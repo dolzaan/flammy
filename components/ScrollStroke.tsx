@@ -33,7 +33,7 @@ export default function ScrollStroke({ children }: { children: ReactNode }) {
       setVisibleFraction(Math.min(1, window.innerHeight / bounds.height));
       const scaleX = 1340 / bounds.width, scaleY = 6100 / bounds.height;
       const padding = window.innerWidth < 600 ? 8 : 14;
-      const selectors = 'header, h1, h2, h3, p, a, button, summary, form, .section-label, .eyebrow, .values, .hero-rule, .scroll-hint, .manifesto-bottom';
+      const selectors = 'header, h1, h2, h3, p, a, button, summary, form, .section-label, .eyebrow, .values, .hero-rule, .scroll-hint, .manifesto-bottom, .text-tag, .step-number, .hero-symbol, footer > div';
       const areas = Array.from(site.querySelectorAll<HTMLElement>(selectors)).flatMap(element => {
         if (element.closest('.honeypot')) return [];
         const safePadding = element.closest('.reveal') ? padding + 28 : padding;
