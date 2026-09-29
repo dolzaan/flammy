@@ -38,3 +38,9 @@ Sem as variáveis, o site utiliza os contatos oficiais: briefing público, flamm
 ## Arquivos de prévia
 
 `flammy-preview.html` é uma versão estática independente para revisar o visual. Usa a logo embutida, CSS embutido e fontes do Google quando há internet; não substitui a aplicação Next.js.
+
+## Ambiente publicado
+
+Site: https://flammy.vercel.app/
+Repositório privado: https://github.com/dolzaan/flammy
+Supabase: projeto `sfohvokxjtibqshuvltq`, região São Paulo. Migração aplicada. Banco conectado ao projeto Flammy pela integração nativa da Vercel, com prefixo FLAMMY. A aplicação aceita as variáveis `NEXT_PUBLIC_FLAMMY_SUPABASE_URL` e `FLAMMY_SUPABASE_SERVICE_ROLE_KEY`; `LEAD_HASH_SALT` fica no servidor. As chaves são administradas pela integração e não estão no código.

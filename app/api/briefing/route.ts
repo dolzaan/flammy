@@ -3,7 +3,7 @@ import {createHash} from 'node:crypto';
 export async function POST(req:NextRequest){
  if(req.headers.get('origin')!==new URL(req.url).origin)return NextResponse.json({error:'Origem inválida.'},{status:403});
  if(Number(req.headers.get('content-length')||0)>12000)return NextResponse.json({error:'Mensagem muito longa.'},{status:413});
- const url=process.env.SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY,salt=process.env.LEAD_HASH_SALT;
+ const url=process.env.SUPABASE_URL||process.env.NEXT_PUBLIC_FLAMMY_SUPABASE_URL,key=process.env.FLAMMY_SUPABASE_SERVICE_ROLE_KEY||process.env.SUPABASE_SERVICE_ROLE_KEY,salt=process.env.LEAD_HASH_SALT;
  if(!url||!key||!salt)return NextResponse.json({error:'Use o e-mail ou o briefing para entrar em contato.'},{status:503});
  let b;try{const text=await req.text();if(text.length>12000)throw Error();b=JSON.parse(text)}catch{return NextResponse.json({error:'Dados inválidos.'},{status:400})}
  if(b.website)return NextResponse.json({error:'Não foi possível enviar.'},{status:400});
