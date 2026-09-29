@@ -33,7 +33,7 @@ export default function ScrollStroke({ children }: { children: ReactNode }) {
       setVisibleFraction(Math.min(1, window.innerHeight / bounds.height));
       const scaleX = 1340 / bounds.width, scaleY = 6100 / bounds.height;
       const padding = window.innerWidth < 600 ? 8 : 14;
-      const selectors = 'header, .hero .eyebrow, .hero h1, .hero-bottom, .hero-rule, .hero-symbol, .services .section-label, .services .section-heading, .service-list, .process .section-label, .process .section-heading, .steps, footer';
+      const selectors = 'header, .hero .eyebrow, .hero h1, .hero-bottom, .hero-rule, .hero-symbol, .services .section-label, .services .section-heading, .service-list, footer';
       const areas = Array.from(site.querySelectorAll<HTMLElement>(selectors)).flatMap(element => {
         if (element.closest('.honeypot')) return [];
         const safePadding = element.closest('.reveal') ? padding + 28 : padding;
@@ -82,8 +82,6 @@ export default function ScrollStroke({ children }: { children: ReactNode }) {
     return before.length + fraction * (after.length - before.length);
   });
   const drawing = reducedMotion ? 1 : pathLength;
-  const tipX = useTransform(pathLength, length => pathRef.current?.getPointAtLength(pathRef.current.getTotalLength() * length).x ?? 0);
-  const tipY = useTransform(pathLength, length => pathRef.current?.getPointAtLength(pathRef.current.getTotalLength() * length).y ?? 0);
 
   return (
     <div ref={siteRef} className="scroll-site">
@@ -96,7 +94,6 @@ export default function ScrollStroke({ children }: { children: ReactNode }) {
         <g mask={`url(#${maskId})`}>
         <motion.path d={stroke} stroke="var(--pink)" strokeWidth="13" strokeLinecap="round" style={{ pathLength: drawing }} />
         <motion.path ref={pathRef} data-scroll-stroke d={stroke} stroke="var(--red)" strokeWidth="7" strokeLinecap="round" style={{ pathLength: drawing }} />
-        {reducedMotion ? null : <motion.circle className="stroke-tip" r="10" fill="var(--red)" stroke="var(--pink)" strokeWidth="5" cx={tipX} cy={tipY} />}
         </g>
       </svg>
     </div>
