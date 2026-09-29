@@ -1,17 +1,21 @@
 'use client';
 
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 /**
  * Adapted from Skiper 19 by @gurvinder-singh02 (https://skiper-ui.com).
  * Free version: attribution required. Inspired by comgio.ai; independent recreation.
  * Original supplied by the client; adapted to Flammy's colors and responsive layout.
  */
-// A continuous, mostly vertical route keeps the drawing aligned with page progress.
-const stroke = 'M1010 0 C1010 100 1250 140 1150 300 C1050 460 730 240 800 430 C870 620 1220 530 1160 760 C1100 990 980 1020 1040 1250 C1100 1480 1200 1480 1080 1700 C960 1920 1080 1970 1180 2150 C1280 2330 1050 2480 980 2670 C910 2860 1150 2890 1150 3100 C1150 3310 820 3260 900 3490 C980 3720 1230 3670 1130 3910 C1030 4150 1060 4120 1150 4360 C1240 4600 920 4580 1000 4800 C1080 5020 1210 5050 1120 5300 C1030 5550 920 5500 1000 5710 C1080 5920 1140 5930 1080 6100';
+// Hand-drawn route: orbit, knot, wide sweep, spiral, then a loose signature.
+const stroke = 'M1080 -20 C1140 100 1280 120 1200 230 C1120 340 950 240 1010 140 C1070 40 1210 210 1130 330 C1050 450 850 350 900 260 C950 170 1110 320 1040 450 C970 580 1230 600 1180 760 C1130 920 790 850 650 960 C510 1070 740 1180 850 1060 C960 940 1050 1200 890 1320 C730 1440 450 1260 260 1450 C70 1640 160 1850 350 1790 C540 1730 330 1560 250 1710 C170 1860 510 1960 750 1890 C990 1820 1280 1980 1160 2220 C1040 2460 800 2250 900 2110 C1000 1970 1170 2320 1010 2480 C850 2640 380 2520 160 2730 C-60 2940 140 3150 380 3060 C620 2970 480 2830 360 2920 C240 3010 560 3200 850 3120 C1140 3040 1310 3260 1170 3440 C1030 3620 870 3490 950 3380 C1030 3270 1210 3500 1090 3650 C970 3800 680 3750 560 3890 C440 4030 700 4180 820 4050 C940 3920 1080 4140 980 4300 C880 4460 1280 4480 1160 4690 C1040 4900 790 4800 860 4630 C930 4460 1150 4780 1010 4930 C870 5080 440 5000 300 5200 C160 5400 510 5510 650 5350 C790 5190 900 5500 770 5650 C640 5800 970 5950 1080 5810 C1190 5670 1310 5920 1140 6120';
+type Sample = { y: number; length: number };
+
 
 export default function ScrollStroke({ children }: { children: ReactNode }) {
+  const pathRef = useRef<SVGPathElement>(null);
+  const [samples, setSamples] = useState<Sample[]>([]);
   const reducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ trackContentSize: true });
   const [visibleFraction, setVisibleFraction] = useState(0.15);
@@ -19,21 +23,42 @@ export default function ScrollStroke({ children }: { children: ReactNode }) {
   useEffect(() => {
     const measure = () => setVisibleFraction(Math.min(1, window.innerHeight / document.documentElement.scrollHeight));
     measure();
+    const path = pathRef.current;
+    if (path) {
+      const total = path.getTotalLength();
+      const route: Sample[] = [{ y: 0, length: 0 }];
+      let furthestY = 0;
+      for (let i = 1; i <= 800; i++) {
+        const y = Math.min(1, Math.max(0, path.getPointAtLength(total * i / 800).y / 6100));
+        if (y > furthestY) { route.push({ y, length: i / 800 }); furthestY = y; }
+      }
+      route.push({ y: 1, length: 1 });
+      setSamples(route);
+    }
     const observer = new ResizeObserver(measure);
     observer.observe(document.body);
     window.addEventListener('resize', measure);
     return () => { observer.disconnect(); window.removeEventListener('resize', measure); };
   }, []);
 
-  const pathLength = useTransform(scrollYProgress, [0, 1], [visibleFraction, 1]);
+  const pathLength = useTransform(scrollYProgress, (progress) => {
+    if (progress >= 0.9999) return 1;
+    const y = visibleFraction + (1 - visibleFraction) * progress;
+    if (!samples.length) return y;
+    const index = samples.findIndex(sample => sample.y >= y);
+    if (index <= 0) return index === 0 ? samples[0].length : 1;
+    const before = samples[index - 1], after = samples[index];
+    const fraction = (y - before.y) / (after.y - before.y || 1);
+    return before.length + fraction * (after.length - before.length);
+  });
   const drawing = reducedMotion ? 1 : pathLength;
 
   return (
     <div className="scroll-site">
       {children}
       <svg className="site-stroke" viewBox="0 0 1340 6100" preserveAspectRatio="none" fill="none" aria-hidden="true" focusable="false">
-        <motion.path d={stroke} stroke="var(--pink)" strokeWidth="14" strokeLinecap="round" style={{ pathLength: drawing }} />
-        <motion.path data-scroll-stroke d={stroke} stroke="var(--red)" strokeWidth="6" strokeLinecap="round" style={{ pathLength: drawing }} />
+        <motion.path d={stroke} stroke="var(--pink)" strokeWidth="13" strokeLinecap="round" style={{ pathLength: drawing }} />
+        <motion.path ref={pathRef} data-scroll-stroke d={stroke} stroke="var(--red)" strokeWidth="7" strokeLinecap="round" style={{ pathLength: drawing }} />
       </svg>
     </div>
   );

@@ -3,9 +3,18 @@
 
 /* One decorative drawing follows scroll in both directions across the entire site. */
 .scroll-site{position:relative;isolation:isolate;overflow:clip}
-.scroll-site>.site-stroke{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.55;pointer-events:none}
+.scroll-site>.site-stroke{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.7;pointer-events:none}
 .scroll-site header,.scroll-site .hero>*,.scroll-site .section>*,.scroll-site .manifesto>*:not(svg),.scroll-site footer>*{position:relative;z-index:2}
 .scroll-site .hero-heading{position:relative}
 .scroll-site .hero-symbol{position:relative}
 @media(max-width:600px){.scroll-site>.site-stroke{width:155%;left:-55%;opacity:.4}.scroll-site .hero-symbol{position:absolute}}
 @media(prefers-reduced-motion:reduce){.scroll-site>.site-stroke{opacity:.22}}
+
+/* Opaque content islands hide the route, which resurfaces between sections. */
+.scroll-site .ribbon{position:relative;z-index:3}
+.scroll-site .studio-copy{background:var(--paper);box-shadow:0 0 0 18px var(--paper)}
+.scroll-site .service-list{background:#eee7e3;box-shadow:0 0 0 12px #eee7e3}
+.scroll-site .contact-form{position:relative;background:var(--red);box-shadow:0 0 0 20px var(--red)}
+.scroll-site .hero-symbol svg{background:var(--pink);border-radius:50%;padding:8%}
+.scroll-site .footer-wordmark{background:var(--pink)}
+@media(max-width:600px){.scroll-site>.site-stroke{width:100%;left:0;opacity:.45}.scroll-site .studio-copy{box-shadow:0 0 0 8px var(--paper)}.scroll-site .contact-form{box-shadow:0 0 0 10px var(--red)}}
