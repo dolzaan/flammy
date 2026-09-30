@@ -103,13 +103,16 @@ export default function DarkVeil() {
     let disposed = false, generation = 0;
     let cleanup: (() => void) | undefined;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const coarse = window.matchMedia('(pointer: coarse)');
     const start = async () => {
       const current = ++generation;
-      if (reduced.matches) return;
+      // Touch devices keep the branded poster. It looks the same at page scale
+      // and avoids keeping a mobile GPU busy for a purely decorative layer.
+      if (reduced.matches || coarse.matches) return;
       const THREE = await import('three');
-      if (disposed || current !== generation || reduced.matches) return;
+      if (disposed || current !== generation || reduced.matches || coarse.matches) return;
       let renderer: InstanceType<typeof THREE.WebGLRenderer>;
-      try { renderer = new THREE.WebGLRenderer({ alpha: false, antialias: false }); }
+      try { renderer = new THREE.WebGLRenderer({ alpha: false, antialias: false, powerPreference: 'low-power' }); }
       catch { return; }
       renderer.setPixelRatio(1);
       const geometry = new THREE.BufferGeometry();
@@ -124,10 +127,10 @@ export default function DarkVeil() {
       scene.add(new THREE.Mesh(geometry, material));
       const camera = new THREE.Camera();
       mount.appendChild(renderer.domElement);
-      let frame = 0, lastDraw = 0;
+      let frame = 0, timer = 0, scrollIdleTimer = 0;
       const beginning = performance.now();
       const resize = () => {
-        const scale = innerWidth < 700 ? 0.45 : 0.7;
+        const scale = innerWidth < 900 ? 0.36 : 0.52;
         const w = Math.max(1, Math.round(mount.clientWidth * scale));
         const h = Math.max(1, Math.round(mount.clientHeight * scale));
         renderer.setSize(w, h, false); uniforms.uResolution.value.set(w, h);
@@ -135,36 +138,52 @@ export default function DarkVeil() {
       const render = (now: number) => {
         frame = 0;
         if (disposed || document.hidden) return;
-        if (now - lastDraw >= 1000 / 24) {
-          uniforms.uTime.value = 3.5 + ((now - beginning) / 1000) * 0.18;
-          renderer.render(scene, camera); lastDraw = now;
-          mount.dataset.ready = 'true';
-        }
-        frame = requestAnimationFrame(render);
+        uniforms.uTime.value = 3.5 + ((now - beginning) / 1000) * 0.14;
+        renderer.render(scene, camera);
+        mount.dataset.ready = 'true';
+        timer = window.setTimeout(schedule, 1000 / 15);
+      };
+      const schedule = () => {
+        window.clearTimeout(timer); timer = 0;
+        if (!frame && !disposed && !document.hidden) frame = requestAnimationFrame(render);
+      };
+      const pauseForScroll = () => {
+        cancelAnimationFrame(frame); frame = 0;
+        window.clearTimeout(timer); timer = 0;
+        window.clearTimeout(scrollIdleTimer);
+        scrollIdleTimer = window.setTimeout(schedule, 140);
       };
       const visibility = () => {
-        cancelAnimationFrame(frame); frame = 0;
-        if (!document.hidden) frame = requestAnimationFrame(render);
+        cancelAnimationFrame(frame); frame = 0; window.clearTimeout(timer); timer = 0;
+        if (!document.hidden) schedule();
       };
       const lost = (event: Event) => {
-        event.preventDefault(); cancelAnimationFrame(frame); frame = 0;
+        event.preventDefault(); cancelAnimationFrame(frame); frame = 0; window.clearTimeout(timer);
         delete mount.dataset.ready;
       };
       renderer.domElement.addEventListener('webglcontextlost', lost);
       const observer = new ResizeObserver(resize); observer.observe(mount);
       document.addEventListener('visibilitychange', visibility);
-      resize(); frame = requestAnimationFrame(render);
+      window.addEventListener('scroll', pauseForScroll, { passive: true });
+      resize(); schedule();
       cleanup = () => {
-        cancelAnimationFrame(frame); observer.disconnect();
+        cancelAnimationFrame(frame); window.clearTimeout(timer); window.clearTimeout(scrollIdleTimer); observer.disconnect();
         document.removeEventListener('visibilitychange', visibility);
+        window.removeEventListener('scroll', pauseForScroll);
         renderer.domElement.removeEventListener('webglcontextlost', lost);
         renderer.domElement.remove(); delete mount.dataset.ready;
         geometry.dispose(); material.dispose(); renderer.dispose(); renderer.forceContextLoss();
       };
     };
     const preferences = () => { cleanup?.(); cleanup = undefined; void start().catch(() => {}); };
-    void start().catch(() => {}); reduced.addEventListener('change', preferences);
-    return () => { disposed = true; ++generation; cleanup?.(); reduced.removeEventListener('change', preferences); };
+    void start().catch(() => {});
+    reduced.addEventListener('change', preferences);
+    coarse.addEventListener('change', preferences);
+    return () => {
+      disposed = true; ++generation; cleanup?.();
+      reduced.removeEventListener('change', preferences);
+      coarse.removeEventListener('change', preferences);
+    };
   }, []);
   return <div className="brand-veil" ref={mountRef} aria-hidden="true"/>;
 }
