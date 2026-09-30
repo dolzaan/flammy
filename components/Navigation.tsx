@@ -1,29 +1,44 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { ArrowUpRight } from 'lucide-react';
-const links = [{ id: 'studio', label: 'O studio' }, { id: 'servicos', label: 'O que fazemos' }, { id: 'entregas', label: 'Entregas', secondary: true }, { id: 'processo', label: 'Processo', secondary: true }];
+import { useEffect, useId, useRef, useState } from 'react';
+import { ArrowUpRight, Menu, X } from 'lucide-react';
 
+const links = [
+  { id: 'studio', label: 'Studio' }, { id: 'servicos', label: 'Serviços' },
+  { id: 'entregas', label: 'Entregas' }, { id: 'processo', label: 'Processo' }
+];
 export default function Navigation() {
-  const [active, setActive] = useState('inicio');
+  const [open, setOpen] = useState(false);
+  const menuId = useId();
+  const controls = useRef<HTMLDivElement>(null);
+  const toggle = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    let frame = 0;
-    const sections = Array.from(document.querySelectorAll<HTMLElement>('main section[id]'));
-    const update = () => {
-      frame = 0;
-      const line = window.innerHeight * 0.35;
-      let current = 'inicio';
-      for (const section of sections) if (section.getBoundingClientRect().top <= line) current = section.id;
-      setActive(current);
+    if (!open) return;
+    const close = () => { setOpen(false); toggle.current?.focus({ preventScroll: true }); };
+    const key = (event: KeyboardEvent) => { if (event.key === 'Escape') close(); };
+    const outside = (event: PointerEvent) => { if (!controls.current?.contains(event.target as Node)) setOpen(false); };
+    const media = window.matchMedia('(min-width: 1101px)');
+    const resize = () => { if (media.matches) setOpen(false); };
+    document.addEventListener('keydown', key); document.addEventListener('pointerdown', outside);
+    media.addEventListener('change', resize);
+    return () => {
+      document.removeEventListener('keydown', key); document.removeEventListener('pointerdown', outside);
+      media.removeEventListener('change', resize);
     };
-    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-    update();
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
-    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule); };
-  }, []);
-  return <nav aria-label="Navegação principal">
-    {links.map(link => <a key={link.id} href={`#${link.id}`} className={link.secondary ? 'nav-secondary' : undefined} aria-current={active === link.id ? 'location' : undefined}>{link.label}</a>)}
-    <a className="nav-cta" href="#contato" aria-current={active === 'contato' ? 'location' : undefined}>Vamos conversar <ArrowUpRight size={16} className="button-arrow" aria-hidden="true" /></a>
-  </nav>;
+  }, [open]);
+  return <div className="header-controls" ref={controls}>
+    <button className="mobile-menu-toggle" ref={toggle} type="button" aria-expanded={open} aria-controls={menuId}
+      aria-label={open ? 'Fechar menu de seções' : 'Abrir menu de seções'} onClick={() => setOpen(value => !value)}>
+      {open ? <X size={18} aria-hidden="true"/> : <Menu size={18} aria-hidden="true"/>}<span>Menu</span>
+    </button>
+    <a className="nav-cta header-contact" href="#contato" onClick={() => setOpen(false)}>
+      <span className="contact-label-full">Vamos conversar</span><span className="contact-label-short">Conversar</span>
+      <ArrowUpRight size={16} className="button-arrow" aria-hidden="true"/>
+    </a>
+    <nav id={menuId} className="mobile-navigation" aria-label="Menu de seções" hidden={!open}>
+      {links.map((link, index) => <a href={`#${link.id}`} key={link.id} onClick={() => { setOpen(false); toggle.current?.focus({preventScroll:true}); }}>
+        <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{link.label}<ArrowUpRight size={16} aria-hidden="true"/>
+      </a>)}
+    </nav>
+  </div>;
 }
