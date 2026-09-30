@@ -43,7 +43,12 @@ export default function Navigation() {
       setOpen(false);
       if (contactVisible) {
         const field = document.querySelector<HTMLInputElement>('.contact-form input[name="name"]');
-        if (field) { event.preventDefault(); field.focus(); }
+        if (field) {
+          event.preventDefault();
+          field.focus({ preventScroll: true });
+          const bounds = field.getBoundingClientRect();
+          if (bounds.top < 100 || bounds.bottom > innerHeight) field.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+        }
       }
     }}>
       <span className="contact-label-full">{contactVisible ? 'Conte sua ideia' : 'Vamos conversar'}</span><span className="contact-label-short">{contactVisible ? 'Sua ideia' : 'Conversar'}</span>
