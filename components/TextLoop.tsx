@@ -181,13 +181,22 @@ const TextLoop = ({
     const root = rootRef.current;
     let inView = true;
     let hovered = false;
-    const syncPlayback = () => { tween.paused(preference.matches || document.hidden || !inView || hovered); };
+    let scrolling = false;
+    let scrollTimer = 0;
+    const syncPlayback = () => { tween.paused(preference.matches || document.hidden || !inView || hovered || scrolling); };
     const pause = () => { hovered = true; syncPlayback(); };
     const resume = () => { hovered = false; syncPlayback(); };
+    const onScroll = () => {
+      scrolling = true;
+      syncPlayback();
+      window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(() => { scrolling = false; syncPlayback(); }, 140);
+    };
     const observer = new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; syncPlayback(); });
     if (root) observer.observe(root);
     preference.addEventListener('change', syncPlayback);
     document.addEventListener('visibilitychange', syncPlayback);
+    window.addEventListener('scroll', onScroll, { passive: true });
     syncPlayback();
 
     if (pauseOnHover && root) {
@@ -197,9 +206,11 @@ const TextLoop = ({
 
     return () => {
       tween.kill();
+      window.clearTimeout(scrollTimer);
       observer.disconnect();
       preference.removeEventListener('change', syncPlayback);
       document.removeEventListener('visibilitychange', syncPlayback);
+      window.removeEventListener('scroll', onScroll);
       if (pauseOnHover && root) {
         root.removeEventListener('pointerenter', pause);
         root.removeEventListener('pointerleave', resume);
