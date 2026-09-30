@@ -336,3 +336,9 @@ body{background:var(--ink)}
 }
 .scroll-site>header::after{content:none}
 @media(max-width:600px){.scroll-site>header::before{bottom:-36px;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}}
+.scroll-site>header .brand{display:grid}
+.scroll-site>header .brand-logo{grid-area:1 / 1;transition:opacity 320ms cubic-bezier(.4,0,.2,1);pointer-events:none}
+.scroll-site>header .brand-logo--cream{opacity:1}
+.scroll-site>header .brand-logo--wine{opacity:0}
+.scroll-site>header[data-tone=light] .brand-logo--cream{opacity:0}
+.scroll-site>header[data-tone=light] .brand-logo--wine{opacity:1}
