@@ -471,6 +471,7 @@ html.lenis,html.lenis body{height:auto}
 /* Desktop scrollytelling: only panels that fit safely inside the viewport are
    pinned. The next section then rises over the previous one like a card deck. */
 @media(min-width:901px) and (min-height:680px) and (hover:hover) and (pointer:fine){
+  .scroll-site main>section:is(.studio,.services,.manifesto,.process){content-visibility:visible}
   .scroll-site main>section.scroll-pin{
     position:sticky;
     top:92px;
