@@ -4,16 +4,16 @@ import SmoothScroll from './SmoothScroll';
 export default function Motion() {
   useEffect(() => {
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
-    const pinCapable = matchMedia('(min-width: 901px) and (min-height: 680px) and (hover: hover) and (pointer: fine)');
+    const pinCapable = matchMedia('(min-width: 901px) and (min-height: 560px) and (hover: hover) and (pointer: fine)');
     const cards = document.querySelectorAll<HTMLElement>('.steps article,.deliverable-card');
     const titles = document.querySelectorAll<HTMLElement>('main h2,.manifesto .panel-content > p');
     const sections = document.querySelectorAll<HTMLElement>('main>section:not(.hero)>.panel-content,main>.brand-text-loop');
     const scenes = document.querySelectorAll<HTMLElement>('main>section:not(.hero)');
     const details = document.querySelectorAll<HTMLElement>('.section-label,.studio-copy,.values>span,.section-heading>p,.service,.deliverable-footer,.manifesto-bottom,.contact-grid>div');
-    const elements = [...cards, ...titles, ...sections, ...details];
+    const elements = [...cards, ...titles, ...sections, ...details, ...scenes];
     const clearPins = () => scenes.forEach(scene => { scene.classList.remove('scroll-pin'); scene.style.removeProperty('--scene-layer'); });
     const revealAll = () => elements.forEach(element => {
-      element.classList.remove('reveal', 'title-reveal', 'scroll-reveal', 'detail-reveal', 'visible');
+      element.classList.remove('reveal', 'title-reveal', 'scroll-reveal', 'detail-reveal', 'scene-reveal', 'visible');
       element.style.removeProperty('--reveal-delay');
       element.style.removeProperty('--detail-delay');
     });
@@ -24,7 +24,7 @@ export default function Motion() {
       clearPins();
       if (!pinCapable.matches) return;
       scenes.forEach((scene, index) => {
-        if (scene.offsetHeight <= innerHeight - 96) {
+        if (scene.offsetHeight <= innerHeight - 76) {
           scene.classList.add('scroll-pin');
           scene.style.setProperty('--scene-layer', String(index + 4));
         }
@@ -44,6 +44,11 @@ export default function Motion() {
       element.classList.add('detail-reveal');
       element.style.setProperty('--detail-delay', `${(index % 4) * 70}ms`);
       observer.observe(element);
+    });
+    scenes.forEach(scene => {
+      if (scene.getBoundingClientRect().top < innerHeight * 0.9) return;
+      scene.classList.add('scene-reveal');
+      observer.observe(scene);
     });
     sections.forEach(element => {
       const rect = element.getBoundingClientRect();
