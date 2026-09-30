@@ -207,13 +207,13 @@ nav .nav-cta[aria-current=location]{background:var(--red);color:var(--pink)}
 @media(prefers-reduced-motion:reduce){.line-sidebar__label,.line-sidebar__marker{transform:none}}
 
 /* The transparent right-hand guide appears during scroll and never changes layout. */
-.section-sidebar{left:auto;right:12px;width:138px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;opacity:0;visibility:hidden;pointer-events:none;transform:translate(10px,-50%);transition:opacity .2s,transform .2s,visibility .2s}
+.section-sidebar{left:auto;right:12px;width:164px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;opacity:0;visibility:hidden;pointer-events:none;transform:translate(10px,-50%);transition:opacity .2s,transform .2s,visibility .2s}
 .section-sidebar[data-visible=true]{opacity:1;visibility:visible;pointer-events:auto;transform:translate(0,-50%)}
-.line-sidebar__list{gap:8px}
-.line-sidebar .line-sidebar__link{flex-direction:row-reverse;justify-content:flex-start;gap:10px;padding:8px 6px;min-height:40px}
-.line-sidebar__marker{width:28px;opacity:calc(.5 + var(--effect,0)*.5);height:1px;transform-origin:right;transform:scaleX(calc(.55 + var(--effect,0)*.45))}
-.line-sidebar__label{font-size:12px;color:var(--sidebar-label-color,var(--red));opacity:0;transform:translateX(8px);transition:opacity .18s,transform .18s}
+.line-sidebar__list{gap:10px}
+.line-sidebar .line-sidebar__link{flex-direction:row-reverse;justify-content:flex-start;gap:12px;padding:10px 6px;min-height:48px}
+.line-sidebar__marker{width:36px;opacity:calc(.5 + var(--effect,0)*.5);height:2px;transform-origin:right;transform:scaleX(calc(.55 + var(--effect,0)*.45))}
+.line-sidebar__label{font-size:14px;color:var(--sidebar-label-color,var(--red));opacity:0;transform:translateX(8px);transition:opacity .18s,transform .18s}
 .line-sidebar__index{display:none}
 .section-sidebar:hover .line-sidebar__label,.section-sidebar:focus-within .line-sidebar__label{opacity:1;transform:translateX(calc(var(--effect,0)*-3px))}
-.line-sidebar__item:not(:last-child)::after{left:auto;right:6px;top:calc(100% + 4px);width:5px;background:#930c1755}
+.line-sidebar__item:not(:last-child)::after{left:auto;right:6px;top:calc(100% + 5px);width:7px;background:#930c1755}
 @media(prefers-reduced-motion:reduce){.section-sidebar,.line-sidebar__label{transition:none}}
