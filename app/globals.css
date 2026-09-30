@@ -121,11 +121,11 @@ nav .nav-cta[aria-current=location]{background:var(--red);color:var(--pink)}
 @media(max-width:380px){.brand img{width:160px}}
 
 /* Static paper grain sits on surfaces, below the readable content. */
-.scroll-site{background-image:url('/paper-grain.png')}
+.scroll-site{background-image:linear-gradient(#eaded9eb,#eaded9eb),url('/paper-grain.png')}
 .panel-surface::after,.scroll-site footer::before,.scroll-site .ribbon::before{
   content:"";position:absolute;inset:0;border-radius:inherit;
   background-image:url('/paper-grain.png');background-repeat:repeat;
-  opacity:.32;pointer-events:none;
+  opacity:.22;pointer-events:none;
 }
 .scroll-site footer::before,.scroll-site .ribbon::before{z-index:-1}
 .scroll-site>header{
