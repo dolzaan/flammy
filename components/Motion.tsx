@@ -10,7 +10,7 @@ export default function Motion() {
     const sections = document.querySelectorAll<HTMLElement>('main>section:not(.hero)>.panel-content,.story-stage>section>.panel-content,main>.brand-text-loop');
     const scenes = document.querySelectorAll<HTMLElement>('.story-stage>section');
     const details = document.querySelectorAll<HTMLElement>('.section-label,.studio-copy,.values>span,.section-heading>p,.service,.deliverable-footer,.manifesto-bottom,.contact-grid>div');
-    const elements = [...cards, ...titles, ...sections, ...details, ...scenes];
+    const elements = [...cards, ...titles, ...sections, ...details];
     const clearPins = () => scenes.forEach(scene => { scene.classList.remove('scroll-pin'); scene.style.removeProperty('--scene-layer'); });
     const revealAll = () => elements.forEach(element => {
       element.classList.remove('reveal', 'title-reveal', 'scroll-reveal', 'detail-reveal', 'scene-reveal', 'visible');
@@ -23,10 +23,9 @@ export default function Motion() {
       resizeFrame = 0;
       clearPins();
       if (!pinCapable.matches) return;
-      scenes.forEach((scene, index) => {
+      scenes.forEach(scene => {
         if (scene.offsetHeight <= innerHeight - 76) {
           scene.classList.add('scroll-pin');
-          scene.style.setProperty('--scene-layer', String(index + 1));
         }
       });
     };
@@ -44,11 +43,6 @@ export default function Motion() {
       element.classList.add('detail-reveal');
       element.style.setProperty('--detail-delay', `${(index % 4) * 70}ms`);
       observer.observe(element);
-    });
-    scenes.forEach(scene => {
-      if (scene.getBoundingClientRect().top < innerHeight * 0.9) return;
-      scene.classList.add('scene-reveal');
-      observer.observe(scene);
     });
     sections.forEach(element => {
       const rect = element.getBoundingClientRect();
