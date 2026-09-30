@@ -62,3 +62,25 @@
 @media(hover:hover) and (pointer:fine){.nav-cta:hover{background:var(--red);color:var(--pink);opacity:1}.button:hover .button-arrow,.nav-cta:hover .button-arrow{transform:translate(3px,-3px)}.service-description a:hover .link-arrow{transform:translate(3px,-3px)}.service:hover{background:#930c1705}.steps article:hover{transform:translateY(-3px);background:#f4bad11a;box-shadow:0 10px 20px #30101505}.steps article:hover .step-number{transform:translateX(4px)}}
 @media(max-width:600px){.nav-cta{gap:5px}.nav-cta>.button-arrow{display:none}.contact-success{padding:25px}.contact-success h3{font-size:30px}.form-field{padding:10px}.steps article:hover{transform:none}}
 @media(prefers-reduced-motion:reduce){.button:hover,.steps article:hover,.button:hover .button-arrow,.nav-cta:hover .button-arrow,.service-description a:hover .link-arrow,.steps article:hover .step-number{transform:none!important}}
+
+/* Deliverables share the panel spacing system and keep decoration behind content. */
+.scroll-site .deliverables{width:88%;margin:0 auto;padding:75px 5%;border-radius:40px 12px 40px 40px}
+.deliverables>.panel-surface{background:var(--pink);z-index:2}
+.deliverables .section-heading>p{color:#65313f;max-width:350px}
+.deliverable-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.deliverable-card{padding:28px 25px;border:1px solid #930c1726;border-radius:22px;background:#f9f5f1e8;display:flex;flex-direction:column;transition:background .25s,border-color .25s,box-shadow .25s}
+.deliverable-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.deliverable-number{font-size:12px;color:var(--red);letter-spacing:1px}
+.deliverable-icon{display:inline-flex;align-items:center;justify-content:center;width:53px;height:53px;border-radius:50%;background:var(--pink);color:var(--red)}
+.deliverable-card h3{font-size:28px;line-height:1.1;margin:0 0 17px;min-height:62px}
+.deliverable-card>p{font-size:14px;line-height:1.7;color:#68565a;margin:0 0 28px;min-height:72px}
+.deliverable-caption{font-size:10px;font-weight:600;letter-spacing:1.4px;color:var(--red);margin-top:auto;padding-top:21px;border-top:1px solid var(--line)}
+.deliverable-card ul{padding:0;margin:17px 0 0;list-style:none;display:flex;flex-direction:column;gap:13px}
+.deliverable-card li{display:flex;gap:11px;align-items:baseline;font-size:14px;line-height:1.5}
+.deliverable-card li>span{color:var(--red);font-size:12px;flex-shrink:0}
+.deliverable-footer{display:flex;align-items:center;justify-content:space-between;gap:35px;margin-top:35px}
+.deliverable-footer>p{max-width:570px;font-size:13px;line-height:1.7;color:#65313f;margin:0}
+.deliverable-footer .button{flex-shrink:0}
+@media(hover:hover) and (pointer:fine){.deliverable-card:hover{background:var(--paper);border-color:#930c1760;box-shadow:0 10px 25px #930c1708}}
+@media(max-width:1000px){.deliverable-grid{grid-template-columns:1fr}.deliverable-card h3,.deliverable-card>p{min-height:0}.deliverable-top{margin-bottom:22px}.deliverable-footer{align-items:flex-start;flex-direction:column;gap:22px}}
+@media(max-width:600px){.scroll-site .deliverables{width:92%;padding:60px 6%;border-radius:28px 8px 28px 28px}.deliverable-card{padding:25px 22px}.deliverable-card h3{font-size:27px}.deliverable-footer .button{max-width:100%}}
