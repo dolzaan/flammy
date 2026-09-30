@@ -386,3 +386,17 @@ body{background:var(--ink)}
 @keyframes flammy-star-bottom{0%{transform:translateX(0);opacity:.65}100%{transform:translateX(-100%);opacity:0}}
 @keyframes flammy-star-top{0%{transform:translateX(0);opacity:.65}100%{transform:translateX(100%);opacity:0}}
 @media(prefers-reduced-motion:reduce){.magnet__content{transform:none}.spotlight-card::before,.star-border__bottom,.star-border__top{display:none}}
+
+/* Local glass keeps section names readable across panel boundaries. */
+.section-sidebar{width:186px;right:14px}
+.line-sidebar .line-sidebar__link{gap:10px;padding:6px;min-height:48px}
+.line-sidebar__label{align-items:center;opacity:1;color:var(--paper);font-size:15px;font-weight:500;line-height:1.2;padding:9px 12px;border:1px solid rgba(249,245,241,.13);border-radius:22px;background:rgba(48,16,21,.78);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 3px 12px rgba(48,16,21,.1);transform:none;white-space:nowrap;transition:background .2s,border-color .2s,transform .2s}
+.line-sidebar__link[aria-current=location] .line-sidebar__label{font-weight:700;background:rgba(48,16,21,.9);border-color:rgba(244,186,209,.6)}
+.line-sidebar__link[aria-current=location] .line-sidebar__label::before{content:"";width:5px;height:5px;flex-shrink:0;border-radius:50%;background:var(--pink);box-shadow:0 0 8px rgba(244,186,209,.5)}
+.line-sidebar__link:hover .line-sidebar__label,.line-sidebar__link:focus-visible .line-sidebar__label{background:rgba(48,16,21,.94);border-color:rgba(244,186,209,.7)}
+.line-sidebar__marker{width:38px;color:var(--paper);background:currentColor;opacity:.85;box-shadow:0 1px 3px rgba(48,16,21,.8)}
+.line-sidebar__link[aria-current=location] .line-sidebar__marker{color:var(--pink);opacity:1;transform:scaleX(1)}
+.line-sidebar__item:not(:last-child)::after{display:none}
+.line-sidebar__counter{display:table;margin:0 6px 10px auto;padding:7px 11px;border-radius:20px;color:var(--paper);background:rgba(48,16,21,.78);border:1px solid rgba(249,245,241,.13);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-size:13px;letter-spacing:.04em}
+.line-sidebar__counter span{opacity:.85}
+@media(prefers-reduced-motion:reduce){.section-sidebar:hover .line-sidebar__label,.section-sidebar:focus-within .line-sidebar__label{transform:none}}
