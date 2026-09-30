@@ -342,3 +342,8 @@ body{background:var(--ink)}
 .scroll-site>header .brand-logo--wine{opacity:0}
 .scroll-site>header[data-tone=light] .brand-logo--cream{opacity:0}
 .scroll-site>header[data-tone=light] .brand-logo--wine{opacity:1}
+
+/* Titles settle into place as soon as they enter the viewport. */
+.title-reveal{opacity:.35;transform:translateY(12px);transition:opacity 400ms ease-out,transform 400ms cubic-bezier(.22,1,.36,1)}
+.title-reveal.visible{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.title-reveal{opacity:1;transform:none;transition:none}}
