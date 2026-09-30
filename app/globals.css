@@ -476,9 +476,12 @@ html.lenis,html.lenis body{height:auto}
     position:sticky;
     top:92px;
     z-index:var(--scene-layer,4);
+    min-height:calc(100vh - 92px);
     content-visibility:visible;
     box-shadow:0 22px 70px rgba(48,16,21,.18);
   }
+  .scroll-site main>section.scroll-pin>.panel-surface{background:var(--paper)}
+  .scroll-site main>section.manifesto.scroll-pin>.panel-surface{background:var(--red)}
 }
 
 /* Secondary elements follow the panel with a short stagger. */
