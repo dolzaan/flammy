@@ -353,3 +353,12 @@ body{background:var(--ink)}
 .service .plus{transition:transform 360ms cubic-bezier(.22,1,.36,1)}
 .header-contact .contact-label-full{min-width:127px;text-align:center}
 .contact-form input[name=name]{scroll-margin-top:110px}
+
+/* React Bits TextLoop: a contained curved ribbon between the content blocks. */
+.scroll-site .brand-text-loop{padding:0;background:transparent;box-shadow:none;height:120px;overflow:hidden;isolation:isolate}
+.scroll-site .brand-text-loop::before{content:none}
+.brand-text-loop .text-loop{width:100%;height:120px;animation:none}
+.brand-text-loop .text-loop-svg{display:block;width:100%;min-width:900px;height:120px;overflow:hidden}
+.brand-text-loop .text-loop-measure{visibility:hidden;pointer-events:none}
+.brand-text-loop .text-loop-text{font-family:'DM Sans',sans-serif}
+@media(max-width:900px){.brand-text-loop .text-loop-svg{position:relative;left:50%;transform:translateX(-50%)} }
