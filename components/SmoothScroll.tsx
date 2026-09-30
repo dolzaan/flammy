@@ -9,6 +9,7 @@ export default function SmoothScroll() {
     const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
     let lenis: Lenis | null = null;
+    let stopVirtualScroll: (() => void) | undefined;
     let frame = 0;
 
     const tick = (time: number) => {
@@ -25,9 +26,10 @@ export default function SmoothScroll() {
     const stop = () => {
       cancelAnimationFrame(frame);
       frame = 0;
+      stopVirtualScroll?.();
+      stopVirtualScroll = undefined;
       lenis?.destroy();
       lenis = null;
-      window.removeEventListener('wheel', wake, true);
       window.removeEventListener('pointerup', wake, true);
     };
 
@@ -47,7 +49,7 @@ export default function SmoothScroll() {
         overscroll: false,
         anchors: { offset: -84 },
       });
-      window.addEventListener('wheel', wake, { passive: true, capture: true });
+      stopVirtualScroll = lenis.on('virtual-scroll', wake);
       window.addEventListener('pointerup', wake, { passive: true, capture: true });
     };
 
