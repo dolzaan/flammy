@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useId, useRef } from 'react';
 
 /** ShapeBlur by David Haz / React Bits, adapted for Flammy.
  * Original: https://github.com/DavidHDev/react-bits
@@ -133,6 +133,7 @@ void main() {
 
 export default function ShapeBlur() {
   const mountRef = useRef<HTMLDivElement>(null);
+  const id = useId().replace(/:/g, '');
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
@@ -142,14 +143,40 @@ export default function ShapeBlur() {
     let generation = 0;
     let cleanup: (() => void) | undefined;
 
+    const svgFallback = () => {
+      const spots = Array.from(mount.querySelectorAll<SVGCircleElement>('.blur-spot'));
+      let frame = 0, x = -200, y = -200, targetX = -200, targetY = -200;
+      const update = () => {
+        frame = 0;
+        if (disposed || document.hidden) return;
+        x += (targetX - x) * 0.2; y += (targetY - y) * 0.2;
+        for (const spot of spots) { spot.setAttribute('cx', String(x)); spot.setAttribute('cy', String(y)); }
+        if (Math.abs(targetX - x) + Math.abs(targetY - y) > 0.2) frame = requestAnimationFrame(update);
+      };
+      const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+      const move = (event: PointerEvent) => {
+        const rect = mount.getBoundingClientRect();
+        targetX = (event.clientX - rect.left) * 300 / rect.width;
+        targetY = (event.clientY - rect.top) * 300 / rect.height; schedule();
+      };
+      const leave = () => { targetX = -200; targetY = -200; schedule(); };
+      mount.addEventListener('pointermove', move, { passive: true });
+      mount.addEventListener('pointerleave', leave);
+      cleanup = () => {
+        cancelAnimationFrame(frame); mount.removeEventListener('pointermove', move);
+        mount.removeEventListener('pointerleave', leave);
+        for (const spot of spots) { spot.setAttribute('cx', '-200'); spot.setAttribute('cy', '-200'); }
+      };
+    };
     const setup = async () => {
       const currentGeneration = ++generation;
       if (reduced.matches || coarse.matches) return;
+      if (typeof WebGL2RenderingContext === 'undefined') { svgFallback(); return; }
       const THREE = await import('three');
       if (disposed || currentGeneration !== generation || reduced.matches || coarse.matches) return;
       let renderer: InstanceType<typeof THREE.WebGLRenderer>;
       try { renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true }); }
-      catch { return; }
+      catch { svgFallback(); return; }
       renderer.setClearColor(0x000000, 0);
       const scene = new THREE.Scene();
       const camera = new THREE.OrthographicCamera();
@@ -246,11 +273,23 @@ export default function ShapeBlur() {
       reduced.removeEventListener('change', preferences);
       coarse.removeEventListener('change', preferences);
     };
-  }, []);
+  }, [id]);
 
   return <div ref={mountRef} className="hero-symbol shape-blur" aria-hidden="true">
     <svg className="shape-blur-fallback" viewBox="0 0 300 300" fill="none">
-      <rect x="79" y="79" width="142" height="142" rx="34" stroke="currentColor" strokeWidth="4" />
+      <defs>
+        <radialGradient id={`${id}-soft`}><stop offset="0" stopColor="white"/><stop offset="1" stopColor="black"/></radialGradient>
+        <radialGradient id={`${id}-sharp`}><stop offset="0" stopColor="black"/><stop offset="1" stopColor="white"/></radialGradient>
+        <mask id={`${id}-blur-mask`} maskUnits="userSpaceOnUse" x="0" y="0" width="300" height="300" style={{maskType:'luminance'}}>
+          <rect width="300" height="300" fill="black"/><circle className="blur-spot" cx="-200" cy="-200" r="95" fill={`url(#${id}-soft)`}/>
+        </mask>
+        <mask id={`${id}-clear-mask`} maskUnits="userSpaceOnUse" x="0" y="0" width="300" height="300" style={{maskType:'luminance'}}>
+          <rect width="300" height="300" fill="white"/><circle className="blur-spot" cx="-200" cy="-200" r="95" fill={`url(#${id}-sharp)`}/>
+        </mask>
+        <filter id={`${id}-blur`} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="8"/></filter>
+      </defs>
+      <rect x="79" y="79" width="142" height="142" rx="34" stroke="currentColor" strokeWidth="4" mask={`url(#${id}-clear-mask)`}/>
+      <g mask={`url(#${id}-blur-mask)`}><rect x="79" y="79" width="142" height="142" rx="34" stroke="currentColor" strokeWidth="7" filter={`url(#${id}-blur)`}/></g>
     </svg>
   </div>;
 }
