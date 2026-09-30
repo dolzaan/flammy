@@ -1,21 +1,21 @@
 import SpotlightCard from './SpotlightCard';
-import { ArrowUpRight, Compass, Layers, Palette } from 'lucide-react';
+import { ArrowUpRight, Compass, MessageCircleMore, Palette } from 'lucide-react';
 
 const deliverables = [
   {
-    number: '01', title: 'Identidade visual', icon: Palette,
-    description: 'Um sistema visual para reconhecer sua marca em cada detalhe.',
-    items: ['Logo e suas variações', 'Paleta de cores', 'Seleção de tipografias', 'Aplicações e guia de uso'],
+    number: '01', title: 'Posicionamento', icon: Compass,
+    description: 'Clareza para comunicar quem sua marca é, por que existe e aonde quer chegar.',
+    items: ['Leitura de contexto e objetivos', 'Planejamento estratégico', 'Direcionamento de marca', 'Clareza para decisões'],
   },
   {
-    number: '02', title: 'Design para o digital', icon: Layers,
-    description: 'Uma linguagem consistente para sua marca ocupar o digital.',
-    items: ['Peças para redes sociais', 'Layouts para campanhas', 'Templates, quando previstos', 'Arquivos nos formatos combinados'],
+    number: '02', title: 'Presença e conteúdo', icon: MessageCircleMore,
+    description: 'Uma comunicação consistente, próxima e feita para construir conexão.',
+    items: ['Estratégia editorial', 'Desenvolvimento de conteúdos', 'Social media', 'Construção de comunidade'],
   },
   {
-    number: '03', title: 'Direção criativa', icon: Compass,
-    description: 'Uma direção visual que conecta as ideias à essência do negócio.',
-    items: ['Conceito criativo', 'Painel de referências', 'Diretrizes visuais', 'Orientação para aplicações'],
+    number: '03', title: 'Identidade e campanhas', icon: Palette,
+    description: 'Soluções visuais e criativas que transformam intenção em percepção.',
+    items: ['Identidade e peças visuais', 'Campanhas e lançamentos', 'Direção criativa', 'Projetos personalizados'],
   },
 ];
 
@@ -23,10 +23,10 @@ export default function Deliverables() {
   return <section id="entregas" className="deliverables section" aria-labelledby="deliverables-title">
     <div className="panel-surface" aria-hidden="true" />
     <div className="panel-content">
-      <div className="section-label">03 / O QUE VOCÊ RECEBE</div>
+      <div className="section-label">03 / COMO A ESTRATÉGIA GANHA FORMA</div>
       <div className="section-heading">
-        <h2 id="deliverables-title">Da ideia ao que<br />você pode <em>usar.</em></h2>
-        <p>Veja exemplos de entregas para cada serviço.<br />Tudo pensado para fazer sua marca acontecer.</p>
+        <h2 id="deliverables-title">Da intenção<br />à <em>presença.</em></h2>
+        <p>Cada projeto nasce do que a sua marca precisa.<br />Nada é criado por acaso.</p>
       </div>
       <div className="deliverable-grid">
         {deliverables.map(({ number, title, icon: Icon, description, items }) => <SpotlightCard key={number}>
@@ -38,8 +38,8 @@ export default function Deliverables() {
         </SpotlightCard>)}
       </div>
       <div className="deliverable-footer">
-        <p>O projeto é feito para você. As entregas, quantidades e formatos são definidos na proposta, de acordo com o que sua marca precisa.</p>
-        <a className="button" href="#contato">Vamos definir seu projeto <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></a>
+        <p>Escopo, entregas e formatos são definidos com clareza na proposta, de acordo com o momento e os objetivos da sua marca.</p>
+        <a className="button" href="#contato">Vamos construir seu projeto <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></a>
       </div>
     </div>
   </section>;
