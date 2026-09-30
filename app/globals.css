@@ -119,3 +119,30 @@ nav .nav-cta[aria-current=location]{background:var(--red);color:var(--pink)}
 @media(max-width:900px){.brand img{width:230px}}
 @media(max-width:600px){.brand img{width:190px;height:auto}.footer-wordmark{margin:20px 0 35px}}
 @media(max-width:380px){.brand img{width:160px}}
+
+/* Static paper grain sits on surfaces, below the readable content. */
+.scroll-site{background-image:url('/paper-grain.png')}
+.panel-surface::after,.scroll-site footer::before,.scroll-site .ribbon::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  background-image:url('/paper-grain.png');background-repeat:repeat;
+  opacity:.32;pointer-events:none;
+}
+.scroll-site footer::before,.scroll-site .ribbon::before{z-index:-1}
+.scroll-site>header{
+  border-bottom:0;background:rgba(244,186,209,.94);box-shadow:none;
+  -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+}
+.scroll-site>header::after{
+  content:"";position:absolute;inset:100% 0 auto;height:26px;
+  background:rgba(244,186,209,.94);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  -webkit-mask-image:linear-gradient(#000,transparent);
+  mask-image:linear-gradient(#000,transparent);pointer-events:none;
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .scroll-site>header{background:var(--pink)}
+}
+@media(max-width:600px){
+  .scroll-site>header{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+  .scroll-site>header::after{height:18px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+}
