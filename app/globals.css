@@ -400,3 +400,13 @@ body{background:var(--ink)}
 .line-sidebar__counter{display:table;margin:0 6px 10px auto;padding:7px 11px;border-radius:20px;color:var(--paper);background:rgba(48,16,21,.78);border:1px solid rgba(249,245,241,.13);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-size:13px;letter-spacing:.04em}
 .line-sidebar__counter span{opacity:.85}
 @media(prefers-reduced-motion:reduce){.section-sidebar:hover .line-sidebar__label,.section-sidebar:focus-within .line-sidebar__label{transform:none}}
+
+/* Softer sidebar: readable glass with less visual weight. */
+.section-sidebar{width:176px;right:12px}
+.line-sidebar .line-sidebar__link{gap:9px;padding:4px 6px;min-height:44px}
+.line-sidebar__label{font-size:13px;font-weight:450;padding:7px 10px;background:rgba(48,16,21,.48);border-color:rgba(249,245,241,.09);box-shadow:0 2px 9px rgba(48,16,21,.07);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);opacity:.82}
+.line-sidebar__link[aria-current=location] .line-sidebar__label{font-weight:650;background:rgba(48,16,21,.72);border-color:rgba(244,186,209,.38);opacity:1}
+.line-sidebar__link:hover .line-sidebar__label,.line-sidebar__link:focus-visible .line-sidebar__label{background:rgba(48,16,21,.68);border-color:rgba(244,186,209,.38);opacity:1}
+.line-sidebar__marker{width:32px;height:1px;opacity:.55;box-shadow:none}
+.line-sidebar__link[aria-current=location] .line-sidebar__marker{width:36px;opacity:.9}
+.line-sidebar__counter{margin-bottom:8px;padding:6px 10px;font-size:12px;background:rgba(48,16,21,.5);border-color:rgba(249,245,241,.09);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px)}
