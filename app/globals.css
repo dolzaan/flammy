@@ -232,25 +232,27 @@ body{background:var(--ink)}
 
 /* Wine sets the atmosphere; cream surfaces keep the content calm. */
 :root{--blush:#e5bcc8}
-.scroll-site>header{background:rgba(48,16,21,.88);color:var(--paper)}
-.scroll-site>header::after{background:rgba(48,16,21,.88)}
-.header-contact{background:var(--pink);color:var(--ink);border-color:var(--pink)}
-.header-contact:hover{background:var(--blush);color:var(--ink)}
+.scroll-site>header{height:84px;background:rgba(249,245,241,.94);color:var(--ink)}
+.scroll-site>header::after{background:rgba(249,245,241,.94)}
+.header-contact{background:var(--blush);color:var(--ink);border-color:var(--blush)}
+.header-contact:hover{background:var(--pink);color:var(--ink)}
 .hero>.panel-surface,.studio>.panel-surface,.deliverables>.panel-surface{background:var(--paper)}
 .hero .eyebrow{background:var(--paper);box-shadow:0 0 0 12px var(--paper)}
 .deliverable-card{background:#e5bcc826}
 .deliverable-icon{background:var(--blush)}
 .scroll-site footer{background:var(--paper)}
-.reading-progress>div{background:var(--pink)}
+.reading-progress>div{background:var(--red)}
 @media(hover:hover) and (pointer:fine){
-  .header-contact:hover{background:var(--blush);color:var(--ink);opacity:1}
+  .header-contact:hover{background:var(--pink);color:var(--ink);opacity:1}
   .deliverable-card:hover{background:#e5bcc842}
 }
 @media(max-width:1100px){
-  .mobile-menu-toggle{color:var(--paper);border-color:#f9f5f140}
-  .mobile-navigation:not([hidden]){background:var(--ink);color:var(--paper);border-color:#f9f5f12b}
-  .mobile-navigation a:hover,.mobile-navigation a:focus-visible{background:#f4bad119}
+  .mobile-menu-toggle{color:var(--red);border-color:var(--line)}
+  .mobile-navigation:not([hidden]){background:var(--paper);color:var(--ink);border-color:var(--line)}
+  .mobile-navigation a:hover,.mobile-navigation a:focus-visible{background:#e5bcc840}
 }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .scroll-site>header{background:var(--ink)}
+  .scroll-site>header{background:var(--paper)}
 }
+
+@media(max-width:600px){.scroll-site>header{height:72px}}
