@@ -15,6 +15,16 @@ const links = [
 
 export default function LineSidebar() {
   const [active, setActive] = useState('inicio');
+  const [visible, setVisible] = useState(false);
+  const aside = useRef<HTMLElement>(null);
+  const interacting = useRef(false);
+  const hideTimer = useRef<number | undefined>(undefined);
+  const hideAfterIdle = useCallback(() => {
+    window.clearTimeout(hideTimer.current);
+    hideTimer.current = window.setTimeout(() => {
+      if (!interacting.current && !aside.current?.contains(document.activeElement)) setVisible(false);
+    }, 1100);
+  }, []);
   const items = useRef<(HTMLLIElement | null)[]>([]);
   const targets = useRef<number[]>([]);
   const current = useRef<number[]>([]);
@@ -60,19 +70,39 @@ export default function LineSidebar() {
       let id = 'inicio';
       for (const section of sections) if (section.getBoundingClientRect().top <= innerHeight * 0.35) id = section.id;
       setActive(id);
+      // Labels inherit a contrasting tone from the actual surface beneath them.
+      items.current.forEach(item => {
+        if (!item) return;
+        const bounds = item.getBoundingClientRect();
+        const x = innerWidth - 100, y = bounds.top + bounds.height / 2;
+        const dark = sections.some(section => {
+          if (!section.matches('.contact,.manifesto')) return false;
+          const rect = section.getBoundingClientRect();
+          return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+        });
+        item.style.setProperty('--sidebar-label-color', dark ? '#f4bad1' : '#930c17');
+      });
     };
-    const onScroll = () => { if (!scrollFrame) scrollFrame = requestAnimationFrame(update); };
+    const onResize = () => { if (!scrollFrame) scrollFrame = requestAnimationFrame(update); };
+    const onScroll = () => {
+      setVisible(window.scrollY > 12);
+      hideAfterIdle();
+      onResize();
+    };
     update(); window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    window.addEventListener('resize', onResize);
     return () => {
       cancelAnimationFrame(scrollFrame); cancelAnimationFrame(frame.current); frame.current = 0;
-      window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll);
+      window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onResize);
+      window.clearTimeout(hideTimer.current);
       preference.removeEventListener('change', change);
     };
-  }, [schedule]);
+  }, [schedule, hideAfterIdle]);
 
-  return <aside className="section-sidebar">
-    <span className="sidebar-caption">EXPLORE O STUDIO</span>
+  return <aside ref={aside} className="section-sidebar" data-visible={visible} aria-hidden={!visible} inert={!visible}
+    onPointerEnter={() => { interacting.current = true; window.clearTimeout(hideTimer.current); }}
+    onPointerLeave={() => { interacting.current = false; hideAfterIdle(); }}
+    onFocusCapture={() => window.clearTimeout(hideTimer.current)} onBlurCapture={hideAfterIdle}>
     <nav className="line-sidebar" aria-label="Seções do site">
       <ul className="line-sidebar__list" onPointerLeave={reset} onPointerMove={event => {
         if (event.pointerType === 'touch') return;
