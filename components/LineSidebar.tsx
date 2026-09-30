@@ -65,6 +65,7 @@ export default function LineSidebar() {
     change(); preference.addEventListener('change', change);
     let scrollFrame = 0;
     const sections = Array.from(document.querySelectorAll<HTMLElement>('main section[id]'));
+    const surfaces = Array.from(document.querySelectorAll<HTMLElement>('main>section,main>.ribbon,footer'));
     const update = () => {
       scrollFrame = 0;
       let id = 'inicio';
@@ -74,13 +75,16 @@ export default function LineSidebar() {
       items.current.forEach(item => {
         if (!item) return;
         const bounds = item.getBoundingClientRect();
-        const x = innerWidth - 100, y = bounds.top + bounds.height / 2;
-        const dark = sections.some(section => {
-          if (!section.matches('.contact,.manifesto')) return false;
-          const rect = section.getBoundingClientRect();
-          return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-        });
-        item.style.setProperty('--sidebar-label-color', dark ? '#f4bad1' : '#930c17');
+        const y = bounds.top + bounds.height / 2;
+        const darkAt = (x: number) => {
+          const surface = surfaces.find(section => {
+            const rect = section.getBoundingClientRect();
+            return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+          });
+          return !surface || surface.matches('.contact,.manifesto,.ribbon');
+        };
+        item.style.setProperty('--sidebar-label-color', darkAt(innerWidth - 110) ? '#f4bad1' : '#930c17');
+        item.style.setProperty('--sidebar-marker-color', darkAt(innerWidth - 30) ? '#f4bad1' : '#930c17');
       });
     };
     const onResize = () => { if (!scrollFrame) scrollFrame = requestAnimationFrame(update); };

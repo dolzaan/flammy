@@ -1,5 +1,6 @@
 'use client';
 
+import DarkVeil from './DarkVeil';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 
@@ -85,6 +86,7 @@ export default function ScrollStroke({ children }: { children: ReactNode }) {
 
   return (
     <div ref={siteRef} className="scroll-site">
+      <DarkVeil/>
       {children}
       <svg className="site-stroke" viewBox="0 0 1340 6100" preserveAspectRatio="none" fill="none" aria-hidden="true" focusable="false">
         <defs><mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width="1340" height="6100">
