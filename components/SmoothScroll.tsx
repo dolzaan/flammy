@@ -43,7 +43,7 @@ export default function SmoothScroll() {
         } else {
           gestureLocked = false;
         }
-      }, 180);
+      }, 320);
     };
 
     const onWheel = (event: WheelEvent) => {
@@ -60,7 +60,7 @@ export default function SmoothScroll() {
       if (!next) return;
 
       gestureLocked = true;
-      minimumLockUntil = performance.now() + (reducedMotion.matches ? 120 : 680);
+      minimumLockUntil = performance.now() + (reducedMotion.matches ? 280 : 1200);
       window.scrollTo({ top: targetTop(next), behavior: reducedMotion.matches ? 'auto' : 'smooth' });
     };
 
