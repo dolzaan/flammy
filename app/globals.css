@@ -434,7 +434,7 @@ body{background:var(--ink)}
 .line-sidebar__label,.line-sidebar__counter{-webkit-backdrop-filter:none;backdrop-filter:none}
 
 /* Off-screen panels are not painted until they approach the viewport. */
-main>section:not(.hero),.story-stage>section,.scroll-site footer{content-visibility:auto;contain-intrinsic-size:auto 850px}
+main>section:not(.hero),.scroll-site footer{content-visibility:auto;contain-intrinsic-size:auto 850px}
 
 /* Reading progress runs on the compositor without a React scroll listener. */
 .reading-progress>div{transform:scaleX(0)}
@@ -466,51 +466,4 @@ html.lenis,html.lenis body{height:auto}
 
 @media(prefers-reduced-motion:reduce){
   .scroll-reveal{opacity:1;transform:none;transition:none;will-change:auto}
-}
-
-/* Desktop scrollytelling: only panels that fit safely inside the viewport are
-   pinned. The next section then rises over the previous one like a card deck. */
-@media(min-width:901px) and (min-height:560px) and (hover:hover) and (pointer:fine){
-  .scroll-site .story-stage{position:relative;min-height:128vh;isolation:isolate}
-  .scroll-site .story-stage>section{content-visibility:visible}
-  .scroll-site .story-stage>section.scroll-pin{
-    position:sticky;
-    top:92px;
-    z-index:1;
-    content-visibility:visible;
-    box-shadow:0 22px 70px rgba(48,16,21,.18);
-  }
-}
-
-/* Compact laptop viewports still get the story effect without hiding the
-   bottom of a panel behind the browser chrome. */
-@media(min-width:901px) and (min-height:560px) and (max-height:760px) and (hover:hover) and (pointer:fine){
-  .scroll-site .studio,.scroll-site .manifesto,.scroll-site .process{padding-top:48px;padding-bottom:48px}
-  .studio-content{margin-top:24px}
-  .studio-copy p{font-size:15px;line-height:1.5;margin-bottom:12px}
-  .values{margin-top:26px;padding-top:22px}
-  .manifesto .panel-content>p{font-size:clamp(48px,6.7vw,84px);margin:22px 0}
-  .manifesto .panel-content>svg{width:120px;height:120px}
-  .process .section-heading{margin-top:22px;margin-bottom:30px}
-  .process .steps{gap:28px}
-  .process .steps h3{font-size:22px;margin:16px 0 8px}
-  .process .steps p{font-size:14px;line-height:1.5;margin-bottom:0}
-  .process .step-number{font-size:42px}
-}
-
-/* Secondary elements follow the panel with a short stagger. */
-.detail-reveal{
-  opacity:0;
-  transform:translate3d(0,20px,0);
-  transition:opacity 500ms ease-out var(--detail-delay,0ms),transform 600ms cubic-bezier(.22,1,.36,1) var(--detail-delay,0ms);
-  will-change:opacity,transform;
-}
-.detail-reveal.visible{opacity:1;transform:translate3d(0,0,0);will-change:auto}
-.values>span.detail-reveal:nth-child(2),.deliverable-card.reveal:nth-child(2){--detail-delay:90ms}
-.values>span.detail-reveal:nth-child(3),.deliverable-card.reveal:nth-child(3){--detail-delay:180ms}
-
-@media(prefers-reduced-motion:reduce){
-  .detail-reveal{opacity:1;transform:none;transition:none;will-change:auto}
-  .scroll-site .story-stage{min-height:0}
-  .scroll-site .story-stage>section.scroll-pin{position:relative;top:auto;box-shadow:none}
 }
