@@ -1,3 +1,110 @@
 'use client';
-import {useState, type FormEvent} from 'react';
-export default function Contact({enabled,briefing}:{enabled:boolean;briefing:string}){const[state,setState]=useState<'idle'|'sending'|'success'|'error'>('idle');const[message,setMessage]=useState('');async function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();if(state==='sending')return;setState('sending');const form=e.currentTarget;try{const response=await fetch('/api/briefing',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(form)))});const data=await response.json();if(!response.ok)throw new Error(data.error||'Não conseguimos enviar agora.');setState('success');form.reset()}catch(err){setState('error');setMessage(err instanceof Error?err.message:'Não conseguimos enviar agora.')}}if(!enabled)return <div className="contact-note"><span className="note-star" aria-hidden="true">✦</span><h3>Uma ideia.<br/>Infinitas possibilidades.</h3><p>Seu projeto começa com um briefing. Conte um pouco sobre a sua marca, o que você precisa e aonde quer chegar.</p><a href={briefing} target="_blank" rel="noopener noreferrer">Preencher briefing</a><span className="note-caption">VAMOS DAR FORMA AO QUE VOCÊ IMAGINA.</span></div>;return <form onSubmit={submit} className="contact-form"><h3>Conte sua ideia</h3><label>Seu nome<input name="name" autoComplete="name" required maxLength={120}/></label><label>E-mail<input name="email" type="email" autoComplete="email" required maxLength={254}/></label><label>O que sua marca precisa?<select name="service" required><option value="">Selecione um serviço</option><option>Identidade visual</option><option>Design para o digital</option><option>Direção criativa</option></select></label><label>Sobre o projeto<textarea name="message" rows={3} required minLength={10} maxLength={3000}/></label><label className="honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off"/></label><label className="consent"><input type="checkbox" name="consent" required/> Autorizo a Flammy a usar estes dados para responder sobre meu projeto.</label><button className="button light" disabled={state==='sending'}>{state==='sending'?'Enviando…':'Enviar meu projeto'}</button><p role="status" aria-live="polite">{state==='success'?'Recebemos sua ideia! Vamos responder por e-mail.':state==='error'?message:''}</p></form>}
+
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
+import { ArrowUpRight, Check, LoaderCircle } from 'lucide-react';
+
+type Field = 'name' | 'email' | 'service' | 'message' | 'consent';
+type Errors = Partial<Record<Field, string>>;
+const fields: Field[] = ['name', 'email', 'service', 'message', 'consent'];
+
+function validate(data: FormData): Errors {
+  const errors: Errors = {};
+  const name = String(data.get('name') ?? '').trim();
+  const email = String(data.get('email') ?? '').trim();
+  const message = String(data.get('message') ?? '').trim();
+  if (name.length < 2) errors.name = 'Como podemos chamar você? Digite pelo menos 2 caracteres.';
+  if (!/^\S+@\S+\.\S+$/.test(email)) errors.email = 'Digite um e-mail válido, como voce@empresa.com.';
+  if (!['Identidade visual', 'Design para o digital', 'Direção criativa'].includes(String(data.get('service')))) errors.service = 'Escolha o serviço que você tem em mente.';
+  if (message.length < 10) errors.message = 'Conte um pouco mais sobre sua ideia: pelo menos 10 caracteres.';
+  if (data.get('consent') !== 'on') errors.consent = 'Precisamos da sua autorização para responder ao projeto.';
+  return errors;
+}
+
+export default function Contact({ enabled, briefing }: { enabled: boolean; briefing: string }) {
+  const id = useId();
+  const formRef = useRef<HTMLFormElement>(null);
+  const successRef = useRef<HTMLHeadingElement>(null);
+  const returnFocus = useRef(false);
+  const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
+  const [errors, setErrors] = useState<Errors>({});
+
+  useEffect(() => {
+    if (state === 'success') successRef.current?.focus();
+    else if (state === 'idle' && returnFocus.current) {
+      formRef.current?.querySelector<HTMLInputElement>('[name="name"]')?.focus();
+      returnFocus.current = false;
+    }
+  }, [state]);
+
+  function checkField(field: Field) {
+    if (!formRef.current) return;
+    const error = validate(new FormData(formRef.current))[field];
+    setErrors(current => ({ ...current, [field]: error }));
+  }
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (state === 'sending') return;
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const nextErrors = validate(data);
+    setErrors(nextErrors);
+    const firstInvalid = fields.find(field => nextErrors[field]);
+    if (firstInvalid) {
+      form.querySelector<HTMLElement>(`[name="${firstInvalid}"]`)?.focus();
+      return;
+    }
+    setState('sending');
+    setMessage('');
+    data.set('name', String(data.get('name')).trim());
+    data.set('email', String(data.get('email')).trim());
+    data.set('message', String(data.get('message')).trim());
+    try {
+      const response = await fetch('/api/briefing', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(data)), signal: AbortSignal.timeout(15000),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Não conseguimos enviar agora.');
+      form.reset();
+      setState('success');
+    } catch (error) {
+      setState('error');
+      setMessage(error instanceof Error && error.name !== 'TimeoutError' ? error.message : 'O envio demorou mais do que o esperado. Tente novamente ou fale com a gente por e-mail.');
+    }
+  }
+
+  const errorFor = (field: Field) => errors[field] ? <span id={`${id}-${field}-error`} className="field-error" aria-live="polite">{errors[field]}</span> : null;
+  const attributesFor = (field: Field) => ({
+    'aria-invalid': Boolean(errors[field]),
+    'aria-describedby': errors[field] ? `${id}-${field}-error` : undefined,
+    onBlur: () => checkField(field),
+    onChange: () => { if (errors[field]) checkField(field); },
+  });
+
+  if (!enabled) return <div className="contact-note"><span className="note-star" aria-hidden="true">✦</span><h3>Uma ideia.<br />Infinitas possibilidades.</h3><p>Seu projeto começa com um briefing. Conte um pouco sobre a sua marca, o que você precisa e aonde quer chegar.</p><a href={briefing} target="_blank" rel="noopener noreferrer">Preencher briefing <ArrowUpRight size={17} aria-hidden="true" /></a><span className="note-caption">VAMOS DAR FORMA AO QUE VOCÊ IMAGINA.</span></div>;
+
+  if (state === 'success') return <div className="contact-success">
+    <span className="success-icon" aria-hidden="true"><Check size={30} /></span>
+    <h3 ref={successRef} tabIndex={-1}>Sua ideia chegou.</h3>
+    <p role="status">Recebemos seu projeto. A Flammy vai responder pelo e-mail que você informou.</p>
+    <button type="button" className="button light" onClick={() => { returnFocus.current = true; setErrors({}); setState('idle'); }}>Enviar outra ideia <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></button>
+  </div>;
+
+  return <form ref={formRef} onSubmit={submit} className="contact-form" noValidate aria-busy={state === 'sending'}>
+    <h3>Conte sua ideia</h3>
+    <p className="form-intro">Um primeiro passo para criar algo com a sua cara.</p>
+    <fieldset disabled={state === 'sending'}>
+      <div className="form-field"><label htmlFor={`${id}-name`}>Seu nome</label><input id={`${id}-name`} name="name" autoComplete="name" required maxLength={120} {...attributesFor('name')} />{errorFor('name')}</div>
+      <div className="form-field"><label htmlFor={`${id}-email`}>E-mail</label><input id={`${id}-email`} name="email" type="email" autoComplete="email" required maxLength={254} {...attributesFor('email')} />{errorFor('email')}</div>
+      <div className="form-field"><label htmlFor={`${id}-service`}>O que sua marca precisa?</label><select id={`${id}-service`} name="service" required {...attributesFor('service')}><option value="">Selecione um serviço</option><option>Identidade visual</option><option>Design para o digital</option><option>Direção criativa</option></select>{errorFor('service')}</div>
+      <div className="form-field"><label htmlFor={`${id}-message`}>Sobre o projeto</label><textarea id={`${id}-message`} name="message" rows={3} required minLength={10} maxLength={3000} {...attributesFor('message')} />{errorFor('message')}</div>
+      <label className="honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
+      <label className="consent"><input type="checkbox" name="consent" required {...attributesFor('consent')} /> Autorizo a Flammy a usar estes dados para responder sobre meu projeto.</label>{errorFor('consent')}
+    </fieldset>
+    <button className="button light form-submit" disabled={state === 'sending'}>{state === 'sending' ? <><LoaderCircle size={18} className="sending-icon" aria-hidden="true" /> Enviando sua ideia…</> : <>Enviar meu projeto <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></>}</button>
+    <p role="status" aria-live="polite" className="form-status">{state === 'error' ? message : state === 'sending' ? 'Estamos enviando seu projeto.' : ''}</p>
+    {state === 'error' ? <a className="form-fallback" href="mailto:flammystudiocriativo@gmail.com">Prefiro conversar por e-mail <ArrowUpRight size={16} aria-hidden="true" /></a> : null}
+  </form>;
+}
