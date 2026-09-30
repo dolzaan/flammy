@@ -39,6 +39,20 @@ export default function Contact({ enabled, briefing }: { enabled: boolean; brief
     }
   }, [state]);
 
+  useEffect(() => {
+    const openContact = (event: Event) => {
+      const service = (event as CustomEvent<{ service?: string }>).detail?.service;
+      if (service && Object.hasOwn(serviceHints, service)) {
+        setSelectedService(service);
+        setErrors(current => ({ ...current, service: undefined }));
+      }
+      if (state === 'success') { returnFocus.current = true; setState('idle'); }
+      else requestAnimationFrame(() => formRef.current?.querySelector<HTMLInputElement>('[name="name"]')?.focus({ preventScroll: true }));
+    };
+    window.addEventListener('flammy:contact', openContact);
+    return () => window.removeEventListener('flammy:contact', openContact);
+  }, [state]);
+
   function checkField(field: Field) {
     if (!formRef.current) return;
     const error = validate(new FormData(formRef.current))[field];
@@ -70,6 +84,7 @@ export default function Contact({ enabled, briefing }: { enabled: boolean; brief
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || 'Não conseguimos enviar agora.');
       form.reset();
+      setSelectedService('');
       setState('success');
     } catch (error) {
       setState('error');
@@ -96,14 +111,14 @@ export default function Contact({ enabled, briefing }: { enabled: boolean; brief
 
   return <form ref={formRef} onSubmit={submit} className="contact-form" noValidate aria-busy={state === 'sending'}>
     <h3>Conte sua ideia</h3>
-    <p className="form-intro">Um primeiro passo para criar algo com a sua cara.</p>
+    <p className="form-intro">Um primeiro passo para criar algo com a sua cara.</p><p className="required-note">* Campos obrigatórios</p>
     <fieldset disabled={state === 'sending'}>
-      <div className="form-field"><label htmlFor={`${id}-name`}>Seu nome</label><input id={`${id}-name`} name="name" autoComplete="name" required maxLength={120} {...attributesFor('name')} />{errorFor('name')}</div>
-      <div className="form-field"><label htmlFor={`${id}-email`}>E-mail</label><input id={`${id}-email`} name="email" type="email" autoComplete="email" required maxLength={254} {...attributesFor('email')} />{errorFor('email')}</div>
-      <div className="form-field"><label htmlFor={`${id}-service`}>O que sua marca precisa?</label><select id={`${id}-service`} name="service" required {...attributesFor('service')} aria-describedby={errors.service ? `${id}-service-error ${id}-service-hint` : `${id}-service-hint`} onChange={event => { setSelectedService(event.target.value); if (errors.service) checkField('service'); }}><option value="">Selecione um serviço</option><option>Identidade visual</option><option>Design para o digital</option><option>Direção criativa</option></select>{errorFor('service')}<span id={`${id}-service-hint`} className="service-hint" role="status">{serviceHints[selectedService] ?? 'Escolha um serviço para encontrar o ponto de partida.'}</span></div>
-      <div className="form-field"><label htmlFor={`${id}-message`}>Sobre o projeto</label><textarea id={`${id}-message`} name="message" rows={3} required minLength={10} maxLength={3000} {...attributesFor('message')} />{errorFor('message')}</div>
+      <div className="form-field"><label htmlFor={`${id}-name`}>Seu nome <span aria-hidden="true">*</span></label><input id={`${id}-name`} name="name" placeholder="Como podemos chamar você?" autoComplete="name" required maxLength={120} {...attributesFor('name')} />{errorFor('name')}</div>
+      <div className="form-field"><label htmlFor={`${id}-email`}>E-mail <span aria-hidden="true">*</span></label><input id={`${id}-email`} name="email" placeholder="voce@exemplo.com" type="email" autoComplete="email" required maxLength={254} {...attributesFor('email')} />{errorFor('email')}</div>
+      <div className="form-field"><label htmlFor={`${id}-service`}>O que sua marca precisa? <span aria-hidden="true">*</span></label><select id={`${id}-service`} name="service" value={selectedService} required {...attributesFor('service')} aria-describedby={errors.service ? `${id}-service-error ${id}-service-hint` : `${id}-service-hint`} onChange={event => { setSelectedService(event.target.value); if (errors.service) checkField('service'); }}><option value="">Selecione um serviço</option><option>Identidade visual</option><option>Design para o digital</option><option>Direção criativa</option></select>{errorFor('service')}<span id={`${id}-service-hint`} className="service-hint" role="status">{serviceHints[selectedService] ?? 'Escolha um serviço para encontrar o ponto de partida.'}</span></div>
+      <div className="form-field"><label htmlFor={`${id}-message`}>Sobre o projeto <span aria-hidden="true">*</span></label><textarea id={`${id}-message`} name="message" placeholder="Conte sobre sua marca e o que deseja criar" rows={3} required minLength={10} maxLength={3000} {...attributesFor('message')} />{errorFor('message')}</div>
       <label className="honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
-      <label className="consent"><input type="checkbox" name="consent" required {...attributesFor('consent')} /> Autorizo a Flammy a usar estes dados para responder sobre meu projeto.</label>{errorFor('consent')}
+      <label className="consent"><input type="checkbox" name="consent" required {...attributesFor('consent')} /> Autorizo a Flammy a usar estes dados para responder sobre meu projeto. <span aria-hidden="true">*</span></label>{errorFor('consent')}
     </fieldset>
     <button className="button light form-submit" disabled={state === 'sending'}>{state === 'sending' ? <><LoaderCircle size={18} className="sending-icon" aria-hidden="true" /> Enviando sua ideia…</> : <>Enviar meu projeto <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></>}</button>
     <p role="status" aria-live="polite" className="form-status">{state === 'error' ? message : state === 'sending' ? 'Estamos enviando seu projeto.' : ''}</p>

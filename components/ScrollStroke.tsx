@@ -33,7 +33,7 @@ export default function ScrollStroke({ children }: { children: ReactNode }) {
       setVisibleFraction(Math.min(1, window.innerHeight / bounds.height));
       const scaleX = 1340 / bounds.width, scaleY = 6100 / bounds.height;
       const padding = window.innerWidth < 600 ? 8 : 14;
-      const selectors = '.hero .eyebrow, .hero h1, .hero-bottom, .hero-rule, .hero-symbol, .services .section-label, .services .section-heading, .service-list, footer';
+      const selectors = '.hero .eyebrow, .hero .eyebrow span, .hero h1, .hero-bottom, .hero-rule, .hero-symbol, .services .section-label, .services .section-heading, .service-list, footer';
       const areas = Array.from(site.querySelectorAll<HTMLElement>(selectors)).flatMap(element => {
         if (element.closest('.honeypot')) return [];
         const safePadding = element.closest('.reveal') ? padding + 28 : padding;
@@ -63,7 +63,7 @@ export default function ScrollStroke({ children }: { children: ReactNode }) {
     const observer = new ResizeObserver(scheduleMeasure);
     observer.observe(document.body);
     const site = siteRef.current;
-    site?.querySelectorAll('section, details, form').forEach(element => observer.observe(element));
+    site?.querySelectorAll('section, details, form, .hero .eyebrow, .hero h1, .hero-bottom, .hero-rule').forEach(element => observer.observe(element));
     site?.addEventListener('toggle', scheduleMeasure, true);
     let active = true;
     document.fonts.ready.then(() => { if (active) scheduleMeasure(); });
