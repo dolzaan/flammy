@@ -7,8 +7,8 @@ export default function Motion() {
     const pinCapable = matchMedia('(min-width: 901px) and (min-height: 560px) and (hover: hover) and (pointer: fine)');
     const cards = document.querySelectorAll<HTMLElement>('.steps article,.deliverable-card');
     const titles = document.querySelectorAll<HTMLElement>('main h2,.manifesto .panel-content > p');
-    const sections = document.querySelectorAll<HTMLElement>('main>section:not(.hero)>.panel-content,main>.brand-text-loop');
-    const scenes = document.querySelectorAll<HTMLElement>('main>section:not(.hero)');
+    const sections = document.querySelectorAll<HTMLElement>('main>section:not(.hero)>.panel-content,.story-stage>section>.panel-content,main>.brand-text-loop');
+    const scenes = document.querySelectorAll<HTMLElement>('.story-stage>section');
     const details = document.querySelectorAll<HTMLElement>('.section-label,.studio-copy,.values>span,.section-heading>p,.service,.deliverable-footer,.manifesto-bottom,.contact-grid>div');
     const elements = [...cards, ...titles, ...sections, ...details, ...scenes];
     const clearPins = () => scenes.forEach(scene => { scene.classList.remove('scroll-pin'); scene.style.removeProperty('--scene-layer'); });
@@ -26,7 +26,7 @@ export default function Motion() {
       scenes.forEach((scene, index) => {
         if (scene.offsetHeight <= innerHeight - 76) {
           scene.classList.add('scroll-pin');
-          scene.style.setProperty('--scene-layer', String(index + 4));
+          scene.style.setProperty('--scene-layer', String(index + 1));
         }
       });
     };
