@@ -110,3 +110,12 @@ nav .nav-cta[aria-current=location]{background:var(--red);color:var(--pink)}
 .contact-form :is(input,textarea)::placeholder{color:var(--paper);opacity:.6}
 .hero .eyebrow{position:relative;z-index:4;background:var(--pink);box-shadow:0 0 0 12px var(--pink)}
 .services>.panel-surface{z-index:2}
+
+/* Original transparent signature from the studio brand assets. */
+.brand{display:block;flex-shrink:0;line-height:0}
+.brand img{display:block;width:280px;max-width:100%;height:auto;border-radius:0}
+.footer-wordmark{display:block;width:100%;font-size:inherit;line-height:0;margin:24px 0 54px}
+.footer-wordmark img{display:block;width:100%;height:auto}
+@media(max-width:900px){.brand img{width:230px}}
+@media(max-width:600px){.brand img{width:190px;height:auto}.footer-wordmark{margin:20px 0 35px}}
+@media(max-width:380px){.brand img{width:160px}}
