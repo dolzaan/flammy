@@ -84,3 +84,22 @@
 @media(hover:hover) and (pointer:fine){.deliverable-card:hover{background:var(--paper);border-color:#930c1760;box-shadow:0 10px 25px #930c1708}}
 @media(max-width:1000px){.deliverable-grid{grid-template-columns:1fr}.deliverable-card h3,.deliverable-card>p{min-height:0}.deliverable-top{margin-bottom:22px}.deliverable-footer{align-items:flex-start;flex-direction:column;gap:22px}}
 @media(max-width:600px){.scroll-site .deliverables{width:92%;padding:60px 6%;border-radius:28px 8px 28px 28px}.deliverable-card{padding:25px 22px}.deliverable-card h3{font-size:27px}.deliverable-footer .button{max-width:100%}}
+
+/* Reading cues and progressively enhanced, keyboard-accessible disclosures. */
+.reading-progress{position:fixed;inset:0 0 auto;height:3px;background:#930c1715;pointer-events:none;z-index:110}
+.reading-progress>div{height:100%;background:var(--red);transform-origin:left;box-shadow:0 1px 0 var(--pink)}
+.scroll-site>header{position:sticky;top:0;z-index:20;background:var(--pink)}
+nav a:not(.nav-cta){position:relative;padding:8px 0}
+nav a:not(.nav-cta)::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .2s}
+nav a[aria-current=location]::after{transform:scaleX(1)}
+nav .nav-cta[aria-current=location]{background:var(--red);color:var(--pink)}
+.service-toggle{display:grid;grid-template-columns:55px 1fr 1fr 30px;align-items:center;gap:15px;padding:32px 0;width:100%;border:0;background:transparent;text-align:left;color:inherit;cursor:pointer}
+.service-title{font-size:32px;font-weight:500;letter-spacing:-.04em}
+.service[data-open=true] .plus{transform:rotate(45deg)}
+.service-body{overflow:hidden}
+.service-hint{display:block;min-height:36px;font-size:12px;line-height:1.5;color:#f9e8cb;margin-top:9px}
+.deliverable-card.reveal{transition:opacity .6s var(--reveal-delay,0ms),transform .6s var(--reveal-delay,0ms),background .25s,border-color .25s,box-shadow .25s}
+@media(max-width:1100px){nav .nav-secondary{display:none}}
+@media(max-width:900px){.service-toggle{grid-template-columns:45px 1fr 30px}}
+@media(max-width:600px){.service-toggle{grid-template-columns:25px 1fr 25px;gap:10px;padding:25px 0}.service-title{font-size:25px}}
+@media(prefers-reduced-motion:reduce){.deliverable-card.reveal{opacity:1;transform:none;transition:none}}

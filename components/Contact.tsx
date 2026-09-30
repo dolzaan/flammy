@@ -5,6 +5,7 @@ import { ArrowUpRight, Check, LoaderCircle } from 'lucide-react';
 
 type Field = 'name' | 'email' | 'service' | 'message' | 'consent';
 type Errors = Partial<Record<Field, string>>;
+const serviceHints: Record<string, string> = { 'Identidade visual': 'Vamos dar forma à identidade da sua marca.', 'Design para o digital': 'Vamos criar uma presença digital com a sua personalidade.', 'Direção criativa': 'Vamos encontrar uma direção para as ideias da sua marca.' };
 const fields: Field[] = ['name', 'email', 'service', 'message', 'consent'];
 
 function validate(data: FormData): Errors {
@@ -28,6 +29,7 @@ export default function Contact({ enabled, briefing }: { enabled: boolean; brief
   const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
   const [errors, setErrors] = useState<Errors>({});
+  const [selectedService, setSelectedService] = useState('');
 
   useEffect(() => {
     if (state === 'success') successRef.current?.focus();
@@ -89,7 +91,7 @@ export default function Contact({ enabled, briefing }: { enabled: boolean; brief
     <span className="success-icon" aria-hidden="true"><Check size={30} /></span>
     <h3 ref={successRef} tabIndex={-1}>Sua ideia chegou.</h3>
     <p role="status">Recebemos seu projeto. A Flammy vai responder pelo e-mail que você informou.</p>
-    <button type="button" className="button light" onClick={() => { returnFocus.current = true; setErrors({}); setState('idle'); }}>Enviar outra ideia <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></button>
+    <button type="button" className="button light" onClick={() => { returnFocus.current = true; setErrors({}); setSelectedService(''); setState('idle'); }}>Enviar outra ideia <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></button>
   </div>;
 
   return <form ref={formRef} onSubmit={submit} className="contact-form" noValidate aria-busy={state === 'sending'}>
@@ -98,7 +100,7 @@ export default function Contact({ enabled, briefing }: { enabled: boolean; brief
     <fieldset disabled={state === 'sending'}>
       <div className="form-field"><label htmlFor={`${id}-name`}>Seu nome</label><input id={`${id}-name`} name="name" autoComplete="name" required maxLength={120} {...attributesFor('name')} />{errorFor('name')}</div>
       <div className="form-field"><label htmlFor={`${id}-email`}>E-mail</label><input id={`${id}-email`} name="email" type="email" autoComplete="email" required maxLength={254} {...attributesFor('email')} />{errorFor('email')}</div>
-      <div className="form-field"><label htmlFor={`${id}-service`}>O que sua marca precisa?</label><select id={`${id}-service`} name="service" required {...attributesFor('service')}><option value="">Selecione um serviço</option><option>Identidade visual</option><option>Design para o digital</option><option>Direção criativa</option></select>{errorFor('service')}</div>
+      <div className="form-field"><label htmlFor={`${id}-service`}>O que sua marca precisa?</label><select id={`${id}-service`} name="service" required {...attributesFor('service')} aria-describedby={errors.service ? `${id}-service-error ${id}-service-hint` : `${id}-service-hint`} onChange={event => { setSelectedService(event.target.value); if (errors.service) checkField('service'); }}><option value="">Selecione um serviço</option><option>Identidade visual</option><option>Design para o digital</option><option>Direção criativa</option></select>{errorFor('service')}<span id={`${id}-service-hint`} className="service-hint" role="status">{serviceHints[selectedService] ?? 'Escolha um serviço para encontrar o ponto de partida.'}</span></div>
       <div className="form-field"><label htmlFor={`${id}-message`}>Sobre o projeto</label><textarea id={`${id}-message`} name="message" rows={3} required minLength={10} maxLength={3000} {...attributesFor('message')} />{errorFor('message')}</div>
       <label className="honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
       <label className="consent"><input type="checkbox" name="consent" required {...attributesFor('consent')} /> Autorizo a Flammy a usar estes dados para responder sobre meu projeto.</label>{errorFor('consent')}
