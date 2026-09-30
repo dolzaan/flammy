@@ -10,5 +10,25 @@ export async function POST(req:NextRequest){
  if(typeof b.name!=='string'||b.name.trim().length<2||b.name.length>120||typeof b.email!=='string'||b.email.length>254||!/^\S+@\S+\.\S+$/.test(b.email)||typeof b.message!=='string'||b.message.trim().length<10||b.message.length>3000||!['Identidade visual','Design para o digital','Direção criativa'].includes(b.service)||b.consent!=='on')return NextResponse.json({error:'Confira os campos e a autorização de contato.'},{status:400});
  const ip=req.headers.get('x-vercel-forwarded-for')?.split(',')[0]||req.headers.get('x-forwarded-for')?.split(',')[0]||'unknown';
  const hash=createHash('sha256').update(salt+ip).digest('hex');
- try{const response=await fetch(`${url}/rest/v1/rpc/submit_flammy_lead`,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({p_name:b.name.trim(),p_email:b.email.trim().toLowerCase(),p_service:b.service,p_message:b.message.trim(),p_hash:hash}),signal:AbortSignal.timeout(10000)});if(!response.ok)throw Error();const result=await response.json();if(!result)return NextResponse.json({error:'Você já enviou algumas mensagens. Tente novamente em uma hora.'},{status:429});return NextResponse.json({ok:true})}catch{return NextResponse.json({error:'Não conseguimos enviar agora. Entre em contato por e-mail.'},{status:503})}
+ try{const response=await fetch(`${url}/rest/v1/rpc/submit_flammy_lead`,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({p_name:b.name.trim(),p_email:b.email.trim().toLowerCase(),p_service:b.service,p_message:b.message.trim(),p_hash:hash}),signal:AbortSignal.timeout(5000)});if(!response.ok)throw Error();const result=await response.json();if(!result)return NextResponse.json({error:'Você já enviou algumas mensagens. Tente novamente em uma hora.'},{status:429});
+  try {
+   const notification = await fetch('https://formspree.io/f/xrpbjodn', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({
+     name: b.name.trim(),
+     email: b.email.trim().toLowerCase(),
+     service: b.service,
+     message: b.message.trim(),
+     _subject: `Novo contato Flammy — ${b.service}`,
+    }),
+    signal: AbortSignal.timeout(8000),
+   });
+   const notificationResult = await notification.json();
+   if (!notification.ok || notificationResult.ok !== true) throw Error();
+   return NextResponse.json({ok:true});
+  } catch {
+   return NextResponse.json({error:'Seu contato ficou salvo, mas a notificação por e-mail não pôde ser enviada. Para falar diretamente com a Flammy, use o link de e-mail abaixo.'},{status:502});
+  }
+ }catch{return NextResponse.json({error:'Não conseguimos enviar agora. Entre em contato por e-mail.'},{status:503})}
 }
