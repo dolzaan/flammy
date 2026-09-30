@@ -9,9 +9,17 @@ const links = [
 ];
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const [contactVisible, setContactVisible] = useState(false);
   const menuId = useId();
   const controls = useRef<HTMLDivElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const form = document.querySelector('.contact-form');
+    if (!form) return;
+    const observer = new IntersectionObserver(([entry]) => setContactVisible(entry.isIntersecting), { rootMargin: '-90px 0px 0px', threshold: 0.1 });
+    observer.observe(form);
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => {
     if (!open) return;
     const close = () => { setOpen(false); toggle.current?.focus({ preventScroll: true }); };
@@ -31,8 +39,14 @@ export default function Navigation() {
       aria-label={open ? 'Fechar menu de seções' : 'Abrir menu de seções'} onClick={() => setOpen(value => !value)}>
       {open ? <X size={18} aria-hidden="true"/> : <Menu size={18} aria-hidden="true"/>}<span>Menu</span>
     </button>
-    <a className="nav-cta header-contact" href="#contato" onClick={() => setOpen(false)}>
-      <span className="contact-label-full">Vamos conversar</span><span className="contact-label-short">Conversar</span>
+    <a className="nav-cta header-contact" href="#contato" onClick={event => {
+      setOpen(false);
+      if (contactVisible) {
+        const field = document.querySelector<HTMLInputElement>('.contact-form input[name="name"]');
+        if (field) { event.preventDefault(); field.focus(); }
+      }
+    }}>
+      <span className="contact-label-full">{contactVisible ? 'Conte sua ideia' : 'Vamos conversar'}</span><span className="contact-label-short">{contactVisible ? 'Sua ideia' : 'Conversar'}</span>
       <ArrowUpRight size={16} className="button-arrow" aria-hidden="true"/>
     </a>
     <nav id={menuId} className="mobile-navigation" aria-label="Menu de seções" hidden={!open}>

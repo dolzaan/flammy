@@ -10,13 +10,15 @@ const links = [
   { id: 'studio', label: 'Studio' },
   { id: 'servicos', label: 'Serviços' },
   { id: 'entregas', label: 'Entregas' },
-  { id: 'processo', label: 'Processo' }
+  { id: 'processo', label: 'Processo' },
+  { id: 'contato', label: 'Contato' }
 ];
 
 export default function LineSidebar() {
   const [active, setActive] = useState('inicio');
   const [visible, setVisible] = useState(false);
   const aside = useRef<HTMLElement>(null);
+  const counter = useRef<HTMLParagraphElement>(null);
   const interacting = useRef(false);
   const hideTimer = useRef<number | undefined>(undefined);
   const hideAfterIdle = useCallback(() => {
@@ -72,7 +74,7 @@ export default function LineSidebar() {
       for (const section of sections) if (section.getBoundingClientRect().top <= innerHeight * 0.35) id = section.id;
       setActive(id);
       // Labels inherit a contrasting tone from the actual surface beneath them.
-      items.current.forEach(item => {
+      [...items.current, counter.current].forEach(item => {
         if (!item) return;
         const bounds = item.getBoundingClientRect();
         const y = bounds.top + bounds.height / 2;
@@ -108,6 +110,9 @@ export default function LineSidebar() {
     onPointerLeave={() => { interacting.current = false; hideAfterIdle(); }}
     onFocusCapture={() => window.clearTimeout(hideTimer.current)} onBlurCapture={hideAfterIdle}>
     <nav className="line-sidebar" aria-label="Seções do site">
+      <p ref={counter} className="line-sidebar__counter" aria-label={`Seção ${Math.max(1, links.findIndex(link => link.id === active) + 1)} de ${links.length}`} style={{visibility: active === 'inicio' ? 'hidden' : 'visible'}}>
+        {String(Math.max(1, links.findIndex(link => link.id === active) + 1)).padStart(2, '0')} <span>de {String(links.length).padStart(2, '0')}</span>
+      </p>
       <ul className="line-sidebar__list" onPointerLeave={reset} onPointerMove={event => {
         if (event.pointerType === 'touch') return;
         targets.current = items.current.map(item => {

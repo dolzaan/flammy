@@ -347,3 +347,9 @@ body{background:var(--ink)}
 .title-reveal{opacity:.35;transform:translateY(12px);transition:opacity 400ms ease-out,transform 400ms cubic-bezier(.22,1,.36,1)}
 .title-reveal.visible{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.title-reveal{opacity:1;transform:none;transition:none}}
+
+.line-sidebar__counter{margin:0 0 16px;text-align:right;padding-right:4px;color:var(--sidebar-label-color,#f4bad1);font-size:12px;font-weight:600;letter-spacing:.08em;font-variant-numeric:tabular-nums}
+.line-sidebar__counter span{font-weight:400;opacity:.7}
+.service .plus{transition:transform 360ms cubic-bezier(.22,1,.36,1)}
+.header-contact .contact-label-full{min-width:127px;text-align:center}
+.contact-form input[name=name]{scroll-margin-top:110px}
