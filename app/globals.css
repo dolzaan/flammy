@@ -278,3 +278,31 @@ body{background:var(--ink)}
   .scroll-site>header{background:rgba(249,245,241,.85)}
   .hero>.panel-surface,.studio>.panel-surface,.services>.panel-surface,.deliverables>.panel-surface,.process>.panel-surface,.scroll-site footer{background:rgba(249,245,241,.94)}
 }
+
+/* A compact opening panel leaves room for the animated backdrop. */
+.scroll-site .hero{width:88%;max-width:1440px;margin:28px auto 0;min-height:0;padding:30px 5% 24px;border-radius:32px}
+.hero>.panel-surface{background:rgba(249,245,241,.78);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.hero-heading{padding:32px 0 22px}
+.hero h1{font-size:clamp(54px,7vw,108px)}
+.hero-heading>.shape-blur{width:22%;max-width:240px}
+.hero-bottom{padding:12px 0 30px;gap:20px}
+.hero-bottom p{font-size:16px}
+.hero-bottom .button{padding:18px 24px}
+.hero-rule{padding-top:16px}
+@media(max-width:900px){
+  .scroll-site .hero{width:92%;padding:28px 6% 24px}
+  .hero .eyebrow{font-size:10px;letter-spacing:.8px;gap:20px}
+  .hero .eyebrow span:last-child{display:none}
+  .hero-heading{padding:32px 0 24px}
+  .hero h1{font-size:clamp(48px,8vw,72px)}
+}
+@media(max-width:600px){
+  .scroll-site .hero{margin-top:18px;padding:24px 6% 20px;border-radius:24px}
+  .hero>.panel-surface{background:rgba(249,245,241,.85);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+  .hero h1{font-size:clamp(38px,9.6vw,58px)}
+  .hero-heading{padding:40px 0 24px}
+  .hero-heading>.shape-blur{width:52px;top:4px;right:0;opacity:.65}
+  .hero-bottom{padding:0 0 24px}
+  .hero-bottom p{font-size:14px;margin-bottom:20px}
+  .hero-bottom .button{padding:16px 20px;font-size:13px}
+}
