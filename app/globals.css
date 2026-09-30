@@ -467,3 +467,11 @@ html.lenis,html.lenis body{height:auto}
 @media(prefers-reduced-motion:reduce){
   .scroll-reveal{opacity:1;transform:none;transition:none;will-change:auto}
 }
+
+
+/* Keep every panel painted during Lenis scrolling. content-visibility:auto
+   caused stale/blank panel surfaces and overlapping-looking gutters. */
+main>section:not(.hero),.scroll-site footer{
+  content-visibility:visible;
+  contain-intrinsic-size:none;
+}
