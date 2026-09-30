@@ -434,7 +434,7 @@ body{background:var(--ink)}
 .line-sidebar__label,.line-sidebar__counter{-webkit-backdrop-filter:none;backdrop-filter:none}
 
 /* Off-screen panels are not painted until they approach the viewport. */
-main>section:not(.hero),.scroll-site footer{content-visibility:auto;contain-intrinsic-size:auto 850px}
+main>section:not(.hero),.story-stage>section,.scroll-site footer{content-visibility:auto;contain-intrinsic-size:auto 850px}
 
 /* Reading progress runs on the compositor without a React scroll listener. */
 .reading-progress>div{transform:scaleX(0)}
@@ -483,19 +483,18 @@ html.lenis,html.lenis body{height:auto}
 /* Desktop scrollytelling: only panels that fit safely inside the viewport are
    pinned. The next section then rises over the previous one like a card deck. */
 @media(min-width:901px) and (min-height:560px) and (hover:hover) and (pointer:fine){
-  .scroll-site main>section:is(.studio,.services,.manifesto,.process){content-visibility:visible}
-  .scroll-site main>section.scroll-pin{
+  .scroll-site .story-stage{position:relative;min-height:128vh;isolation:isolate}
+  .scroll-site .story-stage>section{content-visibility:visible}
+  .scroll-site .story-stage>section.scroll-pin{
     position:sticky;
     top:92px;
     z-index:var(--scene-layer,4);
     min-height:calc(100vh - 92px);
-    margin-bottom:28vh;
     content-visibility:visible;
     box-shadow:0 22px 70px rgba(48,16,21,.18);
-    isolation:isolate;
   }
-  .scroll-site main>section.scroll-pin>.panel-surface{background:var(--paper)}
-  .scroll-site main>section.manifesto.scroll-pin>.panel-surface{background:var(--red)}
+  .scroll-site .story-stage>section.scroll-pin>.panel-surface{background:var(--paper)}
+  .scroll-site .story-stage>section.manifesto.scroll-pin>.panel-surface{background:var(--red)}
 }
 
 /* Compact laptop viewports still get the story effect without hiding the
@@ -527,5 +526,6 @@ html.lenis,html.lenis body{height:auto}
 
 @media(prefers-reduced-motion:reduce){
   .detail-reveal,.scene-reveal{opacity:1;transform:none;transition:none;will-change:auto}
-  .scroll-site main>section.scroll-pin{position:relative;top:auto;box-shadow:none}
+  .scroll-site .story-stage{min-height:0}
+  .scroll-site .story-stage>section.scroll-pin{position:relative;top:auto;box-shadow:none}
 }
