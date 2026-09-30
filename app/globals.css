@@ -481,8 +481,8 @@ html.lenis,html.lenis body{height:auto}
     content-visibility:visible;
     box-shadow:0 22px 70px rgba(48,16,21,.18);
   }
-  .scroll-site .story-stage>section.scroll-pin>.panel-surface{background:var(--paper)}
-  .scroll-site .story-stage>section.manifesto.scroll-pin>.panel-surface{background:var(--red)}
+  .scroll-site .story-stage>section.scroll-pin>.panel-surface{background:rgba(249,245,241,.88)}
+  .scroll-site .story-stage>section.manifesto.scroll-pin>.panel-surface{background:rgba(147,12,23,.9)}
 }
 
 /* Compact laptop viewports still get the story effect without hiding the
