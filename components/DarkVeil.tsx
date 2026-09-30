@@ -7,8 +7,8 @@ import { useEffect, useRef } from 'react';
  * https://github.com/DavidHDev/react-bits — license in licenses/react-bits.md.
  */
 const vertex = `
-attribute vec2 position;
-void main(){gl_Position=vec4(position,0.0,1.0);}
+attribute vec3 position;
+void main(){gl_Position=vec4(position.xy,0.0,1.0);}
 `;
 
 const fragment = `
@@ -113,7 +113,7 @@ export default function DarkVeil() {
       catch { return; }
       renderer.setPixelRatio(1);
       const geometry = new THREE.BufferGeometry();
-      geometry.setAttribute('position', new THREE.Float32BufferAttribute([-1,-1,3,-1,-1,3], 2));
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute([-1,-1,0,3,-1,0,-1,3,0], 3));
       const uniforms = {
         uResolution: { value: new THREE.Vector2() }, uTime: { value: 3.5 },
         uHueShift: { value: 0 }, uNoise: { value: 0 }, uScan: { value: 0 },
