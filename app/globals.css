@@ -448,3 +448,22 @@ main>section:not(.hero),.scroll-site footer{content-visibility:auto;contain-intr
   .hero>.panel-surface,.studio>.panel-surface,.services>.panel-surface,.deliverables>.panel-surface,.process>.panel-surface{background:rgba(249,245,241,.91)}
   .header-glass,.header-glass[data-refraction=true]{-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px)}
 }
+
+/* Sections rise into place as the visitor reaches them. Transform and opacity
+   stay on the compositor, so the reveal does not recalculate page layout. */
+.scroll-reveal{
+  opacity:.12;
+  transform:translate3d(0,42px,0);
+  transition:opacity 620ms ease-out,transform 680ms cubic-bezier(.22,1,.36,1);
+  will-change:opacity,transform;
+}
+.scroll-reveal.visible{opacity:1;transform:translate3d(0,0,0);will-change:auto}
+
+/* Lenis is awake only during precise-pointer scrolling. */
+html.lenis,html.lenis body{height:auto}
+.lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
+.lenis.lenis-smooth iframe{pointer-events:none}
+
+@media(prefers-reduced-motion:reduce){
+  .scroll-reveal{opacity:1;transform:none;transition:none;will-change:auto}
+}
