@@ -109,6 +109,8 @@ export default function DarkVeil() {
       // Touch devices keep the branded poster. It looks the same at page scale
       // and avoids keeping a mobile GPU busy for a purely decorative layer.
       if (reduced.matches || coarse.matches) return;
+      const probe = document.createElement('canvas');
+      if (!probe.getContext('webgl2') && !probe.getContext('webgl')) return;
       const THREE = await import('three');
       if (disposed || current !== generation || reduced.matches || coarse.matches) return;
       let renderer: InstanceType<typeof THREE.WebGLRenderer>;
