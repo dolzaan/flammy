@@ -467,3 +467,31 @@ html.lenis,html.lenis body{height:auto}
 @media(prefers-reduced-motion:reduce){
   .scroll-reveal{opacity:1;transform:none;transition:none;will-change:auto}
 }
+
+/* Desktop scrollytelling: only panels that fit safely inside the viewport are
+   pinned. The next section then rises over the previous one like a card deck. */
+@media(min-width:901px) and (min-height:680px) and (hover:hover) and (pointer:fine){
+  .scroll-site main>section.scroll-pin{
+    position:sticky;
+    top:92px;
+    z-index:var(--scene-layer,4);
+    content-visibility:visible;
+    box-shadow:0 22px 70px rgba(48,16,21,.18);
+  }
+}
+
+/* Secondary elements follow the panel with a short stagger. */
+.detail-reveal{
+  opacity:0;
+  transform:translate3d(0,20px,0);
+  transition:opacity 500ms ease-out var(--detail-delay,0ms),transform 600ms cubic-bezier(.22,1,.36,1) var(--detail-delay,0ms);
+  will-change:opacity,transform;
+}
+.detail-reveal.visible{opacity:1;transform:translate3d(0,0,0);will-change:auto}
+.values>span.detail-reveal:nth-child(2),.deliverable-card.reveal:nth-child(2){--detail-delay:90ms}
+.values>span.detail-reveal:nth-child(3),.deliverable-card.reveal:nth-child(3){--detail-delay:180ms}
+
+@media(prefers-reduced-motion:reduce){
+  .detail-reveal{opacity:1;transform:none;transition:none;will-change:auto}
+  .scroll-site main>section.scroll-pin{position:relative;top:auto;box-shadow:none}
+}
