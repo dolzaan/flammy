@@ -325,3 +325,14 @@ body{background:var(--ink)}
   .hero-bottom p{font-size:14px;margin:0}
   .hero-bottom .button{font-size:14px;padding:16px 22px}
 }
+
+/* Feather the whole blur layer so its lower edge has no hard seam. */
+.scroll-site>header{-webkit-backdrop-filter:none;backdrop-filter:none;isolation:isolate}
+.scroll-site>header::before{
+  content:"";position:absolute;inset:0 0 -48px;z-index:-1;pointer-events:none;
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 55%,rgba(0,0,0,.85) 65%,rgba(0,0,0,.4) 80%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 55%,rgba(0,0,0,.85) 65%,rgba(0,0,0,.4) 80%,transparent 100%);
+}
+.scroll-site>header::after{content:none}
+@media(max-width:600px){.scroll-site>header::before{bottom:-36px;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}}
