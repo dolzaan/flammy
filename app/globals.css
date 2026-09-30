@@ -413,3 +413,9 @@ body{background:var(--ink)}
 
 /* Sidebar hover is CSS-only to keep pointer interactions off the main thread. */
 .line-sidebar__link:hover .line-sidebar__marker,.line-sidebar__link:focus-visible .line-sidebar__marker{opacity:.85;transform:scaleX(.85)}
+
+/* Lenis smooths wheel and trackpad input on precise-pointer devices only. */
+html.lenis,html.lenis body{height:auto}
+.lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
+.lenis [data-lenis-prevent],.lenis [data-lenis-prevent-wheel],.lenis [data-lenis-prevent-touch]{overscroll-behavior:contain}
+.lenis.lenis-smooth iframe{pointer-events:none}
