@@ -8,9 +8,11 @@ export default function SmoothScroll() {
   useEffect(() => {
     const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-    let gestureLocked = false;
-    let unlockTimer = 0;
-    let minimumLockUntil = 0;
+    let settling = false;
+    let scrollFinished = true;
+    let wheelIdle = true;
+    let idleTimer = 0;
+    let fallbackTimer = 0;
 
     const targets = () => Array.from(document.querySelectorAll<HTMLElement>(SNAP_SELECTOR));
 
@@ -34,40 +36,56 @@ export default function SmoothScroll() {
       return bestIndex;
     };
 
-    const scheduleUnlock = () => {
-      window.clearTimeout(unlockTimer);
-      unlockTimer = window.setTimeout(() => {
-        const wait = Math.max(0, minimumLockUntil - performance.now());
-        if (wait > 0) {
-          unlockTimer = window.setTimeout(() => { gestureLocked = false; }, wait);
-        } else {
-          gestureLocked = false;
-        }
-      }, 320);
+    const releaseIfReady = () => {
+      if (scrollFinished && wheelIdle) settling = false;
+    };
+
+    const markWheelActivity = () => {
+      wheelIdle = false;
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => {
+        wheelIdle = true;
+        releaseIfReady();
+      }, 240);
+    };
+
+    const onScrollEnd = () => {
+      scrollFinished = true;
+      window.clearTimeout(fallbackTimer);
+      releaseIfReady();
     };
 
     const onWheel = (event: WheelEvent) => {
       if (!finePointer.matches || event.ctrlKey || Math.abs(event.deltaY) < 8) return;
       event.preventDefault();
-      scheduleUnlock();
-      if (gestureLocked) return;
+      markWheelActivity();
+      if (settling) return;
 
       const elements = targets();
       if (!elements.length) return;
       const direction = event.deltaY > 0 ? 1 : -1;
-      const nextIndex = Math.min(elements.length - 1, Math.max(0, currentIndex(elements) + direction));
-      const next = elements[nextIndex];
-      if (!next) return;
+      const index = currentIndex(elements);
+      const nextIndex = Math.min(elements.length - 1, Math.max(0, index + direction));
+      if (nextIndex === index) return;
 
-      gestureLocked = true;
-      minimumLockUntil = performance.now() + (reducedMotion.matches ? 280 : 1200);
+      settling = true;
+      scrollFinished = false;
+      const next = elements[nextIndex];
       window.scrollTo({ top: targetTop(next), behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+      window.clearTimeout(fallbackTimer);
+      fallbackTimer = window.setTimeout(() => {
+        scrollFinished = true;
+        releaseIfReady();
+      }, reducedMotion.matches ? 120 : 1000);
     };
 
     window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('scrollend', onScrollEnd);
     return () => {
-      window.clearTimeout(unlockTimer);
+      window.clearTimeout(idleTimer);
+      window.clearTimeout(fallbackTimer);
       window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('scrollend', onScrollEnd);
     };
   }, []);
 
