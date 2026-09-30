@@ -414,8 +414,37 @@ body{background:var(--ink)}
 /* Sidebar hover is CSS-only to keep pointer interactions off the main thread. */
 .line-sidebar__link:hover .line-sidebar__marker,.line-sidebar__link:focus-visible .line-sidebar__marker{opacity:.85;transform:scaleX(.85)}
 
-/* Lenis smooths wheel and trackpad input on precise-pointer devices only. */
-html.lenis,html.lenis body{height:auto}
-.lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
-.lenis [data-lenis-prevent],.lenis [data-lenis-prevent-wheel],.lenis [data-lenis-prevent-touch]{overscroll-behavior:contain}
-.lenis.lenis-smooth iframe{pointer-events:none}
+/* Performance pass: keep the translucent hierarchy without recompositing
+   viewport-sized blur filters on every scroll frame. */
+.hero>.panel-surface,.studio>.panel-surface,.services>.panel-surface,.deliverables>.panel-surface,.process>.panel-surface,
+.manifesto>.panel-surface,.contact>.panel-surface,.scroll-site footer{
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+}
+.hero>.panel-surface,.studio>.panel-surface,.services>.panel-surface,.deliverables>.panel-surface,.process>.panel-surface{background:rgba(249,245,241,.88)}
+.manifesto>.panel-surface,.contact>.panel-surface{background:rgba(147,12,23,.9)}
+.scroll-site footer{background:rgba(249,245,241,.9)}
+
+/* The header keeps one inexpensive glass layer; RGB refraction was removed. */
+.header-glass,.header-glass[data-refraction=true]{
+  background:rgba(255,255,255,.035);
+  -webkit-backdrop-filter:blur(11px) saturate(1.08);
+  backdrop-filter:blur(11px) saturate(1.08);
+  contain:paint;
+}
+.line-sidebar__label,.line-sidebar__counter{-webkit-backdrop-filter:none;backdrop-filter:none}
+
+/* Off-screen panels are not painted until they approach the viewport. */
+main>section:not(.hero),.scroll-site footer{content-visibility:auto;contain-intrinsic-size:auto 850px}
+
+/* Reading progress runs on the compositor without a React scroll listener. */
+.reading-progress>div{transform:scaleX(0)}
+@supports (animation-timeline:scroll()){
+  .reading-progress>div{animation:reading-progress linear both;animation-timeline:scroll(root block)}
+  @keyframes reading-progress{to{transform:scaleX(1)}}
+}
+
+@media(pointer:coarse){.brand-veil::before{animation:none}}
+@media(max-width:600px){
+  .hero>.panel-surface,.studio>.panel-surface,.services>.panel-surface,.deliverables>.panel-surface,.process>.panel-surface{background:rgba(249,245,241,.91)}
+  .header-glass,.header-glass[data-refraction=true]{-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px)}
+}
