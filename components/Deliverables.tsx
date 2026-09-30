@@ -1,3 +1,4 @@
+import SpotlightCard from './SpotlightCard';
 import { ArrowUpRight, Compass, Layers, Palette } from 'lucide-react';
 
 const deliverables = [
@@ -28,13 +29,13 @@ export default function Deliverables() {
         <p>Veja exemplos de entregas para cada serviço.<br />Tudo pensado para fazer sua marca acontecer.</p>
       </div>
       <div className="deliverable-grid">
-        {deliverables.map(({ number, title, icon: Icon, description, items }) => <article className="deliverable-card" key={number}>
+        {deliverables.map(({ number, title, icon: Icon, description, items }) => <SpotlightCard key={number}>
           <div className="deliverable-top"><span className="deliverable-number">{number}</span><span className="deliverable-icon" aria-hidden="true"><Icon size={27} strokeWidth={1.4} /></span></div>
           <h3>{title}</h3>
           <p>{description}</p>
           <span className="deliverable-caption">PODE INCLUIR</span>
           <ul>{items.map(item => <li key={item}><span aria-hidden="true">✦</span>{item}</li>)}</ul>
-        </article>)}
+        </SpotlightCard>)}
       </div>
       <div className="deliverable-footer">
         <p>O projeto é feito para você. As entregas, quantidades e formatos são definidos na proposta, de acordo com o que sua marca precisa.</p>
