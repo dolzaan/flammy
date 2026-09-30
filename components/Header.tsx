@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Navigation from './Navigation';
+import GlassSurface from './GlassSurface';
 
 export default function Header() {
   const [lightSurface, setLightSurface] = useState(false);
@@ -28,6 +29,7 @@ export default function Header() {
     return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule); };
   }, []);
   return <header data-tone={lightSurface ? 'light' : 'dark'}>
+    <GlassSurface/>
     <a className="brand" href="#inicio" aria-label="Flammy, início">
       <Image className="brand-logo brand-logo--cream" src="/flammy-logo-cream.svg" width={846} height={156} unoptimized alt="Flammy Studio Criativo" sizes="(max-width: 600px) 160px, 280px" priority/>
       <Image className="brand-logo brand-logo--wine" src="/flammy-logo.svg" width={846} height={156} unoptimized alt="" aria-hidden="true" sizes="(max-width: 600px) 160px, 280px" priority/>
