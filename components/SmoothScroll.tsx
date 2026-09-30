@@ -1,76 +1,73 @@
 'use client';
 
 import { useEffect } from 'react';
-import Lenis from 'lenis';
 
-/** Smooths precise wheel input without keeping an animation loop alive while idle. */
+const SNAP_SELECTOR = 'main > section, .scroll-site > footer';
+
 export default function SmoothScroll() {
   useEffect(() => {
     const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-    let lenis: Lenis | null = null;
-    let stopVirtualScroll: (() => void) | undefined;
-    let frame = 0;
+    let gestureLocked = false;
+    let unlockTimer = 0;
+    let minimumLockUntil = 0;
 
-    const tick = (time: number) => {
-      frame = 0;
-      if (!lenis || document.hidden) return;
-      lenis.raf(time);
-      if (lenis.isScrolling) frame = requestAnimationFrame(tick);
+    const targets = () => Array.from(document.querySelectorAll<HTMLElement>(SNAP_SELECTOR));
+
+    const targetTop = (element: HTMLElement) => {
+      const headerHeight = document.querySelector<HTMLElement>('header')?.offsetHeight ?? 0;
+      return Math.max(0, element.getBoundingClientRect().top + window.scrollY - headerHeight);
     };
 
-    const wake = () => {
-      if (lenis && !frame && !document.hidden) frame = requestAnimationFrame(tick);
-    };
-
-    const stop = () => {
-      cancelAnimationFrame(frame);
-      frame = 0;
-      stopVirtualScroll?.();
-      stopVirtualScroll = undefined;
-      lenis?.destroy();
-      lenis = null;
-      window.removeEventListener('pointerup', wake, true);
-    };
-
-    const sync = () => {
-      const shouldRun = finePointer.matches && !reducedMotion.matches;
-      if (!shouldRun) {
-        stop();
-        return;
-      }
-      if (lenis) return;
-      lenis = new Lenis({
-        autoRaf: false,
-        smoothWheel: true,
-        lerp: 0.14,
-        wheelMultiplier: 0.88,
-        syncTouch: false,
-        overscroll: false,
-        anchors: { offset: -84 },
+    const currentIndex = (elements: HTMLElement[]) => {
+      const headerHeight = document.querySelector<HTMLElement>('header')?.offsetHeight ?? 0;
+      const anchor = window.scrollY + headerHeight;
+      let bestIndex = 0;
+      let bestDistance = Number.POSITIVE_INFINITY;
+      elements.forEach((element, index) => {
+        const distance = Math.abs(element.getBoundingClientRect().top + window.scrollY - anchor);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestIndex = index;
+        }
       });
-      stopVirtualScroll = lenis.on('virtual-scroll', wake);
-      window.addEventListener('pointerup', wake, { passive: true, capture: true });
+      return bestIndex;
     };
 
-    const visibility = () => {
-      if (document.hidden) {
-        cancelAnimationFrame(frame);
-        frame = 0;
-      } else if (lenis?.isScrolling) {
-        wake();
-      }
+    const scheduleUnlock = () => {
+      window.clearTimeout(unlockTimer);
+      unlockTimer = window.setTimeout(() => {
+        const wait = Math.max(0, minimumLockUntil - performance.now());
+        if (wait > 0) {
+          unlockTimer = window.setTimeout(() => { gestureLocked = false; }, wait);
+        } else {
+          gestureLocked = false;
+        }
+      }, 180);
     };
 
-    sync();
-    finePointer.addEventListener('change', sync);
-    reducedMotion.addEventListener('change', sync);
-    document.addEventListener('visibilitychange', visibility);
+    const onWheel = (event: WheelEvent) => {
+      if (!finePointer.matches || event.ctrlKey || Math.abs(event.deltaY) < 8) return;
+      event.preventDefault();
+      scheduleUnlock();
+      if (gestureLocked) return;
+
+      const elements = targets();
+      if (!elements.length) return;
+      const direction = event.deltaY > 0 ? 1 : -1;
+      const nextIndex = Math.min(elements.length - 1, Math.max(0, currentIndex(elements) + direction));
+      const next = elements[nextIndex];
+      if (!next) return;
+
+      gestureLocked = true;
+      minimumLockUntil = performance.now() + (reducedMotion.matches ? 120 : 680);
+      window.scrollTo({ top: targetTop(next), behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+    };
+
+    window.addEventListener('wheel', onWheel, { passive: false });
     return () => {
-      stop();
-      finePointer.removeEventListener('change', sync);
-      reducedMotion.removeEventListener('change', sync);
-      document.removeEventListener('visibilitychange', visibility);
+      window.clearTimeout(unlockTimer);
+      window.removeEventListener('wheel', onWheel);
     };
   }, []);
 
