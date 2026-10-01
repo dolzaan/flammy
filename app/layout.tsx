@@ -4,15 +4,15 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title:'Flammy — Estratégia com alma',
+  title:'Flammy — Studio Criativo',
   description:'Estratégia, criatividade e sensibilidade para marcas que querem construir algo relevante.',
   robots:{index:true,follow:true},
   icons:{
-    icon:[{url:'/flammy-icon.svg',type:'image/svg+xml'},{url:'/flammy-icon-32.png',type:'image/png',sizes:'32x32'}],
-    apple:{url:'/flammy-icon-180.png',sizes:'180x180'}
+    icon:[{url:'/flammy-icon.svg?v=2',type:'image/svg+xml',sizes:'any'},{url:'/brand-icon/32?v=2',type:'image/png',sizes:'32x32'},{url:'/brand-icon/192?v=2',type:'image/png',sizes:'192x192'},{url:'/brand-icon/512?v=2',type:'image/png',sizes:'512x512'}],
+    apple:{url:'/brand-icon/180?v=2',sizes:'180x180'}
   },
   openGraph:{
-    title:'Flammy — Estratégia com alma',
+    title:'Flammy — Studio Criativo',
     description:'Transformamos potencial em posicionamento e presença em autoridade.',
     locale:'pt_BR',
     type:'website'
