@@ -9,10 +9,7 @@ export default function SmoothScroll() {
     const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
     let settling = false;
-    let scrollFinished = true;
-    let wheelIdle = true;
-    let idleTimer = 0;
-    let fallbackTimer = 0;
+    let releaseTimer = 0;
 
     const targets = () => Array.from(document.querySelectorAll<HTMLElement>(SNAP_SELECTOR));
 
@@ -36,35 +33,12 @@ export default function SmoothScroll() {
       return bestIndex;
     };
 
-    const releaseIfReady = () => {
-      if (scrollFinished && wheelIdle) settling = false;
-    };
-
-    const markWheelActivity = () => {
-      wheelIdle = false;
-      window.clearTimeout(idleTimer);
-      idleTimer = window.setTimeout(() => {
-        wheelIdle = true;
-        releaseIfReady();
-      }, 320);
-    };
-
-    const onScrollEnd = () => {
-      scrollFinished = true;
-      window.clearTimeout(fallbackTimer);
-      releaseIfReady();
-    };
-
     const onWheel = (event: WheelEvent) => {
       if (!finePointer.matches || event.ctrlKey || event.deltaY === 0) return;
-      // Consume the entire gesture, including the tiny inertial tail. Letting
-      // those events scroll natively can interrupt snapping or advance twice.
+      // Suppress inertia during a bounded transition. Wheel events must never
+      // extend this deadline, or a continuous wheel stream can lock navigation.
       event.preventDefault();
-      // Ignore sensor noise for the lock timer, while still preventing native
-      // scrolling. Otherwise a stream of tiny deltas keeps navigation locked.
-      if (Math.abs(event.deltaY) < 8) return;
-      markWheelActivity();
-      if (settling) return;
+      if (settling || Math.abs(event.deltaY) < 2) return;
 
       const elements = targets();
       if (!elements.length) return;
@@ -74,23 +48,17 @@ export default function SmoothScroll() {
       if (nextIndex === index) return;
 
       settling = true;
-      scrollFinished = false;
       const next = elements[nextIndex];
       window.scrollTo({ top: targetTop(next), behavior: reducedMotion.matches ? 'auto' : 'smooth' });
-      window.clearTimeout(fallbackTimer);
-      fallbackTimer = window.setTimeout(() => {
-        scrollFinished = true;
-        releaseIfReady();
-      }, reducedMotion.matches ? 120 : 1000);
+      releaseTimer = window.setTimeout(() => {
+        settling = false;
+      }, reducedMotion.matches ? 180 : 850);
     };
 
     window.addEventListener('wheel', onWheel, { passive: false });
-    window.addEventListener('scrollend', onScrollEnd);
     return () => {
-      window.clearTimeout(idleTimer);
-      window.clearTimeout(fallbackTimer);
+      window.clearTimeout(releaseTimer);
       window.removeEventListener('wheel', onWheel);
-      window.removeEventListener('scrollend', onScrollEnd);
     };
   }, []);
 
