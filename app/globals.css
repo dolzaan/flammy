@@ -1149,10 +1149,10 @@ body{overscroll-behavior-y:none}
 /* The real footer sits outside the contact card, within the final screen. */
 .scroll-site main{padding-bottom:0}
 .scroll-site #contato{height:calc(100svh - 164px)}
-.scroll-site>.site-footer{display:flex;flex-direction:row;box-sizing:border-box;align-items:center;justify-content:space-between;gap:24px;height:80px;min-height:0;max-height:80px;padding:18px 5%;margin:0;border-radius:0!important;background:var(--paper);color:var(--red);box-shadow:none;scroll-snap-align:none}
+.scroll-site>.site-footer{display:flex;flex-direction:row;box-sizing:border-box;align-items:center;justify-content:space-between;gap:24px;height:80px;min-height:0;max-height:80px;padding:18px 5%;margin:0;border-radius:32px 32px 0 0!important;background:var(--paper);color:var(--red);box-shadow:none;scroll-snap-align:none}
 .scroll-site>.site-footer::before{content:none}
 .scroll-site>.site-footer .footer-wordmark{width:160px;max-width:160px;margin:0;flex-shrink:0;line-height:1}
 .scroll-site>.site-footer .footer-wordmark img{width:100%;height:auto;display:block}
 .scroll-site>.site-footer>div{display:flex;align-items:center;gap:24px;border:0;padding:0;font-size:11px;line-height:1.5}
 .scroll-site>.site-footer>div>span:first-child{display:none}
-@media(max-width:900px){.scroll-site #contato{height:calc(100svh - 132px)}.scroll-site>.site-footer{height:60px;max-height:60px;padding:12px 5%;gap:12px}.scroll-site>.site-footer .footer-wordmark{width:110px;max-width:110px}.scroll-site>.site-footer>div{gap:12px;font-size:9px}}
+@media(max-width:900px){.scroll-site #contato{height:calc(100svh - 132px)}.scroll-site>.site-footer{height:60px;max-height:60px;padding:12px 5%;gap:12px;border-radius:26px 26px 0 0!important}.scroll-site>.site-footer .footer-wordmark{width:110px;max-width:110px}.scroll-site>.site-footer>div{gap:12px;font-size:9px}}
