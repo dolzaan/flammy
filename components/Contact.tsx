@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import StarBorder from './StarBorder';
 import { ArrowUpRight, Check, LoaderCircle } from 'lucide-react';
 
 type Field = 'name' | 'email' | 'service' | 'message' | 'consent';
@@ -111,17 +110,16 @@ export default function Contact({ enabled, briefing }: { enabled: boolean; brief
   </div>;
 
   return <form ref={formRef} onSubmit={submit} className="contact-form" noValidate aria-busy={state === 'sending'}>
-    <h3>Conte sua ideia</h3>
-    <p className="form-intro">A conversa começa pela sua essência, seus objetivos e o que precisa ganhar direção.</p><p className="required-note">* Campos obrigatórios</p>
+    <p className="required-note">* Campos obrigatórios</p>
     <fieldset disabled={state === 'sending'}>
       <div className="form-field"><label htmlFor={`${id}-name`}>Seu nome <span aria-hidden="true">*</span></label><input id={`${id}-name`} name="name" placeholder="Como podemos chamar você?" autoComplete="name" required maxLength={120} {...attributesFor('name')} />{errorFor('name')}</div>
       <div className="form-field"><label htmlFor={`${id}-email`}>E-mail <span aria-hidden="true">*</span></label><input id={`${id}-email`} name="email" placeholder="voce@exemplo.com" type="email" autoComplete="email" required maxLength={254} {...attributesFor('email')} />{errorFor('email')}</div>
-      <div className="form-field"><label htmlFor={`${id}-service`}>O que sua marca precisa? <span aria-hidden="true">*</span></label><select id={`${id}-service`} name="service" value={selectedService} required {...attributesFor('service')} aria-describedby={errors.service ? `${id}-service-error ${id}-service-hint` : `${id}-service-hint`} onChange={event => { setSelectedService(event.target.value); if (errors.service) checkField('service'); }}><option value="">Selecione um serviço</option><option>Estratégia</option><option>Conteúdo</option><option>Social Media</option><option>Design</option><option>Projetos especiais</option></select>{errorFor('service')}<span id={`${id}-service-hint`} className="service-hint" role="status">{serviceHints[selectedService] ?? 'Escolha uma frente para encontrarmos o melhor ponto de partida.'}</span></div>
-      <div className="form-field"><label htmlFor={`${id}-message`}>Sobre o projeto <span aria-hidden="true">*</span></label><textarea id={`${id}-message`} name="message" placeholder="Conte sobre sua marca, seus objetivos e o que deseja construir" rows={3} required minLength={10} maxLength={3000} {...attributesFor('message')} />{errorFor('message')}</div>
+      <div className="form-field"><label htmlFor={`${id}-service`}>O que sua marca precisa? <span aria-hidden="true">*</span></label><select id={`${id}-service`} name="service" value={selectedService} required {...attributesFor('service')} onChange={event => { setSelectedService(event.target.value); if (errors.service) checkField('service'); }}><option value="">Selecione um serviço</option><option>Estratégia</option><option>Conteúdo</option><option>Social Media</option><option>Design</option><option>Projetos especiais</option></select>{errorFor('service')}</div>
+      <div className="form-field"><label htmlFor={`${id}-message`}>Sobre o projeto <span aria-hidden="true">*</span></label><textarea id={`${id}-message`} name="message" placeholder="Conte sobre sua marca, seus objetivos e o que deseja construir" rows={2} required minLength={10} maxLength={3000} {...attributesFor('message')} />{errorFor('message')}</div>
       <label className="honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
-      <label className="consent"><input type="checkbox" name="consent" required {...attributesFor('consent')} /> Autorizo a Flammy a usar estes dados para responder sobre meu projeto. <span aria-hidden="true">*</span></label>{errorFor('consent')}
+      <label className="consent"><input type="checkbox" name="consent" required {...attributesFor('consent')} /> Autorizo o uso dos meus dados para responder à mensagem. <span aria-hidden="true">*</span></label>{errorFor('consent')}
     </fieldset>
-    <StarBorder type="submit" className="button light form-submit" disabled={state === 'sending'}>{state === 'sending' ? <><LoaderCircle size={18} className="sending-icon" aria-hidden="true" /> Enviando sua ideia…</> : <>Enviar minha mensagem <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></>}</StarBorder>
+    <button type="submit" className="button light form-submit" disabled={state === 'sending'}>{state === 'sending' ? <><LoaderCircle size={18} className="sending-icon" aria-hidden="true" /> Enviando sua ideia…</> : <>Enviar minha mensagem <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></>}</button>
     <p role="status" aria-live="polite" className="form-status">{state === 'error' ? message : state === 'sending' ? 'Estamos enviando seu projeto.' : ''}</p>
     {state === 'error' ? <a className="form-fallback" href="mailto:flammystudiocriativo@gmail.com">Prefiro conversar por e-mail <ArrowUpRight size={16} aria-hidden="true" /></a> : null}
   </form>;
