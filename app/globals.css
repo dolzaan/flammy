@@ -1322,3 +1322,25 @@ html{scroll-snap-type:y mandatory}
  #studio .values span{font-size:13px;line-height:1.45;gap:10px}
 }
 @media(max-width:900px){#studio h2{font-size:clamp(28px,7vw,44px);line-height:1.12}#studio h2>span{white-space:normal}}
+
+/* Studio surface follows the content scale while the chapter keeps its scroll rhythm. */
+@media(min-width:901px){
+ .scroll-site #studio>.panel-surface{inset:clamp(28px,12svh,130px) 0}
+ #studio .studio-content{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,60px);align-items:center;margin-top:28px}
+ #studio h2{font-size:clamp(38px,3.8vw,60px)}
+ #studio .studio-copy p{font-size:17px}
+ #studio .values{margin-top:36px;padding-top:26px}
+ #studio .values span{font-size:14px}
+}
+@media(min-width:901px) and (max-height:720px){
+ .scroll-site #studio>.panel-surface{inset:24px 0}
+ #studio h2{font-size:clamp(36px,3.3vw,48px)}
+ #studio .studio-copy p{font-size:15px}
+ #studio .values{margin-top:24px;padding-top:20px}
+}
+@media(max-width:900px){
+ .scroll-site #studio{height:auto;min-height:0;max-height:none;padding-block:38px;overflow:visible}
+ .scroll-site #studio>.panel-surface{inset:8px 0}
+ #studio .studio-content{margin-top:22px;gap:20px}
+ #studio .values{margin-top:24px;padding-top:20px}
+}
