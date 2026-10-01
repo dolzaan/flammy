@@ -46,7 +46,7 @@ export default function SmoothScroll() {
       idleTimer = window.setTimeout(() => {
         wheelIdle = true;
         releaseIfReady();
-      }, 240);
+      }, 320);
     };
 
     const onScrollEnd = () => {
@@ -56,10 +56,12 @@ export default function SmoothScroll() {
     };
 
     const onWheel = (event: WheelEvent) => {
-      if (!finePointer.matches || event.ctrlKey || Math.abs(event.deltaY) < 8) return;
+      if (!finePointer.matches || event.ctrlKey || event.deltaY === 0) return;
+      // Consume the entire gesture, including the tiny inertial tail. Letting
+      // those events scroll natively can interrupt snapping or advance twice.
       event.preventDefault();
       markWheelActivity();
-      if (settling) return;
+      if (settling || Math.abs(event.deltaY) < 8) return;
 
       const elements = targets();
       if (!elements.length) return;
@@ -91,3 +93,4 @@ export default function SmoothScroll() {
 
   return null;
 }
+
