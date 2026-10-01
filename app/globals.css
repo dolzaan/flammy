@@ -1199,3 +1199,9 @@ html{scroll-snap-type:y mandatory}
 .scroll-site main>section>.panel-surface::after{content:"";opacity:.22;background-size:160px 160px;pointer-events:none}
 #principal>.hero>.panel-content{position:relative;isolation:isolate}
 #principal>.hero>.panel-content::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background-image:url("/paper-grain.png");background-repeat:repeat;background-size:160px 160px;opacity:.22;pointer-events:none}
+
+/* Quiet glass footer follows the transparent header treatment. */
+.scroll-site>.site-footer{background:rgba(249,245,241,.035);color:rgba(249,245,241,.78);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:0;box-shadow:inset 0 1px 0 rgba(249,245,241,.06)}
+.scroll-site>.site-footer .footer-wordmark img{filter:brightness(0) invert(1);opacity:.8}
+.scroll-site>.site-footer a:hover{color:var(--paper)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.scroll-site>.site-footer{background:rgba(48,16,21,.9)}}
