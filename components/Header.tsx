@@ -16,7 +16,10 @@ export default function Header() {
       frame = 0;
       if (!brand) return;
       const logo = brand.getBoundingClientRect();
-      const points = [0.2, 0.5, 0.8].map(ratio => ({ x: logo.left + logo.width * ratio, y: logo.top + logo.height / 2 }));
+      // A partially passing card must not darken the logo over the wine backdrop.
+      const points = [0.05, 0.5, 0.95].flatMap(x => [0.1, 0.5, 0.9].map(y => ({
+        x: logo.left + logo.width * x, y: logo.top + logo.height * y,
+      }))); 
       const painted = surfaces.map(surface => ({ style: getComputedStyle(surface), rect: surface.getBoundingClientRect() }));
       let lightPoints = 0;
       for (const point of points) {
@@ -37,7 +40,7 @@ export default function Header() {
         }
         if (light) lightPoints++;
       }
-      setLightSurface(lightPoints >= 2);
+      setLightSurface(lightPoints === points.length);
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
     const observer = new ResizeObserver(schedule);
