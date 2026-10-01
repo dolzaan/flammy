@@ -33,7 +33,7 @@ export default function Page(){
         </section>
 
         <div className="ribbon brand-text-loop" aria-hidden="true">
-          <TextLoop text="PRESENÇA ✦ CLAREZA ✦ ESSÊNCIA ✦ POSICIONAMENTO ✦ LEGADO ✦ CONEXÃO ✦ INTENÇÃO" shape="wave" curviness={14} speed={45} direction="reverse" fontSize={22} fontWeight={500} letterSpacing={1.8} color="#f4bad1" ribbonColor="#930c17" ribbonWidth={60}/>
+          <TextLoop text="IDEIAS QUE ACENDEM ✦ MARCAS QUE CONECTAM ✦ DESIGN QUE FICA" shape="wave" curviness={14} speed={45} direction="reverse" fontSize={22} fontWeight={500} letterSpacing={1.8} color="#f4bad1" ribbonColor="#930c17" ribbonWidth={60}/>
         </div>
 
         <section id="studio" className="studio section">
