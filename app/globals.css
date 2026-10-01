@@ -1162,7 +1162,7 @@ body{overscroll-behavior-y:none}
 #contato .contact-links .contact-direct{display:inline-block;margin:0}
 
 /* Native section snapping never captures or locks wheel input. */
-.hero-scroll-cue{position:absolute;right:calc((100vw - 100%)/-2 + 5vw);bottom:80px;z-index:2;display:flex;align-items:center;justify-content:center;width:44px;height:64px;margin:0;border:0;border-radius:0;color:rgba(255,255,255,.45);background:transparent;transition:color .2s,transform .2s}
+.hero-scroll-cue{position:absolute;right:calc((100vw - 100%)/-2 + 5vw);bottom:145px;z-index:2;display:flex;align-items:center;justify-content:center;width:44px;height:64px;margin:0;border:0;border-radius:0;color:rgba(255,255,255,.45);background:transparent;transition:color .2s,transform .2s}
 .hero-scroll-cue:hover{color:rgba(255,255,255,.8);transform:translateY(3px)}
 @media(prefers-reduced-motion:reduce){.hero-scroll-cue{transition:none}.hero-scroll-cue:hover{transform:none}}
 
