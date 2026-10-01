@@ -1129,3 +1129,14 @@ body{overscroll-behavior-y:none}
 }
 @media(max-height:700px){#contato .form-field{padding-block:4px}#contato .contact-form fieldset{gap:6px}}
 @media(prefers-reduced-motion:reduce){#contato .form-field,#contato .form-field :is(input,select,textarea){transition:none}}
+
+/* Footer shares the contact viewport rather than creating another chapter. */
+#contato .contact-footer{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:32px;padding:20px 0 0;border-top:1px solid rgba(249,245,241,.2);border-radius:0!important;background:none;min-height:0;height:auto;color:var(--paper);box-shadow:none}
+#contato .contact-footer::before{content:none}
+#contato .contact-footer .footer-wordmark{width:140px;max-width:140px;margin:0;line-height:1;flex-shrink:0}
+#contato .contact-footer .footer-wordmark img{display:block;width:100%;height:auto}
+#contato .contact-footer>div{display:flex;align-items:center;gap:24px;border:0;padding:0;font-size:11px;line-height:1.5}
+#contato .contact-footer>div>span:first-child{display:none}
+#contato .contact-footer a:focus-visible{outline-offset:4px}
+@media(max-width:900px){#contato .contact-footer{margin-top:18px;padding-top:14px;gap:12px}#contato .contact-footer .footer-wordmark{width:110px;max-width:110px}#contato .contact-footer>div{gap:12px;font-size:9px}}
+@media(max-height:700px){#contato .contact-footer{margin-top:14px;padding-top:12px}}
