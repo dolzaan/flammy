@@ -748,6 +748,7 @@ body{overscroll-behavior-y:none}
     border-top:1px solid var(--line);
   }
   .hero-bottom p{max-width:550px;font-size:16px}
+  .hero-bottom .button{white-space:nowrap}
 
   /* Every chapter receives its own silhouette instead of one repeated card. */
   .scroll-site .studio{width:min(88%,1220px);padding-inline:clamp(54px,6vw,86px)}
