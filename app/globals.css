@@ -1112,3 +1112,20 @@ body{overscroll-behavior-y:none}
  #contato .form-field textarea{height:54px}
  #contato .form-submit{margin-top:10px}
 }
+
+/* Restore the brand's expressive form typography and luminous interactions. */
+#contato .form-field{padding:8px 10px;border:1px solid transparent;border-radius:12px;transition:background .22s,border-color .22s,box-shadow .22s}
+#contato .form-field:focus-within{background:rgba(244,186,209,.075);border-color:rgba(244,186,209,.42);box-shadow:0 0 22px rgba(244,186,209,.055)}
+#contato .form-field label{font-family:'Inter',Arial,sans-serif;font-size:11px;letter-spacing:.015em;color:var(--paper)}
+#contato .form-field :is(input,select,textarea){font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:500;letter-spacing:-.02em;line-height:1.35;color:var(--paper);transition:border-color .22s,box-shadow .22s}
+#contato .form-field :is(input,textarea)::placeholder{color:rgba(249,245,241,.7);opacity:1}
+#contato .form-field :is(input,select,textarea):focus{border-bottom-color:var(--pink);box-shadow:0 1px 0 var(--pink)}
+#contato .form-submit.star-border{padding:2px;min-height:44px}
+#contato .form-submit .star-border__content{padding:14px 24px;font-family:'Inter',Arial,sans-serif;font-size:13px;width:100%}
+@media(max-width:900px){
+ #contato .form-field{padding:5px 7px;border-radius:10px}
+ #contato .form-field :is(input,select,textarea){font-size:16px}
+ #contato .form-submit .star-border__content{padding:12px 20px}
+}
+@media(max-height:700px){#contato .form-field{padding-block:4px}#contato .contact-form fieldset{gap:6px}}
+@media(prefers-reduced-motion:reduce){#contato .form-field,#contato .form-field :is(input,select,textarea){transition:none}}
