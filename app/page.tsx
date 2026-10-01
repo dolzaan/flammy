@@ -8,6 +8,7 @@ import Deliverables from '../components/Deliverables';
 import Motion from '../components/Motion';
 import Services from '../components/Services';
 import Header from '../components/Header';
+import GlassSurface from '../components/GlassSurface';
 import LineSidebar from '../components/LineSidebar';
 import ReadingProgress from '../components/ReadingProgress';
 import DarkVeil from '../components/DarkVeil';
@@ -120,6 +121,7 @@ export default function Page(){
         </section>
       </main>
       <footer className="site-footer">
+        <GlassSurface className="footer-glass"/>
         <a href="#inicio" className="footer-wordmark" aria-label="Flammy, voltar ao início"><Image src="/flammy-logo.svg" width={846} height={156} unoptimized alt="Flammy" sizes="140px"/></a>
         <div><span>Estratégia com alma.</span><span>© {new Date().getFullYear()} Flammy</span><a href="#inicio">Voltar ao início</a></div>
       </footer>
