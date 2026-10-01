@@ -1170,3 +1170,6 @@ body{overscroll-behavior-y:none}
 #contato .contact-links .contact-direct>svg{flex-shrink:0}
 #contato .contact-links .contact-direct>span{text-decoration:underline;text-underline-offset:4px}
 #contato .contact-links .contact-direct:hover{opacity:1}
+
+/* Allow the corner cue beyond the centered hero card without clipping it. */
+#principal>.hero{overflow:visible}
