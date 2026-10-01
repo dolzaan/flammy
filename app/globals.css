@@ -1165,3 +1165,8 @@ body{overscroll-behavior-y:none}
 .hero-scroll-cue{display:flex;align-items:center;justify-content:center;justify-self:center;width:40px;height:40px;margin-top:24px;border:1px solid rgba(249,245,241,.3);border-radius:50%;color:var(--paper);background:rgba(48,16,21,.12);transition:background .2s,transform .2s}
 .hero-scroll-cue:hover{background:rgba(249,245,241,.14);transform:translateY(3px)}
 @media(prefers-reduced-motion:reduce){.hero-scroll-cue{transition:none}.hero-scroll-cue:hover{transform:none}}
+
+#contato .contact-links .contact-direct{display:inline-flex;align-items:center;gap:9px;text-decoration:none}
+#contato .contact-links .contact-direct>svg{flex-shrink:0}
+#contato .contact-links .contact-direct>span{text-decoration:underline;text-underline-offset:4px}
+#contato .contact-links .contact-direct:hover{opacity:1}
