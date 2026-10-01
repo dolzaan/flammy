@@ -108,7 +108,7 @@ export default function Page(){
             <div className="section-label">05 / VAMOS CONVERSAR</div>
             <div className="contact-grid">
               <div>
-                <h2>Vamos construir<br/>algo <em>relevante?</em></h2>
+                <h2>Vamos construir<br/>{' '}algo <em>relevante?</em></h2>
                 <div className="contact-links">
                   <a className="contact-direct" href="mailto:flammystudiocriativo@gmail.com"><Mail size={17} strokeWidth={1.6} aria-hidden="true"/><span>flammystudiocriativo@gmail.com</span></a>
                   <a className="contact-direct" href="https://www.instagram.com/flammystudio/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Flammy (abre em nova aba)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg><span>@flammystudio</span><ArrowUpRight size={13} aria-hidden="true"/></a>
