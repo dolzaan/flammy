@@ -999,3 +999,32 @@ body{overscroll-behavior-y:none}
 .hero-bottom{gap:24px}
 @media(min-width:901px){#principal>.hero{width:min(88%,960px);max-width:960px;padding-inline:0}.hero-bottom p{font-size:16px}}
 @media(max-width:900px){#principal>.hero{padding-inline:0;padding-top:32px}.hero h1{font-size:clamp(38px,9.5vw,66px)}#principal>.hero>.panel-content{padding:36px 20px 30px;border-radius:26px}.hero-heading{padding-bottom:24px}.hero-bottom p{font-size:14px}}
+
+/* Services reserve room for one expanded answer within the viewport. */
+.scroll-site #servicos{min-height:0;max-height:none;height:calc(100svh - 84px);padding-block:clamp(24px,4vh,40px);align-content:center}
+#servicos .panel-content{display:grid;grid-template-rows:auto auto auto;gap:0;min-height:0}
+#servicos .section-heading{margin:16px 0 20px;gap:20px}
+#servicos h2{font-size:clamp(34px,4vw,58px);line-height:1.05}
+#servicos .service-toggle{padding-block:10px;min-height:44px;grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 26px}
+#servicos .service-title{font-size:clamp(22px,2.4vw,32px)}
+#servicos .service-description{padding:0 0 14px 47px;gap:20px}
+#servicos .service-description p{font-size:14px;line-height:1.5}
+#servicos .service-description a{font-size:13px;white-space:normal;flex-shrink:0;max-width:220px}
+@media(max-width:900px){
+ .scroll-site #servicos{height:calc(100svh - 72px);padding-inline:5%;padding-block:22px}
+ #servicos .section-heading{margin:12px 0 16px;gap:8px}
+ #servicos h2{font-size:clamp(29px,7vw,42px)}
+ #servicos .section-heading>p{font-size:12px;line-height:1.4}
+ #servicos .service-toggle{grid-template-columns:24px minmax(0,1fr) 24px;padding-block:9px}
+ #servicos .service-subtitle{display:none}
+ #servicos .service-title{font-size:clamp(19px,4.8vw,25px)}
+ #servicos .service-description{padding:0 0 12px 34px;gap:8px}
+ #servicos .service-description p,#servicos .service-description a{font-size:12px;line-height:1.45}
+ #servicos .service-description a{max-width:none}
+}
+@media(max-height:700px){
+ #servicos .section-heading{margin:8px 0 12px}
+ #servicos h2{font-size:clamp(26px,3vw,38px)}
+ #servicos .service-toggle{padding-block:6px}
+ #servicos .service-description{padding-bottom:8px}
+}
