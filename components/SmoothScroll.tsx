@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-const SNAP_SELECTOR = 'main > section, .scroll-site > footer';
+const SNAP_SELECTOR = 'main > section';
 
 export default function SmoothScroll() {
   useEffect(() => {
