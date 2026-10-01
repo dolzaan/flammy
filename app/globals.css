@@ -1173,3 +1173,18 @@ body{overscroll-behavior-y:none}
 
 /* Allow the corner cue beyond the centered hero card without clipping it. */
 #principal>.hero{overflow:visible}
+
+/* Contact: quiet wine glass, warm paper, and restrained pink accents. */
+#contato{color:var(--paper)}
+#contato>.panel-surface{background:linear-gradient(135deg,rgba(75,24,36,.86),rgba(48,16,21,.92));border-color:rgba(249,245,241,.16);box-shadow:inset 0 1px 0 rgba(249,245,241,.06)}
+#contato h2{color:var(--paper)}
+#contato h2 em{color:var(--pink)}
+#contato .section-label,#contato .required-note{color:rgba(249,245,241,.72)}
+#contato .form-field :is(input,select,textarea){border-bottom-color:rgba(249,245,241,.3);background:transparent}
+#contato .form-field :is(input,textarea)::placeholder{color:rgba(249,245,241,.65)}
+#contato .form-field:focus-within{background:rgba(249,245,241,.04);border-color:rgba(244,186,209,.3);box-shadow:0 0 20px rgba(244,186,209,.03)}
+#contato .form-submit,#contato .form-submit .star-border__content{background:var(--paper);color:var(--red)}
+#contato .form-submit:hover .star-border__content{background:#f4e9e8}
+#contato .consent{color:rgba(249,245,241,.8)}
+#contato .consent input{accent-color:var(--pink)}
+#contato .field-error{color:var(--pink)}
