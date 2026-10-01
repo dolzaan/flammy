@@ -1210,3 +1210,19 @@ html{scroll-snap-type:y mandatory}
 .scroll-site>.site-footer{position:relative;isolation:isolate;background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;content-visibility:visible;contain:none;overflow:visible}
 .scroll-site>.site-footer>.footer-glass{inset:-48px 0 0;z-index:-1;-webkit-mask-image:linear-gradient(to top,#000 0%,#000 55%,rgba(0,0,0,.85) 65%,rgba(0,0,0,.4) 80%,transparent 100%);mask-image:linear-gradient(to top,#000 0%,#000 55%,rgba(0,0,0,.85) 65%,rgba(0,0,0,.4) 80%,transparent 100%)}
 @media(max-width:600px){.scroll-site>.site-footer>.footer-glass{inset:-36px 0 0}}
+
+/* Mobile content may grow instead of clipping expanded answers or validation. */
+@media(max-width:900px){
+ .scroll-site #servicos{height:auto;min-height:calc(100svh - 72px);overflow:visible}
+ .scroll-site #contato{height:auto;min-height:calc(100svh - 132px);overflow:visible}
+ #servicos .service-description p,#servicos .service-description a{font-size:13px;line-height:1.5}
+ #contato .contact-form fieldset{gap:12px}
+ #contato .form-field label{font-size:12px}
+ #contato .form-field :is(input,select,textarea){font-size:16px;scroll-margin-block:100px 32px}
+ #contato .consent{font-size:12px;line-height:1.5}
+ #contato .field-error,#contato .form-status{font-size:12px;line-height:1.45}
+ #contato .contact-links .contact-direct{min-height:32px}
+ #contato .contact-links .contact-direct>span{min-width:0;overflow-wrap:anywhere}
+ html:has(#contato :focus-within){scroll-snap-type:none;scroll-padding-bottom:24px}
+}
+@media(max-width:380px){#contato .contact-form fieldset{grid-template-columns:1fr}#contato .form-field{grid-column:1 / -1}}
