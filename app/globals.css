@@ -1188,3 +1188,6 @@ body{overscroll-behavior-y:none}
 #contato .consent{color:rgba(249,245,241,.8)}
 #contato .consent input{accent-color:var(--pink)}
 #contato .field-error{color:var(--pink)}
+
+/* Subdue the footer so the contact form remains the visual focus. */
+.scroll-site>.site-footer{background:rgba(249,245,241,.68);color:var(--ink)}
