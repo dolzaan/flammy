@@ -1,7 +1,7 @@
 import Magnet from '../components/Magnet';
 import TextLoop from '../components/TextLoop';
 import Image from 'next/image';
-import { Camera, Mail, Sparkles, Plus, ArrowUpRight, ArrowDown } from 'lucide-react';
+import { Camera, Mail, Sparkles, Plus, ArrowUpRight } from 'lucide-react';
 import Contact from '../components/Contact';
 import ContactLink from '../components/ContactLink';
 import Deliverables from '../components/Deliverables';
@@ -30,7 +30,7 @@ export default function Page(){
               <Magnet><ContactLink className="button">Vamos criar juntos <ArrowUpRight size={19} className="button-arrow" aria-hidden="true"/></ContactLink></Magnet>
             </div>
           </div>
-          <a className="hero-scroll-cue" href="#studio" aria-label="Role para conhecer a Flammy"><ArrowDown size={20} aria-hidden="true"/></a>
+          <a className="hero-scroll-cue" href="#studio" aria-label="Role para conhecer a Flammy"><svg width="20" height="52" viewBox="0 0 24 60" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v50m-7-7 7 7 7-7"/></svg></a>
         </section>
 
         <div className="ribbon brand-text-loop" aria-hidden="true">
