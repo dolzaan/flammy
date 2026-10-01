@@ -53,9 +53,9 @@ export default function Page(){
               </div>
             </div>
             <div className="values">
-              <span><Plus size={18}/> Humanidade em cada decisão</span>
-              <span><Plus size={18}/> Intenção antes da estética</span>
-              <span><Plus size={18}/> Clareza para construir</span>
+              <SpotlightCard className="value-spotlight"><span><Plus size={18} aria-hidden="true"/> Humanidade em cada decisão</span></SpotlightCard>
+              <SpotlightCard className="value-spotlight"><span><Plus size={18} aria-hidden="true"/> Intenção antes da estética</span></SpotlightCard>
+              <SpotlightCard className="value-spotlight"><span><Plus size={18} aria-hidden="true"/> Clareza para construir</span></SpotlightCard>
             </div>
           </div>
         </section>
