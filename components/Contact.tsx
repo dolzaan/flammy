@@ -105,8 +105,8 @@ export default function Contact({ enabled, briefing }: { enabled: boolean; brief
 
   if (state === 'success') return <div className="contact-success">
     <span className="success-icon" aria-hidden="true"><Check size={30} /></span>
-    <h3 ref={successRef} tabIndex={-1}>Recebemos sua mensagem.</h3>
-    <p role="status">Obrigada por compartilhar o que você está construindo. A Flammy vai responder pelo e-mail informado.</p>
+    <h3 ref={successRef} tabIndex={-1}>Ideia recebida <span aria-hidden="true">✦</span></h3>
+    <p role="status">Obrigada por compartilhar sua ideia. Vamos ler os detalhes do projeto e entrar em contato pelo e-mail que você informou para conversar sobre os próximos passos.</p>
     <button type="button" className="button light" onClick={() => { returnFocus.current = true; setErrors({}); setSelectedService(''); setState('idle'); }}>Enviar outra ideia <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></button>
   </div>;
 
