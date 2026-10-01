@@ -1,7 +1,7 @@
 import Magnet from '../components/Magnet';
 import TextLoop from '../components/TextLoop';
 import Image from 'next/image';
-import { Camera, Mail, Sparkles, Plus, ArrowUpRight, ArrowDown } from 'lucide-react';
+import { Camera, Mail, Instagram, Sparkles, Plus, ArrowUpRight, ArrowDown } from 'lucide-react';
 import Contact from '../components/Contact';
 import ContactLink from '../components/ContactLink';
 import Deliverables from '../components/Deliverables';
@@ -109,8 +109,8 @@ export default function Page(){
               <div>
                 <h2>Vamos construir<br/>algo <em>relevante?</em></h2>
                 <div className="contact-links">
-                  <a className="contact-direct" href="mailto:flammystudiocriativo@gmail.com">flammystudiocriativo@gmail.com</a>
-                  <a className="contact-direct" href="https://www.instagram.com/flammystudio/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Flammy (abre em nova aba)">@flammystudio ↗</a>
+                  <a className="contact-direct" href="mailto:flammystudiocriativo@gmail.com"><Mail size={17} strokeWidth={1.6} aria-hidden="true"/><span>flammystudiocriativo@gmail.com</span></a>
+                  <a className="contact-direct" href="https://www.instagram.com/flammystudio/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Flammy (abre em nova aba)"><Instagram size={17} strokeWidth={1.6} aria-hidden="true"/><span>@flammystudio</span><ArrowUpRight size={13} aria-hidden="true"/></a>
                 </div>
               </div>
               <Contact enabled={Boolean((process.env.SUPABASE_URL||process.env.NEXT_PUBLIC_FLAMMY_SUPABASE_URL)&&(process.env.FLAMMY_SUPABASE_SERVICE_ROLE_KEY||process.env.SUPABASE_SERVICE_ROLE_KEY)&&process.env.LEAD_HASH_SALT)} briefing={briefing}/>
