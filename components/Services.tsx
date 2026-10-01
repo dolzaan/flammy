@@ -13,14 +13,13 @@ const services = [
   ['05', 'Projetos especiais', 'Ideias importantes pedem caminhos próprios.', 'Campanhas, lançamentos e projetos personalizados construídos para os objetivos da sua marca.'],
 ];
 
-function Service({ item }: { item: string[] }) {
+function Service({ item, open, onToggle }: { item: string[]; open: boolean; onToggle: () => void }) {
   const [number, title, subtitle, description] = item;
-  const [open, setOpen] = useState(number === '01');
   const id = useId();
   const reducedMotion = useReducedMotion();
 
   return <article className="service" data-open={open}>
-    <button type="button" id={`${id}-toggle`} className="service-toggle" aria-expanded={open} aria-controls={`${id}-body`} onClick={() => setOpen(current => !current)}>
+    <button type="button" id={`${id}-toggle`} className="service-toggle" aria-expanded={open} aria-controls={`${id}-body`} onClick={onToggle}>
       <span className="service-number">{number}</span>
       <span className="service-title">{title}</span>
       <span className="service-subtitle">{subtitle}</span>
@@ -36,5 +35,7 @@ function Service({ item }: { item: string[] }) {
 }
 
 export default function Services() {
-  return <div className="service-list">{services.map(item => <Service key={item[0]} item={item} />)}</div>;
+  const [active, setActive] = useState<string | null>('01');
+  return <div className="service-list">{services.map(item => <Service key={item[0]} item={item} open={active === item[0]} onToggle={() => setActive(current => current === item[0] ? null : item[0])} />)}</div>;
 }
+
