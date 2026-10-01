@@ -107,13 +107,7 @@ export default function Page(){
             <div className="contact-grid">
               <div>
                 <h2>Vamos construir<br/>algo <em>relevante?</em></h2>
-                <p>Conte o que você está construindo.<br/>A gente começa entendendo quem você é.</p>
-                <ContactLink className="button light">Quero conversar <ArrowUpRight size={19} className="button-arrow" aria-hidden="true"/></ContactLink>
-                <a className="briefing-secondary" href={briefing} target="_blank" rel="noopener noreferrer">Prefere um briefing detalhado? <ArrowUpRight size={15} aria-hidden="true"/></a>
-                <div className="contact-links">
-                  <a href="mailto:flammystudiocriativo@gmail.com"><Mail size={18}/> E-mail</a>
-                  <a href="https://instagram.com/flammystudio" target="_blank" rel="noopener noreferrer"><Camera size={18}/> @flammystudio</a>
-                </div>
+                <a className="contact-direct" href="mailto:flammystudiocriativo@gmail.com">flammystudiocriativo@gmail.com</a>
               </div>
               <Contact enabled={Boolean((process.env.SUPABASE_URL||process.env.NEXT_PUBLIC_FLAMMY_SUPABASE_URL)&&(process.env.FLAMMY_SUPABASE_SERVICE_ROLE_KEY||process.env.SUPABASE_SERVICE_ROLE_KEY)&&process.env.LEAD_HASH_SALT)} briefing={briefing}/>
             </div>
