@@ -1191,3 +1191,11 @@ body{overscroll-behavior-y:none}
 
 /* Subdue the footer so the contact form remains the visual focus. */
 .scroll-site>.site-footer{background:rgba(249,245,241,.68);color:var(--ink)}
+
+/* Section storytelling uses browser snapping without JavaScript wheel locks. */
+html{scroll-snap-type:y mandatory}
+.scroll-site main>section{scroll-snap-stop:always}
+/* Static paper grain adds detail without animation or input interference. */
+.scroll-site main>section>.panel-surface::after{content:"";opacity:.09;pointer-events:none}
+#principal>.hero>.panel-content{position:relative;isolation:isolate}
+#principal>.hero>.panel-content::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background-image:url("/paper-grain.png");background-repeat:repeat;opacity:.09;pointer-events:none}
