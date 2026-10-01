@@ -107,7 +107,10 @@ export default function Page(){
             <div className="contact-grid">
               <div>
                 <h2>Vamos construir<br/>algo <em>relevante?</em></h2>
-                <a className="contact-direct" href="mailto:flammystudiocriativo@gmail.com">flammystudiocriativo@gmail.com</a>
+                <div className="contact-links">
+                  <a className="contact-direct" href="mailto:flammystudiocriativo@gmail.com">flammystudiocriativo@gmail.com</a>
+                  <a className="contact-direct" href="https://www.instagram.com/flammystudio/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Flammy (abre em nova aba)">@flammystudio ↗</a>
+                </div>
               </div>
               <Contact enabled={Boolean((process.env.SUPABASE_URL||process.env.NEXT_PUBLIC_FLAMMY_SUPABASE_URL)&&(process.env.FLAMMY_SUPABASE_SERVICE_ROLE_KEY||process.env.SUPABASE_SERVICE_ROLE_KEY)&&process.env.LEAD_HASH_SALT)} briefing={briefing}/>
             </div>
