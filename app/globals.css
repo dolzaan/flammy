@@ -1205,3 +1205,8 @@ html{scroll-snap-type:y mandatory}
 .scroll-site>.site-footer .footer-wordmark img{filter:brightness(0) invert(1);opacity:.8}
 .scroll-site>.site-footer a:hover{color:var(--paper)}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.scroll-site>.site-footer{background:rgba(48,16,21,.9)}}
+
+/* Footer shares the actual header glass component, with the fade mirrored. */
+.scroll-site>.site-footer{position:relative;isolation:isolate;background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;content-visibility:visible;contain:none;overflow:visible}
+.scroll-site>.site-footer>.footer-glass{inset:-48px 0 0;z-index:-1;-webkit-mask-image:linear-gradient(to top,#000 0%,#000 55%,rgba(0,0,0,.85) 65%,rgba(0,0,0,.4) 80%,transparent 100%);mask-image:linear-gradient(to top,#000 0%,#000 55%,rgba(0,0,0,.85) 65%,rgba(0,0,0,.4) 80%,transparent 100%)}
+@media(max-width:600px){.scroll-site>.site-footer>.footer-glass{inset:-36px 0 0}}
