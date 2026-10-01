@@ -60,8 +60,11 @@ export default function SmoothScroll() {
       // Consume the entire gesture, including the tiny inertial tail. Letting
       // those events scroll natively can interrupt snapping or advance twice.
       event.preventDefault();
+      // Ignore sensor noise for the lock timer, while still preventing native
+      // scrolling. Otherwise a stream of tiny deltas keeps navigation locked.
+      if (Math.abs(event.deltaY) < 8) return;
       markWheelActivity();
-      if (settling || Math.abs(event.deltaY) < 8) return;
+      if (settling) return;
 
       const elements = targets();
       if (!elements.length) return;
