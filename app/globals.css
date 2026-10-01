@@ -1028,3 +1028,46 @@ body{overscroll-behavior-y:none}
  #servicos .service-toggle{padding-block:6px}
  #servicos .service-description{padding-bottom:8px}
 }
+
+/* Deliverables: three quiet, aligned editorial cards with a restrained spotlight. */
+.scroll-site #entregas{min-height:0;max-height:none;height:calc(100svh - 84px);padding-block:clamp(28px,4vh,46px)}
+#entregas>.panel-surface{background:rgba(249,245,241,.94)}
+#entregas .section-heading{margin:20px 0 28px;gap:24px}
+#entregas h2{font-size:clamp(38px,4vw,60px)}
+#entregas .section-heading>p{font-size:14px;line-height:1.6}
+#entregas .deliverable-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding:0;overflow:visible}
+#entregas .deliverable-card,#entregas .deliverable-card:nth-child(2){transform:none;background:rgba(255,255,255,.46);border:1px solid rgba(48,16,21,.1);border-radius:24px;padding:26px;box-shadow:none;min-width:0}
+#entregas .deliverable-top{margin-bottom:26px;align-items:center}
+#entregas .deliverable-number{color:#826d70;font-size:11px;letter-spacing:.1em}
+#entregas .deliverable-icon{background:none;border:0;border-radius:0;width:28px;height:28px;color:var(--red)}
+#entregas .deliverable-card h3{font-size:clamp(22px,2vw,28px);min-height:0;margin:0 0 12px;line-height:1.12}
+#entregas .deliverable-card>p{font-size:13px;line-height:1.6;min-height:0;margin:0 0 22px;color:#68565a}
+#entregas .deliverable-card ul{border-top:1px solid rgba(48,16,21,.1);padding-top:18px;margin:0;gap:10px}
+#entregas .deliverable-card li{font-size:12px;line-height:1.45}
+#entregas .deliverable-card li>span{color:#aa8c90}
+#entregas .spotlight-card::before{background:radial-gradient(220px circle at var(--mouse-x,50%) var(--mouse-y,50%),rgba(147,12,23,.07),transparent 75%)}
+#entregas .deliverable-footer{margin-top:20px;display:block}
+#entregas .deliverable-footer>p{display:block;font-size:11px;line-height:1.5;color:#826d70;margin:0;max-width:none}
+@media(max-width:900px){
+ .scroll-site #entregas{height:calc(100svh - 72px);padding:24px 5%}
+ #entregas .section-heading{margin:10px 0 18px;gap:8px}
+ #entregas h2{font-size:clamp(29px,7vw,42px)}
+ #entregas .section-heading>p{font-size:12px}
+ #entregas .deliverable-grid{grid-template-columns:1fr;gap:10px}
+ #entregas .deliverable-card,#entregas .deliverable-card:nth-child(2){padding:16px 18px;border-radius:18px;display:grid;grid-template-columns:24px minmax(0,1fr);column-gap:12px}
+ #entregas .deliverable-top{grid-row:1 / 4;display:block;margin:2px 0 0}
+ #entregas .deliverable-icon{display:none}
+ #entregas .deliverable-card h3{font-size:21px;margin:0 0 6px}
+ #entregas .deliverable-card>p{display:none}
+ #entregas .deliverable-card ul{padding:0;border:0;display:flex;flex-wrap:wrap;gap:4px 12px}
+ #entregas .deliverable-card li{font-size:11px;line-height:1.5}
+ #entregas .deliverable-card li>span{display:none}
+ #entregas .deliverable-footer{margin-top:14px}
+}
+@media(max-height:700px) and (min-width:901px){
+ #entregas .section-heading{margin:10px 0 18px}
+ #entregas h2{font-size:38px}
+ #entregas .deliverable-card,#entregas .deliverable-card:nth-child(2){padding:20px}
+ #entregas .deliverable-top{margin-bottom:16px}
+ #entregas .deliverable-card>p{margin-bottom:16px}
+}
