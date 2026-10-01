@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
+import StarBorder from './StarBorder';
 import { ArrowUpRight, Check, LoaderCircle } from 'lucide-react';
 
 type Field = 'name' | 'email' | 'service' | 'message' | 'consent';
@@ -119,7 +120,7 @@ export default function Contact({ enabled, briefing }: { enabled: boolean; brief
       <label className="honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
       <label className="consent"><input type="checkbox" name="consent" required {...attributesFor('consent')} /> Autorizo o uso dos meus dados para responder à mensagem. <span aria-hidden="true">*</span></label>{errorFor('consent')}
     </fieldset>
-    <button type="submit" className="button light form-submit" disabled={state === 'sending'}>{state === 'sending' ? <><LoaderCircle size={18} className="sending-icon" aria-hidden="true" /> Enviando sua ideia…</> : <>Enviar minha mensagem <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></>}</button>
+    <StarBorder type="submit" className="button light form-submit" disabled={state === 'sending'}>{state === 'sending' ? <><LoaderCircle size={18} className="sending-icon" aria-hidden="true" /> Enviando sua ideia…</> : <>Enviar minha mensagem <ArrowUpRight size={18} className="button-arrow" aria-hidden="true" /></>}</StarBorder>
     <p role="status" aria-live="polite" className="form-status">{state === 'error' ? message : state === 'sending' ? 'Estamos enviando seu projeto.' : ''}</p>
     {state === 'error' ? <a className="form-fallback" href="mailto:flammystudiocriativo@gmail.com">Prefiro conversar por e-mail <ArrowUpRight size={16} aria-hidden="true" /></a> : null}
   </form>;
