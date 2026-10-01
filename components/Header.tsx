@@ -9,24 +9,43 @@ export default function Header() {
   const [lightSurface, setLightSurface] = useState(false);
   useEffect(() => {
     let frame = 0;
-    const surfaces = Array.from(document.querySelectorAll<HTMLElement>('main > section, main > .ribbon'));
+    // Measure painted cards, not their transparent section wrappers.
+    const surfaces = Array.from(document.querySelectorAll<HTMLElement>('.panel-surface, .hero > .panel-content, .brand-text-loop, footer'));
+    const brand = document.querySelector<HTMLElement>('header .brand');
     const update = () => {
       frame = 0;
-      const header = document.querySelector('header');
-      if (!header) return;
-      const y = header.getBoundingClientRect().height / 2;
-      const x = innerWidth < 600 ? 100 : 190;
-      const surface = surfaces.find(element => {
-        const rect = element.getBoundingClientRect();
-        return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-      });
-      setLightSurface(Boolean(surface && !surface.matches('.contact,.manifesto,.ribbon')));
+      if (!brand) return;
+      const logo = brand.getBoundingClientRect();
+      const points = [0.2, 0.5, 0.8].map(ratio => ({ x: logo.left + logo.width * ratio, y: logo.top + logo.height / 2 }));
+      const painted = surfaces.map(surface => ({ style: getComputedStyle(surface), rect: surface.getBoundingClientRect() }));
+      let lightPoints = 0;
+      for (const point of points) {
+        let light = false;
+        for (const { style, rect } of painted) {
+          if (style.display === 'none' || style.visibility === 'hidden') continue;
+          if (point.x < rect.left || point.x > rect.right || point.y < rect.top || point.y > rect.bottom) continue;
+          const radius = Math.min(parseFloat(style.borderTopLeftRadius) || 0, rect.width / 2, rect.height / 2);
+          const dx = Math.max(rect.left + radius - point.x, 0, point.x - (rect.right - radius));
+          const dy = Math.max(rect.top + radius - point.y, 0, point.y - (rect.bottom - radius));
+          if (dx * dx + dy * dy > radius * radius) continue;
+          const colors = style.backgroundImage.match(/rgba?\([^)]+\)/g);
+          const color = style.backgroundColor === 'rgba(0, 0, 0, 0)' ? colors?.at(-1) : style.backgroundColor;
+          const values = color?.match(/[\d.]+/g)?.map(Number);
+          if (!values || (values[3] ?? 1) < 0.4) continue;
+          const luminance = (0.2126 * values[0] + 0.7152 * values[1] + 0.0722 * values[2]) / 255;
+          light = luminance > 0.6;
+        }
+        if (light) lightPoints++;
+      }
+      setLightSurface(lightPoints >= 2);
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    const observer = new ResizeObserver(schedule);
+    surfaces.forEach(surface => observer.observe(surface));
     update();
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
-    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule); };
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule); };
   }, []);
   return <header data-tone={lightSurface ? 'light' : 'dark'}>
     <GlassSurface/>
