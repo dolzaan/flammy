@@ -1275,3 +1275,22 @@ html{scroll-snap-type:y mandatory}
  #principal>.hero .hero-heading{padding-bottom:20px}
  #principal>.hero .hero-bottom{gap:18px}
 }
+
+/* Opening microinteractions: one-shot word reveal and an event-driven light. */
+.hero-word-reveal{display:inline-block;animation:hero-word-in 720ms cubic-bezier(.22,1,.36,1) 120ms both}
+@keyframes hero-word-in{from{opacity:0;filter:blur(8px);transform:translateY(12px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
+#principal>.hero>.hero-card::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background:radial-gradient(320px circle at var(--hero-light-x,70%) var(--hero-light-y,25%),rgba(244,186,209,.3),transparent 75%);opacity:.3;transition:opacity 220ms ease-out}
+@media(hover:hover) and (pointer:fine){
+ #principal>.hero>.hero-card::before{opacity:0}
+ #principal>.hero>.hero-card:hover::before{opacity:1}
+ #inicio .button:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(147,12,23,.12)}
+ #inicio .button:hover .button-arrow{transform:translate(4px,-4px)}
+}
+#inicio .button{transition:background 220ms ease,transform 220ms ease,box-shadow 220ms ease}
+#inicio .button:focus-visible .button-arrow{transform:translate(3px,-3px)}
+@media(prefers-reduced-motion:reduce){
+ .hero-word-reveal{animation:none;opacity:1;filter:none;transform:none}
+ #principal>.hero>.hero-card::before{display:none}
+ #inicio .button,#inicio .button-arrow{transition:none}
+ #inicio .button:focus-visible .button-arrow{transform:none}
+}
