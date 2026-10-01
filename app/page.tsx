@@ -111,13 +111,14 @@ export default function Page(){
               </div>
               <Contact enabled={Boolean((process.env.SUPABASE_URL||process.env.NEXT_PUBLIC_FLAMMY_SUPABASE_URL)&&(process.env.FLAMMY_SUPABASE_SERVICE_ROLE_KEY||process.env.SUPABASE_SERVICE_ROLE_KEY)&&process.env.LEAD_HASH_SALT)} briefing={briefing}/>
             </div>
+      <footer className="contact-footer">
+        <a href="#inicio" className="footer-wordmark" aria-label="Flammy, voltar ao início"><Image src="/flammy-logo-cream.svg" width={846} height={156} unoptimized alt="Flammy" sizes="140px"/></a>
+        <div><span>Estratégia com alma.</span><span>© {new Date().getFullYear()} Flammy</span><a href="#inicio">Voltar ao início</a></div>
+      </footer>
           </div>
         </section>
       </main>
-      <footer>
-        <a href="#inicio" className="footer-wordmark" aria-label="Flammy, voltar ao início"><Image src="/flammy-logo.svg" width={846} height={156} unoptimized alt="Flammy" sizes="(max-width: 600px) 240px, 320px"/></a>
-        <div><span>Estratégia com alma.</span><span>© {new Date().getFullYear()} Flammy</span><a href="#inicio">Voltar ao início</a></div>
-      </footer>
+
     </div>
   </>;
 }
