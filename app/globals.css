@@ -1158,5 +1158,5 @@ body{overscroll-behavior-y:none}
 @media(max-width:900px){.scroll-site #contato{height:calc(100svh - 132px)}.scroll-site>.site-footer{height:60px;max-height:60px;padding:12px 5%;gap:12px;border-radius:26px 26px 0 0!important}.scroll-site>.site-footer .footer-wordmark{width:110px;max-width:110px}.scroll-site>.site-footer>div{gap:12px;font-size:9px}}
 
 /* Direct contact options stay compact beneath the contact heading. */
-#contato .contact-links{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
-#contato .contact-links .contact-direct{margin:0}
+#contato .contact-links{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:20px}
+#contato .contact-links .contact-direct{display:inline-block;margin:0}
