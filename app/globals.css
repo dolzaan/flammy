@@ -1344,3 +1344,19 @@ html{scroll-snap-type:y mandatory}
  #studio .studio-content{margin-top:22px;gap:20px}
  #studio .values{margin-top:24px;padding-top:20px}
 }
+
+/* React Bits-inspired Blur Text and Animated Content, using the existing observer. */
+#studio h2.blur-text-ready>span{opacity:.2;filter:blur(5px);transform:translateY(10px);transition:opacity 460ms ease-out,filter 460ms ease-out,transform 460ms cubic-bezier(.22,1,.36,1)}
+#studio h2.blur-text-ready>span:nth-child(2){transition-delay:70ms}
+#studio h2.blur-text-ready.visible>span{opacity:1;filter:none;transform:none}
+#studio .value-spotlight{min-width:0;padding:16px 14px;border:1px solid rgba(147,12,23,.1);border-radius:14px;background:rgba(249,245,241,.2)}
+#studio .value-spotlight>span{position:relative}
+#studio .value-spotlight::before{background:radial-gradient(170px circle at var(--mouse-x,50%) var(--mouse-y,50%),rgba(244,186,209,.5),transparent 75%)}
+#processo .steps article.reveal{opacity:0;transform:translateY(16px);transition:opacity 440ms ease-out var(--reveal-delay,0ms),transform 440ms cubic-bezier(.22,1,.36,1) var(--reveal-delay,0ms)}
+#processo .steps article.reveal.visible{opacity:1;transform:none}
+@media(max-width:900px){#studio .values{gap:8px}#studio .value-spotlight{padding:12px 14px}}
+@media(prefers-reduced-motion:reduce){
+ #studio h2.blur-text-ready>span{opacity:1;filter:none;transform:none;transition:none}
+ #processo .steps article.reveal{opacity:1;transform:none;transition:none}
+ #studio .value-spotlight::before{display:none}
+}
