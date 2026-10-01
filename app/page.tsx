@@ -26,7 +26,7 @@ export default function Page(){
         <section className="hero" id="inicio">
           <div className="panel-surface" aria-hidden="true"/>
           <HeroCard>
-            <div className="hero-heading"><h1>Design que<br/>acende <em className="hero-word-reveal">marcas.<svg className="hero-brand-spark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1 17.5 12 12 23 6.5 12Z"/></svg></em></h1></div>
+            <div className="hero-heading"><h1>Design que<br/>acende <em className="hero-word-reveal">marcas.</em></h1></div>
             <div className="hero-bottom">
               <p>Identidades com estratégia e personalidade.</p>
               <Magnet><ContactLink className="button">Vamos criar juntos <ArrowUpRight size={19} className="button-arrow" aria-hidden="true"/></ContactLink></Magnet>
