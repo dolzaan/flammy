@@ -1,3 +1,4 @@
+import HeroCard from '../components/HeroCard';
 import Magnet from '../components/Magnet';
 import TextLoop from '../components/TextLoop';
 import Image from 'next/image';
@@ -24,13 +25,13 @@ export default function Page(){
       <main id="principal">
         <section className="hero" id="inicio">
           <div className="panel-surface" aria-hidden="true"/>
-          <div className="panel-content">
-            <div className="hero-heading"><h1>Design que<br/>acende <em>marcas.</em></h1></div>
+          <HeroCard>
+            <div className="hero-heading"><h1>Design que<br/>acende <em className="hero-word-reveal">marcas.</em></h1></div>
             <div className="hero-bottom">
               <p>Identidades com estratégia e personalidade.</p>
               <Magnet><ContactLink className="button">Vamos criar juntos <ArrowUpRight size={19} className="button-arrow" aria-hidden="true"/></ContactLink></Magnet>
             </div>
-          </div>
+          </HeroCard>
           <a className="hero-scroll-cue" href="#studio" aria-label="Role para conhecer a Flammy"><svg width="20" height="52" viewBox="0 0 24 60" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v50m-7-7 7 7 7-7"/></svg></a>
         </section>
 
