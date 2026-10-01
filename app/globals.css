@@ -1226,3 +1226,7 @@ html{scroll-snap-type:y mandatory}
  html:has(#contato :focus-within){scroll-snap-type:none;scroll-padding-bottom:24px}
 }
 @media(max-width:380px){#contato .contact-form fieldset{grid-template-columns:1fr}#contato .form-field{grid-column:1 / -1}}
+
+/* Grain must not inherit the old rotated hero decoration. */
+#principal>.hero>.panel-content{overflow:hidden}
+#principal>.hero>.panel-content::after{transform:none;inset:0;width:auto;height:auto;pointer-events:none}
