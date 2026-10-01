@@ -1,3 +1,4 @@
+import SpotlightCard from '../components/SpotlightCard';
 import HeroCard from '../components/HeroCard';
 import Magnet from '../components/Magnet';
 import TextLoop from '../components/TextLoop';
@@ -44,7 +45,7 @@ export default function Page(){
           <div className="panel-content">
             <div className="section-label">01 / QUEM É A FLAMMY</div>
             <div className="studio-content">
-              <h2><span>Entre estratégia</span><span>e <em>humanidade.</em></span></h2>
+              <h2 className="studio-blur-text"><span>Entre estratégia</span><span>e <em>humanidade.</em></span></h2>
               <div className="studio-copy">
                 <p>A Flammy nasceu da união entre estratégia, criatividade e sensibilidade.</p>
                 <p>Somos parceiras de profissionais, empreendedoras, criadores e marcas que querem construir uma presença relevante, consistente e memorável.</p>
