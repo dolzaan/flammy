@@ -1294,3 +1294,17 @@ html{scroll-snap-type:y mandatory}
  #inicio .button,#inicio .button-arrow{transition:none}
  #inicio .button:focus-visible .button-arrow{transform:none}
 }
+
+/* The brand diamond is a small signature, outside the word's text flow. */
+.hero-word-reveal{position:relative}
+.hero-brand-spark{position:absolute;width:.26em;height:.36em;right:-.38em;top:.08em;overflow:visible;transform-origin:center;animation:hero-spark-in 650ms cubic-bezier(.22,1,.36,1) 240ms both}
+@keyframes hero-spark-in{from{opacity:0;transform:rotate(-35deg) scale(.7)}to{opacity:1;transform:rotate(0deg) scale(1)}}
+#contato .contact-success{padding:24px;border:1px solid rgba(249,245,241,.16);border-radius:20px;background:rgba(249,245,241,.04);animation:idea-received-in 420ms ease-out both}
+#contato .contact-success h3{font-family:'Fraunces',Georgia,serif;font-size:clamp(27px,3vw,38px);margin:18px 0 12px;color:var(--paper)}
+#contato .contact-success h3>span{font-size:.65em;color:var(--pink);vertical-align:middle}
+#contato .contact-success p{font-size:14px;line-height:1.6;margin:0 0 20px;color:rgba(249,245,241,.85)}
+#contato .contact-success .success-icon{width:46px;height:46px;background:var(--paper);color:var(--red)}
+#contato .contact-success .button{font-size:13px;padding:12px 18px;max-width:100%}
+@keyframes idea-received-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){#contato .contact-success{padding:20px}.hero-brand-spark{width:.22em;right:-.32em}}
+@media(prefers-reduced-motion:reduce){.hero-brand-spark,#contato .contact-success{animation:none;opacity:1;transform:none}}
