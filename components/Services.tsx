@@ -28,7 +28,7 @@ function Service({ item, open, onToggle }: { item: string[]; open: boolean; onTo
     <motion.div id={`${id}-body`} className="service-body" role="region" aria-labelledby={`${id}-toggle`} aria-hidden={!open} inert={!open} initial={false} animate={{ height: open ? 'auto' : 0 }} transition={{ duration: reducedMotion ? 0 : 0.36, ease: [0.22, 1, 0.36, 1] }}>
       <motion.div className="service-description" initial={false} animate={{opacity: open ? 1 : 0, y: open || reducedMotion ? 0 : -8}} transition={{duration: reducedMotion ? 0 : 0.22, ease: 'easeOut'}}>
         <p>{description}</p>
-        <ContactLink service={title}>Quero construir com a Flammy <ArrowUpRight size={16} className="link-arrow" aria-hidden="true" /></ContactLink>
+        <ContactLink service={title}>Conversar sobre {title} <ArrowUpRight size={16} className="link-arrow" aria-hidden="true" /></ContactLink>
       </motion.div>
     </motion.div>
   </article>;
