@@ -1308,3 +1308,17 @@ html{scroll-snap-type:y mandatory}
 @keyframes idea-received-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:600px){#contato .contact-success{padding:20px}.hero-brand-spark{width:.22em;right:-.32em}}
 @media(prefers-reduced-motion:reduce){.hero-brand-spark,#contato .contact-success{animation:none;opacity:1;transform:none}}
+
+/* Studio: a balanced two-line heading, with no isolated conjunction. */
+#studio h2>span{display:block}
+#studio .studio-content>*{min-width:0}
+@media(min-width:901px){
+ #studio .studio-content{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,4vw,60px);align-items:center;margin-top:28px}
+ #studio h2{font-size:clamp(38px,3.3vw,54px);line-height:1.12;letter-spacing:-.045em}
+ #studio h2>span{white-space:nowrap}
+ #studio .studio-copy p{font-size:16px;line-height:1.6;margin-bottom:14px}
+ #studio .text-tag{font-size:10px;line-height:1.65;letter-spacing:1px;max-width:42ch;padding-top:8px}
+ #studio .values{margin-top:30px;padding-top:24px;gap:24px}
+ #studio .values span{font-size:13px;line-height:1.45;gap:10px}
+}
+@media(max-width:900px){#studio h2{font-size:clamp(28px,7vw,44px);line-height:1.12}#studio h2>span{white-space:normal}}
