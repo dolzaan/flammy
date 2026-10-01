@@ -24,10 +24,10 @@ export default function Page(){
         <section className="hero" id="inicio">
           <div className="panel-surface" aria-hidden="true"/>
           <div className="panel-content">
-            <div className="hero-heading"><h1>Estratégia<br/>com <em>alma.</em></h1></div>
+            <div className="hero-heading"><h1>Design que<br/>acende <em>marcas.</em></h1></div>
             <div className="hero-bottom">
-              <p>Estratégia, criatividade e sensibilidade para marcas que querem construir algo relevante.</p>
-              <Magnet><ContactLink className="button">Vamos construir juntas <ArrowUpRight size={19} className="button-arrow" aria-hidden="true"/></ContactLink></Magnet>
+              <p>Identidades com estratégia e personalidade.</p>
+              <Magnet><ContactLink className="button">Vamos criar juntos <ArrowUpRight size={19} className="button-arrow" aria-hidden="true"/></ContactLink></Magnet>
             </div>
           </div>
         </section>
