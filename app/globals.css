@@ -188,7 +188,7 @@ nav .nav-cta[aria-current=location]{background:var(--red);color:var(--pink)}
   .section-sidebar{display:none}
   .mobile-menu-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 12px;min-height:44px;background:transparent;color:var(--red);border:1px solid var(--line);border-radius:30px;cursor:pointer;font-size:13px}
   .mobile-navigation:not([hidden]){display:flex;position:absolute;right:5%;top:calc(100% + 12px);flex-direction:column;align-items:stretch;gap:0;width:280px;max-width:90vw;padding:12px;background:var(--pink);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 40px #3010151a}
-  .mobile-navigation a{display:flex!important;align-items:center;gap:14px;min-height:48px;padding:12px!important;border-radius:8px}
+  .mobile-navigation a{display:flex;align-items:center;gap:14px;min-height:48px;padding:12px!important;border-radius:8px}
   .mobile-navigation a::after{display:none}
   .mobile-navigation a:hover,.mobile-navigation a:focus-visible{background:#930c1710}
   .mobile-navigation a>span{font-size:11px;opacity:.6}
@@ -1230,3 +1230,39 @@ html{scroll-snap-type:y mandatory}
 /* Grain must not inherit the old rotated hero decoration. */
 #principal>.hero>.panel-content{overflow:hidden}
 #principal>.hero>.panel-content::after{transform:none;inset:0;width:auto;height:auto;pointer-events:none}
+
+/* Mobile containment: intrinsic text widths must never widen a viewport panel. */
+@media(max-width:900px){
+ .scroll-site main>section>.panel-content{min-width:0;max-width:100%;max-height:none}
+ .scroll-site main>section .section-heading,.scroll-site main>section .studio-content,.scroll-site main>section .contact-grid{min-width:0}
+ .scroll-site main>section h2{max-width:100%;overflow-wrap:break-word}
+ .scroll-site #entregas,.scroll-site #processo{height:auto;min-height:calc(100svh - 72px);max-height:none;overflow:visible;padding:30px 6%}
+ #entregas .deliverable-grid{display:grid;grid-template-columns:minmax(0,1fr);width:100%;min-width:0;max-width:100%;overflow:visible;padding:0;scroll-snap-type:none}
+ #entregas .deliverable-card,#entregas .deliverable-card:nth-child(2){width:100%;min-width:0;transform:none;padding:16px;grid-template-columns:22px minmax(0,1fr)}
+ #entregas .deliverable-card h3{font-size:21px;overflow-wrap:break-word}
+ #entregas .deliverable-card ul{grid-column:2;min-width:0}
+ #entregas .deliverable-card li{font-size:12px}
+ #processo h2{font-size:clamp(27px,7.4vw,42px);line-height:1.12;letter-spacing:-.04em}
+ #processo .section-heading{margin:14px 0 20px}
+ #processo .steps{display:grid;grid-template-columns:minmax(0,1fr);width:100%;min-width:0;gap:10px;padding:0;overflow:visible;scroll-snap-type:none}
+ #processo .steps article{display:grid;grid-template-columns:30px minmax(0,1fr);column-gap:12px;row-gap:4px;min-width:0;width:100%;padding:12px 14px;transform:none;border-radius:16px;background:rgba(249,245,241,.46)}
+ #processo .step-number{grid-column:1;grid-row:1 / 3;font-size:27px;line-height:1.1}
+ #processo .steps h3{grid-column:2;font-size:19px;line-height:1.15;margin:0}
+ #processo .steps p{grid-column:2;font-size:12px;line-height:1.45;margin:0;max-width:none}
+ #contato h2{line-height:1.12;letter-spacing:-.04em}
+ #contato .contact-grid{gap:18px}
+}
+@media(max-width:600px){
+ #contato .contact-form fieldset{grid-template-columns:minmax(0,1fr);gap:10px}
+ #contato .form-field{grid-column:1 / -1}
+ #contato .form-field :is(input,select,textarea){font-size:16px;max-width:100%}
+ #contato .form-field textarea{height:76px}
+ #contato .contact-links{margin-top:14px;gap:6px}
+ #contato .contact-links .contact-direct{font-size:12px}
+ #contato .contact-links .contact-direct>span{overflow-wrap:anywhere}
+ #principal>.hero>.panel-content{padding:30px 18px 26px}
+ #principal>.hero .hero-bottom{gap:18px}
+ #principal>.hero .hero-bottom p{font-size:13px;max-width:28ch;margin-inline:auto}
+ #principal>.hero .hero-scroll-cue{width:32px;height:52px;bottom:110px}
+ #principal>.hero .hero-scroll-cue svg{height:40px}
+}
