@@ -488,12 +488,12 @@ em{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:500}
 
 /* Viewport chapters: every gesture lands on one complete content block.
    Panels stay in normal document flow; no sticky stacking or overlap. */
-html{scroll-snap-type:y mandatory;scroll-padding-top:84px}
+html{scroll-snap-type:y proximity;scroll-padding-top:84px}
 body{overscroll-behavior-y:none}
 .scroll-site main{gap:0;padding-bottom:0}
 .scroll-site main>section,.scroll-site>footer{
   scroll-snap-align:start;
-  scroll-snap-stop:always;
+  scroll-snap-stop:normal;
 }
 .scroll-site main>section{
   box-sizing:border-box;
@@ -1160,3 +1160,8 @@ body{overscroll-behavior-y:none}
 /* Direct contact options stay compact beneath the contact heading. */
 #contato .contact-links{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:20px}
 #contato .contact-links .contact-direct{display:inline-block;margin:0}
+
+/* Native section snapping never captures or locks wheel input. */
+.hero-scroll-cue{display:flex;align-items:center;justify-content:center;justify-self:center;width:40px;height:40px;margin-top:24px;border:1px solid rgba(249,245,241,.3);border-radius:50%;color:var(--paper);background:rgba(48,16,21,.12);transition:background .2s,transform .2s}
+.hero-scroll-cue:hover{background:rgba(249,245,241,.14);transform:translateY(3px)}
+@media(prefers-reduced-motion:reduce){.hero-scroll-cue{transition:none}.hero-scroll-cue:hover{transform:none}}
