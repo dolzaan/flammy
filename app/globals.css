@@ -924,7 +924,7 @@ body{overscroll-behavior-y:none}
     text-align:center;
   }
   .hero>.panel-surface{
-    inset:clamp(66px,8vh,82px) 0 clamp(92px,11vh,112px);
+    inset:clamp(72px,9vh,92px) 0 clamp(176px,22vh,220px);
     border-radius:42px;
     overflow:hidden;
     background:rgba(249,245,241,.92);
@@ -961,7 +961,7 @@ body{overscroll-behavior-y:none}
     text-align:center;
   }
   .hero>.panel-surface{
-    inset:clamp(24px,4vh,38px) 0 clamp(76px,10vh,96px);
+    inset:clamp(24px,4vh,38px) 0 clamp(118px,17vh,150px);
     border-radius:30px;
     background:rgba(249,245,241,.93);
   }
@@ -985,6 +985,6 @@ body{overscroll-behavior-y:none}
 }
 
 @media(max-width:420px) and (max-height:700px){
-  .hero>.panel-surface{inset:16px 0 70px}
+  .hero>.panel-surface{inset:16px 0 112px}
   .hero h1{font-size:42px}
 }
