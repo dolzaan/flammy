@@ -988,3 +988,14 @@ body{overscroll-behavior-y:none}
   #principal>.hero>.panel-surface{inset:16px 0 112px}
   .hero h1{font-size:42px}
 }
+
+/* Reference hero: compact centered card, sans headline and expressive italic. */
+#principal>.hero{isolation:isolate;align-content:start;padding-top:clamp(48px,7vh,72px)}
+#principal>.hero>.panel-surface{display:none}
+#principal>.hero>.panel-content{width:100%;max-width:none;padding:44px 30px 34px;border-radius:32px;background:rgba(249,245,241,.9);box-shadow:inset 0 0 0 1px rgba(249,245,241,.2)}
+.hero h1{font-family:'Inter',Arial,sans-serif;font-weight:500;font-size:clamp(64px,6vw,94px);letter-spacing:-.075em;line-height:1.08}
+.hero h1 em{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:1.17em}
+.hero-heading{padding-bottom:28px}
+.hero-bottom{gap:24px}
+@media(min-width:901px){#principal>.hero{width:min(88%,960px);max-width:960px;padding-inline:0}.hero-bottom p{font-size:16px}}
+@media(max-width:900px){#principal>.hero{padding-inline:0;padding-top:32px}.hero h1{font-size:clamp(38px,9.5vw,66px)}#principal>.hero>.panel-content{padding:36px 20px 30px;border-radius:26px}.hero-heading{padding-bottom:24px}.hero-bottom p{font-size:14px}}
