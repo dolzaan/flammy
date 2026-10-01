@@ -1269,5 +1269,9 @@ html{scroll-snap-type:y mandatory}
 
 /* Reserve the ribbon's overlap plus a clear gutter below the opening card. */
 @media(min-width:901px){
- #principal>.hero{height:auto;min-height:calc(100svh - 84px);max-height:none;display:block;padding-bottom:184px}
+ #principal>.hero{height:calc(100svh - 84px);min-height:0;max-height:none;display:block;padding-top:clamp(24px,4svh,48px);padding-bottom:152px}
+ #principal>.hero>.panel-content{padding:28px 30px 24px}
+ #principal>.hero h1{font-size:clamp(48px,min(6vw,10svh),94px)}
+ #principal>.hero .hero-heading{padding-bottom:20px}
+ #principal>.hero .hero-bottom{gap:18px}
 }
