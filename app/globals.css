@@ -1374,3 +1374,12 @@ main .site-content-ready.visible{opacity:1;transform:none}
  .site-blur-ready,.site-content-ready{opacity:1;filter:none;transform:none;transition:none}
  .site-spotlight::before{display:none}
 }
+
+/* Center the opening card in the space above the ribbon. */
+#principal>.hero{display:flex;flex-direction:column;justify-content:center;align-items:center;padding-top:20px;padding-bottom:132px}
+#principal>.hero>.panel-content{flex:0 0 auto}
+#principal>.hero .hero-scroll-cue{bottom:124px}
+@media(max-width:900px){
+ #principal>.hero{padding-top:16px;padding-bottom:100px}
+ #principal>.hero .hero-scroll-cue{bottom:94px}
+}
