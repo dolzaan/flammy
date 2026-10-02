@@ -1360,3 +1360,17 @@ html{scroll-snap-type:y mandatory}
  #processo .steps article.reveal{opacity:1;transform:none;transition:none}
  #studio .value-spotlight::before{display:none}
 }
+
+/* A consistent, one-shot motion language across the site. */
+.site-blur-ready{opacity:.25;filter:blur(5px);transform:translateY(10px);transition:opacity 460ms ease-out,filter 460ms ease-out,transform 460ms cubic-bezier(.22,1,.36,1)}
+.site-blur-ready.visible{opacity:1;filter:none;transform:none}
+.site-content-ready{opacity:0;transform:translateY(14px);transition:opacity 420ms ease-out var(--reveal-delay,0ms),transform 420ms cubic-bezier(.22,1,.36,1) var(--reveal-delay,0ms)}
+.site-content-ready.visible{opacity:1;transform:none}
+#inicio h1.site-blur-ready .hero-word-reveal{animation:none}
+.site-spotlight{position:relative;isolation:isolate;overflow:hidden}
+.site-spotlight::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;background:radial-gradient(230px circle at var(--mouse-x,50%) var(--mouse-y,50%),rgba(244,186,209,.3),transparent 75%);opacity:0;transition:opacity 200ms ease-out}
+@media(hover:hover) and (pointer:fine){.site-spotlight:hover::before{opacity:1}}
+@media(prefers-reduced-motion:reduce){
+ .site-blur-ready,.site-content-ready{opacity:1;filter:none;transform:none;transition:none}
+ .site-spotlight::before{display:none}
+}
