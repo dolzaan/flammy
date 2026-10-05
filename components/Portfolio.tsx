@@ -114,7 +114,7 @@ export default function Portfolio() {
       <div className="section-label">01 / TRABALHOS QUE GANHAM VIDA</div>
 
       <div key={`${project}-heading`} className="portfolio-heading"><div><h3>{projectName}</h3><p>{isAurora ? 'Floricultura Boutique · Identidade visual · Projeto conceitual' : 'Identidade visual · Aplicações da marca'}</p></div></div>
-      <p key={`${project}-story`} className="portfolio-project-story">{isAurora ? 'Uma identidade que traduz o afeto das flores em uma marca moderna e acolhedora. O desafio: valorizar o trabalho artesanal e os arranjos personalizados, combinando sofisticação e proximidade.' : 'Uma identidade que aproxima pessoas, negócios e oportunidades do Vale. Formas orgânicas e tons naturais dão vida a uma marca acolhedora, com personalidade e presença no digital.'}</p>
+      <p key={`${project}-story`} className="portfolio-project-story">{isAurora ? 'Uma identidade que traduz o afeto das flores em uma marca moderna e acolhedora. O desafio: valorizar o trabalho artesanal e os arranjos personalizados, combinando sofisticação e proximidade.' : 'Infraestrutura digital feita para as pequenas cidades do Alto Vale. O Achei no Vale conecta quem procura um lar a quem ajuda na mudança, valorizando a proximidade e a confiança que movem a região.'}</p>
       </div><div className="portfolio-showcase">
       <div key={`${project}-gallery`} className="portfolio-gallery" onWheelCapture={markActivity} onTouchMove={markActivity} onPointerMove={event => { if (event.buttons === 1) markActivity(); }}>
         <div className="portfolio-edge-arrows" data-hidden={explored} aria-hidden="true"><svg viewBox="0 0 48 20"><path d="M47 10H2M10 2L2 10L10 18"/></svg><svg viewBox="0 0 48 20"><path d="M1 10H46M38 2L46 10L38 18"/></svg></div>
