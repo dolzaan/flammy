@@ -1588,3 +1588,8 @@ main .site-content-ready.visible{opacity:1;transform:none}
 .portfolio-edge-arrows{opacity:.62}
 .portfolio-edge-arrows[data-hidden=true]{opacity:0}
 .portfolio-edge-arrows svg{stroke-width:.9;filter:drop-shadow(0 1px 2px rgba(48,16,21,.3))}
+
+/* Keep the thin direction arrows readable over the mockups. */
+.portfolio-edge-arrows{opacity:.92}
+.portfolio-edge-arrows[data-hidden=true]{opacity:0}
+.portfolio-edge-arrows svg{filter:drop-shadow(0 1px 2px rgba(25,8,13,.65)) drop-shadow(0 0 1px rgba(25,8,13,.45))}
