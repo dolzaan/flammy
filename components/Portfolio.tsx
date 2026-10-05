@@ -34,6 +34,7 @@ export default function Portfolio() {
   const drag = useRef({ down: false, startX: 0, startScroll: 0, moved: false });
   const scrollFrame = useRef<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const swipe = useRef<{ x: number; y: number; id: number } | null>(null);
   const reducedMotion = useReducedMotion();
   useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
   useEffect(() => {
@@ -128,7 +129,21 @@ export default function Portfolio() {
       </div>
     </div>
     <dialog ref={dialog} className="portfolio-dialog" data-closing={closing} aria-label="Mockup Aurora ampliado. Clique fora da imagem ou pressione Esc para fechar." onCancel={e => { e.preventDefault(); close(); }} onClose={() => setIsOpen(false)} onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); setOpened(i => (i + (e.key === 'ArrowRight' ? 1 : 10)) % 11); } }} onClick={e => { if (e.target === e.currentTarget) close(); }}>
-      <motion.div key={opened} className="portfolio-full-image" initial={reducedMotion ? false : { opacity: 0, scale: 0.97, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.24, ease: 'easeOut' }}><Image src={items[opened].src} alt={items[opened].alt} width={dimensions[opened][0]} height={dimensions[opened][1]} unoptimized sizes="94vw"/></motion.div>
+      <motion.div key={opened} className="portfolio-full-image" style={{ touchAction: 'pan-y pinch-zoom' }} onTouchStart={event => {
+        if (event.touches.length !== 1 || closing) { swipe.current = null; return; }
+        const touch = event.touches[0];
+        swipe.current = { x: touch.clientX, y: touch.clientY, id: touch.identifier };
+      }} onTouchMove={event => { if (event.touches.length !== 1) swipe.current = null; }} onTouchCancel={() => { swipe.current = null; }} onTouchEnd={event => {
+        const start = swipe.current;
+        swipe.current = null;
+        if (!start || closing || event.touches.length !== 0) return;
+        const touch = Array.from(event.changedTouches).find(t => t.identifier === start.id);
+        if (!touch) return;
+        const dx = touch.clientX - start.x;
+        const dy = touch.clientY - start.y;
+        if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+        setOpened(index => (index + (dx < 0 ? 1 : items.length - 1)) % items.length);
+      }} initial={reducedMotion ? false : { opacity: 0, scale: 0.97, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.24, ease: 'easeOut' }}><Image src={items[opened].src} alt={items[opened].alt} width={dimensions[opened][0]} height={dimensions[opened][1]} unoptimized sizes="94vw"/></motion.div>
       <div className="portfolio-modal-controls"><button onClick={() => setOpened(i => (i + 10) % 11)} aria-label="Imagem anterior"><ArrowLeft size={20}/></button><span>{items[opened].title} · {opened + 1} / 11</span><button onClick={() => setOpened(i => (i + 1) % 11)} aria-label="Próxima imagem"><ArrowRight size={20}/></button></div>
     </dialog>
   </section>;
