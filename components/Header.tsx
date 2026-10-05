@@ -52,7 +52,7 @@ export default function Header() {
   }, []);
   return <header data-tone={lightSurface ? 'light' : 'dark'}>
     <GlassSurface/>
-    <a className="brand" href="#inicio" aria-label="Flammy, início">
+    <a className="brand" href="#trabalhos" aria-label="Flammy, início">
       <Image className="brand-logo brand-logo--cream" src="/flammy-logo-cream.svg" width={846} height={156} unoptimized alt="Flammy Studio Criativo" sizes="(max-width: 600px) 160px, 280px" priority/>
       <Image className="brand-logo brand-logo--wine" src="/flammy-logo.svg" width={846} height={156} unoptimized alt="" aria-hidden="true" sizes="(max-width: 600px) 160px, 280px" priority/>
     </a><Navigation/>
