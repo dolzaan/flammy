@@ -1518,3 +1518,15 @@ main .site-content-ready.visible{opacity:1;transform:none}
  .scroll-site .brand-text-loop{margin-block:-24px;height:72px}
  .section-sidebar{display:none}
 }
+
+/* Keep mobile chapters separated and snapped without clipping taller content. */
+@media(max-width:900px){
+ html{scroll-snap-type:y mandatory;scroll-padding-top:80px}
+ .scroll-site #principal>section:not(.hero){margin-block:24px!important;min-height:calc(100svh - 104px);display:grid;align-content:center;scroll-snap-align:start;scroll-snap-stop:always}
+ .scroll-site #principal>section:not(.hero)>.panel-surface{inset:0}
+ html:has(#contato :focus-within){scroll-snap-type:none}
+}
+@media(max-width:600px){
+ html{scroll-padding-top:80px}
+ .scroll-site #principal>section:not(.hero){min-height:calc(100svh - 104px)}
+}
