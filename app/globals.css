@@ -594,7 +594,7 @@ body{overscroll-behavior-y:none}
   .service-description{padding:0 4px 10px 34px;gap:7px}
   .service-description p,.service-description a{font-size:12px;line-height:1.45}
   .deliverable-grid,.steps{
-    display:flex!important;
+    display:flex;
     gap:12px;
     overflow-x:auto;
     overscroll-behavior-inline:contain;
@@ -1436,3 +1436,85 @@ main .site-content-ready.visible{opacity:1;transform:none}
 @keyframes portfolio-backdrop-in{from{opacity:0}to{opacity:1}}
 @media(max-width:700px){.portfolio-dialog{padding:44px 0 0}.portfolio-full-image img{max-height:calc(100dvh - 148px);border-radius:16px}.portfolio-modal-controls{margin-top:12px}}
 @media(prefers-reduced-motion:reduce){.portfolio-dialog::backdrop{animation:none}}
+
+/* Mobile layout: content defines card height; desktop chapter layout stays intact. */
+@media(max-width:900px){
+ html{scroll-snap-type:y proximity;scroll-padding-top:80px}
+ .scroll-site #principal>section:not(.hero){height:auto;min-height:0;max-height:none;display:block;overflow:visible;width:calc(100% - 28px);margin-inline:auto!important;padding:38px clamp(20px,5vw,36px);border-radius:28px}
+ .scroll-site #principal>section:not(.hero)>.panel-surface{inset:8px 0;border-radius:28px;overflow:hidden}
+ .scroll-site #principal>section>.panel-content{width:100%;min-width:0;max-width:100%;max-height:none}
+ .section-label{font-size:10px;line-height:1.6;letter-spacing:.12em;overflow-wrap:anywhere}
+ .scroll-site #principal :is(.section-heading,.studio-content,.contact-grid){display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin:20px 0 24px}
+ .scroll-site #principal section h2{font-size:clamp(30px,7.4vw,46px);line-height:1.14;letter-spacing:-.045em;max-width:100%;overflow-wrap:normal}
+ .scroll-site #principal :is(.section-heading>p,.studio-copy p){font-size:14px;line-height:1.65}
+ #studio .studio-blur-text span{white-space:normal}
+ #studio .values{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:22px;padding-top:18px}
+ #studio .value-spotlight{min-width:0;padding:15px 14px}
+ #studio .values span{font-size:13px;line-height:1.5;white-space:normal}
+ #studio .text-tag{display:block;line-height:1.7;overflow-wrap:anywhere}
+ #servicos .service-list{width:100%;min-width:0}
+ #servicos .service{padding-inline:14px}
+ #servicos .service-toggle{grid-template-columns:24px minmax(0,1fr) 24px;gap:10px;min-height:62px;padding:15px 0}
+ #servicos .service-title{font-size:clamp(20px,5.5vw,27px);line-height:1.15;white-space:normal;overflow-wrap:break-word}
+ #servicos .service-description{padding:0 0 18px 34px;display:grid;gap:12px;min-width:0}
+ #servicos .service-description p,#servicos .service-description a{font-size:14px;line-height:1.6;white-space:normal;overflow-wrap:anywhere}
+ #entregas .deliverable-grid,#processo .steps{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;width:100%;padding:0;overflow:visible;scroll-snap-type:none}
+ #entregas .deliverable-card,#entregas .deliverable-card:nth-child(2){display:block;transform:none;width:100%;padding:22px;min-width:0;border-radius:20px;background:rgba(255,255,255,.38)}
+ #entregas .deliverable-top{display:flex;align-items:center;justify-content:space-between;margin:0 0 16px}
+ #entregas .deliverable-icon{display:grid;width:36px;height:36px}
+ #entregas .deliverable-card h3{font-size:25px;line-height:1.2;margin:0 0 10px;min-height:0}
+ #entregas .deliverable-card>p{display:block;font-size:14px;line-height:1.6;min-height:0;margin:0 0 16px}
+ #entregas .deliverable-card ul{margin:0;gap:8px}
+ #entregas .deliverable-card li{font-size:13px;line-height:1.5;white-space:normal}
+ #entregas .deliverable-footer>p{display:block;font-size:12px;line-height:1.6;margin:18px 0 0}
+ #processo .steps article,#processo .steps article:nth-child(even){transform:none;padding:18px;grid-template-columns:32px minmax(0,1fr);border-radius:20px}
+ #processo .steps h3{font-size:23px}
+ #processo .steps p{font-size:14px;line-height:1.6}
+ .scroll-site #principal>.manifesto .panel-content>p{font-size:clamp(36px,9vw,58px);line-height:1.1;margin:22px 0}
+ .manifesto .panel-content>svg{display:none}
+ .manifesto-bottom{display:block;line-height:1.7;white-space:normal}
+ #contato .contact-grid{gap:26px;margin-bottom:0}
+ #contato .contact-links{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:20px;max-width:100%}
+ #contato .contact-direct{display:flex;min-width:0;max-width:100%;gap:9px;font-size:12px}
+ #contato .contact-direct>svg{flex-shrink:0}
+ #contato .contact-direct>span{overflow-wrap:anywhere}
+ #contato .contact-form,#contato .contact-form fieldset{min-width:0;width:100%;max-width:100%}
+ #contato .contact-form fieldset{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin:0;padding:0;border:0}
+ #contato .form-field{width:100%;min-width:0;grid-column:1/-1;padding:10px 8px;margin:0}
+ #contato .form-field label{font-size:13px;line-height:1.5}
+ #contato .form-field :is(input,select,textarea){display:block;width:100%;min-width:0;max-width:100%;font-size:16px;line-height:1.5;padding-block:12px}
+ #contato .form-field textarea{height:104px;min-height:104px;resize:vertical}
+ #contato .consent{display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.65;min-width:0}
+ #contato .consent input{flex:0 0 20px;width:20px;height:20px;margin-top:2px}
+ #contato .form-submit{width:100%;min-width:0;margin-top:22px}
+ #contato .star-border__content{min-height:50px;white-space:normal;padding:15px 12px;font-size:14px}
+ .scroll-site #principal>.portfolio{padding-top:38px;padding-bottom:38px}
+ .portfolio-heading{display:block;margin-top:18px}
+ .portfolio-heading>div{margin-top:18px}
+ .portfolio-heading h3{font-size:24px}
+ .portfolio-heading p{line-height:1.6;font-size:12px}
+ .portfolio-gallery{height:clamp(240px,42svh,360px);margin:12px 0 0;width:100%}
+ .portfolio-native{padding:16px 6%;gap:14px}
+ .portfolio-native-card{flex-basis:88%;border-radius:22px}
+ .scroll-site>.site-footer{height:auto;min-height:76px;max-height:none;padding:20px 7%;gap:16px;flex-wrap:wrap}
+ .scroll-site>.site-footer>.footer-wordmark{width:105px;margin:0}
+ .scroll-site>.site-footer>div{display:flex;gap:10px;flex-wrap:wrap;font-size:10px;padding:0}
+}
+@media(max-width:600px){
+ header{height:72px;padding-inline:16px;gap:12px}
+ header .brand{width:clamp(132px,40vw,190px);min-width:0;flex-shrink:1}
+ .header-controls{gap:8px;flex-shrink:0}
+ .mobile-menu-toggle{width:40px;height:40px;min-width:40px;padding:0}
+ .header-contact{font-size:12px;padding:12px 14px;min-height:42px}
+ .header-contact .button-arrow{display:none}
+ .mobile-navigation{max-width:calc(100vw - 32px);right:0}
+ .scroll-site #principal>.hero{width:calc(100% - 28px);height:calc(100svh - 72px);min-height:500px;padding:30px 0 112px}
+ #principal>.hero>.panel-content{padding:32px 20px 28px;border-radius:28px}
+ #principal>.hero h1{font-size:clamp(36px,9.5vw,56px);line-height:1.12}
+ #principal>.hero .hero-heading{padding:0 0 24px}
+ #principal>.hero .hero-bottom{padding:0;border:0}
+ #principal>.hero .hero-bottom p{font-size:14px;line-height:1.6;max-width:26ch}
+ #principal>.hero .hero-scroll-cue{right:18px;bottom:94px}
+ .scroll-site .brand-text-loop{margin-block:-24px;height:72px}
+ .section-sidebar{display:none}
+}
