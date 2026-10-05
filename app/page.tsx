@@ -23,7 +23,6 @@ export default function Page(){
     <div className="scroll-site">
       <DarkVeil/><Header/><LineSidebar/>
       <main id="principal">
-        <Portfolio/>
         <section className="hero" id="inicio">
           <div className="panel-surface" aria-hidden="true"/>
           <HeroCard>
@@ -32,12 +31,14 @@ export default function Page(){
               <p>Identidades com estratégia e personalidade.</p>
             </div>
           </HeroCard>
-          <a className="hero-scroll-cue" href="#studio" aria-label="Role para conhecer a Flammy"><svg width="20" height="52" viewBox="0 0 24 60" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v50m-7-7 7 7 7-7"/></svg></a>
+          <a className="hero-scroll-cue" href="#trabalhos" aria-label="Role para ver os trabalhos da Flammy"><svg width="20" height="52" viewBox="0 0 24 60" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v50m-7-7 7 7 7-7"/></svg></a>
         </section>
 
         <div className="ribbon brand-text-loop" aria-hidden="true">
           <TextLoop text="IDEIAS QUE ACENDEM ✦ MARCAS QUE CONECTAM ✦ DESIGN QUE FICA" shape="wave" curviness={14} speed={45} direction="reverse" fontSize={22} fontWeight={500} letterSpacing={1.8} color="#f4bad1" ribbonColor="#930c17" ribbonWidth={60}/>
         </div>
+
+        <Portfolio/>
 
         <section id="studio" className="studio section">
           <div className="panel-surface" aria-hidden="true"/>
@@ -123,8 +124,8 @@ export default function Page(){
       </main>
       <footer className="site-footer">
         <GlassSurface className="footer-glass"/>
-        <a href="#trabalhos" className="footer-wordmark" aria-label="Flammy, voltar ao início"><Image src="/flammy-logo.svg" width={846} height={156} unoptimized alt="Flammy" sizes="140px"/></a>
-        <div><span>Estratégia com alma.</span><span>© {new Date().getFullYear()} Flammy</span><a href="#trabalhos">Voltar ao início</a></div>
+        <a href="#inicio" className="footer-wordmark" aria-label="Flammy, voltar ao início"><Image src="/flammy-logo.svg" width={846} height={156} unoptimized alt="Flammy" sizes="140px"/></a>
+        <div><span>Estratégia com alma.</span><span>© {new Date().getFullYear()} Flammy</span><a href="#inicio">Voltar ao início</a></div>
       </footer>
 
     </div>
