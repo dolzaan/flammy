@@ -7,9 +7,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  * https://github.com/DavidHDev/react-bits — license in licenses/react-bits.md.
  */
 const links = [
+  { id: 'trabalhos', label: 'Trabalhos' },
   { id: 'studio', label: 'Studio' },
   { id: 'servicos', label: 'Serviços' },
-  { id: 'trabalhos', label: 'Trabalhos' },
   { id: 'entregas', label: 'Entregas' },
   { id: 'processo', label: 'Processo' },
   { id: 'contato', label: 'Contato' }
@@ -41,7 +41,7 @@ export default function LineSidebar() {
     const sections = Array.from(document.querySelectorAll<HTMLElement>('main section[id]'));
     const update = () => {
       frame = 0;
-      let id = 'inicio';
+      let id = 'trabalhos';
       for (const section of sections) {
         if (section.getBoundingClientRect().top <= innerHeight * 0.35) id = section.id;
       }
