@@ -21,7 +21,7 @@ export default function Portfolio() {
       if (!entry.isIntersecting) return;
       const canvas = document.createElement('canvas');
       const gl = canvas.getContext('webgl2');
-      setWebgl(Boolean(gl));
+      setWebgl(Boolean(gl) && !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
       gl?.getExtension('WEBGL_lose_context')?.loseContext();
       setReady(true);
       observer.disconnect();
