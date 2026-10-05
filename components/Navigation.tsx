@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
 
 const links = [
+  { id: 'trabalhos', label: 'Trabalhos' },
   { id: 'studio', label: 'Studio' }, { id: 'servicos', label: 'Serviços' },
   { id: 'entregas', label: 'Entregas' }, { id: 'processo', label: 'Processo' }
 ];
