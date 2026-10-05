@@ -1604,3 +1604,9 @@ main .site-content-ready.visible{opacity:1;transform:none}
 .portfolio-project-story{max-width:76ch;margin:0 0 16px;font-size:13px;line-height:1.65;color:#74505a}
 #principal>.portfolio .portfolio-heading{margin-bottom:14px}
 @media(max-width:900px){.portfolio-project-story{font-size:12px;line-height:1.6;margin-bottom:12px}}
+
+/* Mobile menu links must override the old desktop navigation hiding rule. */
+@media(max-width:1100px){.scroll-site>header .mobile-navigation:not([hidden]){z-index:30;max-height:calc(100dvh - 100px);overflow-y:auto}.scroll-site>header .mobile-navigation>a:not(.nav-cta){display:flex;visibility:visible;opacity:1;color:var(--ink)}}
+#principal>.portfolio .portfolio-heading{display:block;margin-top:18px;margin-bottom:12px}
+#principal>.portfolio .portfolio-heading>div{margin-top:0}
+#principal>.portfolio .portfolio-heading h3{font-size:clamp(26px,3vw,36px);margin-bottom:6px}
