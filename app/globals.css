@@ -1576,3 +1576,10 @@ main .site-content-ready.visible{opacity:1;transform:none}
 @keyframes portfolio-viewer-out{from{opacity:1}to{opacity:0}}
 @media(max-width:700px){.portfolio-dialog{padding-top:0}}
 @media(prefers-reduced-motion:reduce){.portfolio-drag-arrow{transition:none}.portfolio-dialog[open],.portfolio-dialog[data-closing=true],.portfolio-dialog[data-closing=true]::backdrop{animation:none}}
+
+.portfolio-gallery{position:relative}
+.portfolio-edge-arrows{position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:space-between;padding-inline:6%;pointer-events:none;opacity:.3;transition:opacity .3s ease;color:var(--paper)}
+.portfolio-edge-arrows[data-hidden=true]{opacity:0}
+.portfolio-edge-arrows svg{width:42px;height:20px;fill:none;stroke:currentColor;stroke-width:.7;stroke-linecap:round;stroke-linejoin:round}
+.portfolio-explore{justify-content:flex-end!important}
+@media(prefers-reduced-motion:reduce){.portfolio-edge-arrows{transition:none}}
