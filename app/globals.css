@@ -1407,7 +1407,6 @@ main .site-content-ready.visible{opacity:1;transform:none}
 .portfolio-modal-controls{justify-content:center;margin-top:12px;font-size:13px}
 .portfolio-modal-controls button{color:#f9f5f1;border-color:#ffffff35}
 @media(max-width:700px){#principal>.portfolio{height:auto;min-height:calc(100svh - 84px);max-height:none;padding:30px 22px}.portfolio-heading{display:block;margin-top:20px}.portfolio-heading>div{margin-top:18px}.portfolio-heading h3{font-size:23px}.portfolio-gallery{height:clamp(260px,40svh,380px);margin:12px -10px;width:calc(100% + 20px)}.portfolio-current{display:none}.portfolio-hint{max-width:260px;line-height:1.5}.portfolio-dialog{padding:52px 12px 12px}.portfolio-modal-controls{gap:12px;font-size:12px}}
-
 /* Give portfolio the same contained cream card as the opening panel. */
 .scroll-site #principal>.portfolio{width:min(88%,1260px);margin-inline:auto;border-radius:32px;color:var(--ink);isolation:isolate;min-height:calc(100svh - 84px)}
 #principal>.portfolio>.panel-surface{inset:20px 0;background:rgba(249,245,241,.94);border:1px solid rgba(249,245,241,.2);border-radius:32px;z-index:0;overflow:hidden;box-shadow:0 18px 48px rgba(48,16,21,.12);backdrop-filter:none}
@@ -1415,3 +1414,11 @@ main .site-content-ready.visible{opacity:1;transform:none}
 #principal>.portfolio .section-label,#principal>.portfolio h2,#principal>.portfolio h3{color:var(--red)}
 #principal>.portfolio .portfolio-heading p,#principal>.portfolio .portfolio-hint{color:#74505a}
 @media(max-width:900px){.scroll-site #principal>.portfolio{width:94%;border-radius:32px}#principal>.portfolio>.panel-surface{inset:8px 0;border-radius:32px}}
+
+/* Quiet gallery edges: partial cards dissolve instead of ending abruptly. */
+.portfolio-gallery{mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent);-webkit-mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent)}
+.portfolio-native{height:100%;display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:24px 6%;touch-action:pan-x pan-y}
+.portfolio-native::-webkit-scrollbar{display:none}
+.portfolio-native-card{position:relative;flex:0 0 min(72%,450px);height:100%;border:0;border-radius:28px;overflow:hidden;background:transparent;scroll-snap-align:center;cursor:zoom-in;padding:0}
+.portfolio-native-card img{object-fit:cover;border-radius:28px}
+@media(max-width:700px){.portfolio-native-card{flex-basis:88%}.portfolio-native{gap:16px}}
