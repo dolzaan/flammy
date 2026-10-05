@@ -32,7 +32,7 @@ export default function Portfolio() {
   return <section ref={root} id="trabalhos" className="portfolio section">
     <div className="panel-surface" aria-hidden="true"/>
     <div className="panel-content">
-      <div className="section-label">03 / TRABALHOS QUE GANHAM VIDA</div>
+      <div className="section-label">01 / TRABALHOS QUE GANHAM VIDA</div>
       <div className="portfolio-heading"><h2>Da essência ao <em>mundo.</em></h2><div><h3>Aurora</h3><p>Floricultura Boutique · Identidade visual</p></div></div>
       <div className="portfolio-gallery">
         {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.76} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={false} focusOnClick={false} onSelect={open}/> : <div className="portfolio-native" aria-label="Mockups da Aurora">{items.map((item, index) => <button key={item.src} className="portfolio-native-card" onClick={() => open(index)} aria-label={`Ampliar ${item.title}`}><Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 78vw, 450px" unoptimized/></button>)}</div>}
