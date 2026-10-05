@@ -107,7 +107,7 @@ export default function Portfolio() {
       <p className="portfolio-project-story">Uma identidade que traduz o afeto das flores em uma marca moderna e acolhedora. O desafio: valorizar o trabalho artesanal e os arranjos personalizados, combinando sofisticação e proximidade.</p>
       <div className="portfolio-gallery" onWheelCapture={markActivity} onTouchMove={markActivity} onPointerMove={event => { if (event.buttons === 1) markActivity(); }}>
         <div className="portfolio-edge-arrows" data-hidden={explored} aria-hidden="true"><svg viewBox="0 0 48 20"><path d="M47 10H2M10 2L2 10L10 18"/></svg><svg viewBox="0 0 48 20"><path d="M1 10H46M38 2L46 10L38 18"/></svg></div>
-        {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.76} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open} onChange={index => { setActive(index); markActivity(); }}/> : <div className="portfolio-native" aria-label="Mockups da Aurora" onScroll={event => {
+        {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.86} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open} onChange={index => { setActive(index); markActivity(); }}/> : <div className="portfolio-native" aria-label="Mockups da Aurora" onScroll={event => {
           markActivity();
           if (scrollFrame.current !== null) return;
           const gallery = event.currentTarget;
