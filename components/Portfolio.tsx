@@ -31,12 +31,15 @@ export default function Portfolio() {
   }, [markActivity]);
   const [closing, setClosing] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hintSeen = useRef(false);
+  const [showHint, setShowHint] = useState(false);
   const drag = useRef({ down: false, startX: 0, startScroll: 0, moved: false });
   const scrollFrame = useRef<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const swipe = useRef<{ x: number; y: number; id: number } | null>(null);
   const reducedMotion = useReducedMotion();
-  useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
+  useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); if (hintTimer.current) clearTimeout(hintTimer.current); }, []);
   useEffect(() => {
     if (!isOpen) return;
     const previous = document.body.style.overflow;
@@ -77,7 +80,17 @@ export default function Portfolio() {
     };
   }, [webgl, ready]);
 
-  const open = (index: number) => { setClosing(false); setOpened(index); setIsOpen(true); dialog.current?.showModal(); };
+  const open = (index: number) => {
+    setClosing(false); setOpened(index); setIsOpen(true); dialog.current?.showModal();
+    if (hintSeen.current) return;
+    hintSeen.current = true;
+    try {
+      if (sessionStorage.getItem('flammy-viewer-hint') === 'seen') return;
+      sessionStorage.setItem('flammy-viewer-hint', 'seen');
+    } catch { /* The in-memory guard also works when session storage is unavailable. */ }
+    setShowHint(true);
+    hintTimer.current = setTimeout(() => { setShowHint(false); hintTimer.current = null; }, 4500);
+  };
   const close = () => {
     if (closing) return;
     if (reducedMotion) { dialog.current?.close(); return; }
@@ -145,6 +158,7 @@ export default function Portfolio() {
         setOpened(index => (index + (dx < 0 ? 1 : items.length - 1)) % items.length);
       }} initial={reducedMotion ? false : { opacity: 0, scale: 0.97, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.24, ease: 'easeOut' }}><Image src={items[opened].src} alt={items[opened].alt} width={dimensions[opened][0]} height={dimensions[opened][1]} unoptimized sizes="94vw"/></motion.div>
       <div className="portfolio-modal-controls"><button onClick={() => setOpened(i => (i + 10) % 11)} aria-label="Imagem anterior"><ArrowLeft size={20}/></button><span>{items[opened].title} · {opened + 1} / 11</span><button onClick={() => setOpened(i => (i + 1) % 11)} aria-label="Próxima imagem"><ArrowRight size={20}/></button></div>
+      <p className="portfolio-viewer-hint" data-visible={showHint} aria-hidden={!showHint}>Deslize para explorar · Toque fora para fechar</p>
     </dialog>
   </section>;
 }
