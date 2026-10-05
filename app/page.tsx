@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Camera, Mail, Sparkles, Plus, ArrowUpRight } from 'lucide-react';
 import Contact from '../components/Contact';
 import Deliverables from '../components/Deliverables';
+import Portfolio from '../components/Portfolio';
 import Motion from '../components/Motion';
 import Services from '../components/Services';
 import Header from '../components/Header';
@@ -69,6 +70,7 @@ export default function Page(){
           </div>
         </section>
 
+        <Portfolio/>
         <Deliverables/>
 
         <section className="manifesto">
@@ -84,7 +86,7 @@ export default function Page(){
         <section className="process section" id="processo">
           <div className="panel-surface" aria-hidden="true"/>
           <div className="panel-content">
-            <div className="section-label">04 / COMO TRABALHAMOS</div>
+            <div className="section-label">05 / COMO TRABALHAMOS</div>
             <div className="section-heading">
               <h2>Construção com método.<br/>Evolução com <em>presença.</em></h2>
               <p>A gente escuta antes de falar.<br/>E pensa antes de criar.</p>
@@ -104,7 +106,7 @@ export default function Page(){
         <section className="contact section" id="contato">
           <div className="panel-surface" aria-hidden="true"/>
           <div className="panel-content">
-            <div className="section-label">05 / VAMOS CONVERSAR</div>
+            <div className="section-label">06 / VAMOS CONVERSAR</div>
             <div className="contact-grid">
               <div>
                 <h2>Vamos construir<br/>{' '}algo <em>relevante?</em></h2>
