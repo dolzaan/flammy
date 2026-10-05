@@ -28,6 +28,24 @@ export default function Portfolio() {
     if (root.current) observer.observe(root.current);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (webgl) return;
+    const gallery = root.current?.querySelector<HTMLElement>('.portfolio-native');
+    if (!gallery) return;
+    const onWheel = (event: WheelEvent) => {
+      if (event.ctrlKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? gallery.clientWidth : 1;
+      const delta = event.deltaY * unit;
+      const limit = gallery.scrollWidth - gallery.clientWidth;
+      if (limit <= 0 || (delta < 0 && gallery.scrollLeft <= 1) || (delta > 0 && gallery.scrollLeft >= limit - 1)) return;
+      event.preventDefault();
+      gallery.scrollLeft += delta;
+    };
+    gallery.addEventListener('wheel', onWheel, { passive: false });
+    return () => gallery.removeEventListener('wheel', onWheel);
+  }, [webgl, ready]);
+
   const open = (index: number) => { setOpened(index); dialog.current?.showModal(); };
   return <section ref={root} id="trabalhos" className="portfolio section">
     <div className="panel-surface" aria-hidden="true"/>
@@ -35,7 +53,7 @@ export default function Portfolio() {
       <div className="section-label">01 / TRABALHOS QUE GANHAM VIDA</div>
       <div className="portfolio-heading"><h2>Da essência ao <em>mundo.</em></h2><div><h3>Aurora</h3><p>Floricultura Boutique · Identidade visual</p></div></div>
       <div className="portfolio-gallery">
-        {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.76} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={false} focusOnClick={false} onSelect={open}/> : <div className="portfolio-native" aria-label="Mockups da Aurora">{items.map((item, index) => <button key={item.src} className="portfolio-native-card" onClick={() => open(index)} aria-label={`Ampliar ${item.title}`}><Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 78vw, 450px" unoptimized/></button>)}</div>}
+        {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.76} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open}/> : <div className="portfolio-native" aria-label="Mockups da Aurora">{items.map((item, index) => <button key={item.src} className="portfolio-native-card" onClick={() => open(index)} aria-label={`Ampliar ${item.title}`}><Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 78vw, 450px" unoptimized/></button>)}</div>}
       </div>
     </div>
     <dialog ref={dialog} className="portfolio-dialog" aria-label="Mockup Aurora ampliado" onClick={e => { if (e.target === e.currentTarget) dialog.current?.close(); }}>
