@@ -17,6 +17,9 @@ export default function Portfolio() {
   const [ready, setReady] = useState(false);
   const [webgl, setWebgl] = useState(false);
   const [opened, setOpened] = useState(0);
+  const [active, setActive] = useState(0);
+  const drag = useRef({ down: false, startX: 0, startScroll: 0, moved: false });
+  const scrollFrame = useRef<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const reducedMotion = useReducedMotion();
   useEffect(() => {
@@ -53,7 +56,10 @@ export default function Portfolio() {
       gallery.scrollLeft += delta;
     };
     gallery.addEventListener('wheel', onWheel, { passive: false });
-    return () => gallery.removeEventListener('wheel', onWheel);
+    return () => {
+      gallery.removeEventListener('wheel', onWheel);
+      if (scrollFrame.current !== null) cancelAnimationFrame(scrollFrame.current);
+    };
   }, [webgl, ready]);
 
   const open = (index: number) => { setOpened(index); setIsOpen(true); dialog.current?.showModal(); };
@@ -63,7 +69,41 @@ export default function Portfolio() {
       <div className="section-label">01 / TRABALHOS QUE GANHAM VIDA</div>
       <div className="portfolio-heading"><h2>Da essência ao <em>mundo.</em></h2><div><h3>Aurora</h3><p>Floricultura Boutique · Identidade visual</p></div></div>
       <div className="portfolio-gallery">
-        {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.76} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open}/> : <div className="portfolio-native" aria-label="Mockups da Aurora">{items.map((item, index) => <button key={item.src} className="portfolio-native-card" onClick={() => open(index)} aria-label={`Ampliar ${item.title}`}><Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 78vw, 450px" unoptimized/></button>)}</div>}
+        {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.76} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open} onChange={setActive}/> : <div className="portfolio-native" aria-label="Mockups da Aurora" onScroll={event => {
+          if (scrollFrame.current !== null) return;
+          const gallery = event.currentTarget;
+          scrollFrame.current = requestAnimationFrame(() => {
+            scrollFrame.current = null;
+            const bounds = gallery.getBoundingClientRect();
+            const center = bounds.left + bounds.width / 2;
+            let closest = 0;
+            let distance = Infinity;
+            Array.from(gallery.children).forEach((card, index) => {
+              const rect = card.getBoundingClientRect();
+              const next = Math.abs(rect.left + rect.width / 2 - center);
+              if (next < distance) { closest = index; distance = next; }
+            });
+            setActive(closest);
+          });
+        }} onPointerDown={event => {
+          if (event.pointerType !== 'mouse' || event.button !== 0) return;
+          drag.current = { down: true, startX: event.clientX, startScroll: event.currentTarget.scrollLeft, moved: false };
+        }} onPointerMove={event => {
+          if (!drag.current.down) return;
+          if (!(event.buttons & 1)) { drag.current.down = false; return; }
+          const delta = event.clientX - drag.current.startX;
+          if (Math.abs(delta) > 6) drag.current.moved = true;
+          if (drag.current.moved) { event.preventDefault(); event.currentTarget.scrollLeft = drag.current.startScroll - delta; }
+        }} onPointerUp={() => { drag.current.down = false; }} onPointerLeave={() => { drag.current.down = false; }} onPointerCancel={() => { drag.current.down = false; }} onClickCapture={event => {
+          if (drag.current.moved) { event.preventDefault(); event.stopPropagation(); drag.current.moved = false; }
+        }} onDragStart={event => event.preventDefault()}>{items.map((item, index) => <button key={item.src} className="portfolio-native-card" onClick={() => open(index)} aria-label={`Ampliar ${item.title}`}><Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 78vw, 450px" unoptimized draggable={false}/></button>)}</div>}
+      </div>
+      <div className="portfolio-explore">
+        <span className="portfolio-drag-hint"><ArrowLeft size={13} aria-hidden="true"/>Arraste para explorar<ArrowRight size={13} aria-hidden="true"/></span>
+        <div className="portfolio-position" aria-label={`Imagem ${active + 1} de ${items.length}: ${items[active].title}`}>
+          <div className="portfolio-dots" aria-hidden="true">{items.map((item, index) => <span key={item.src} data-active={active === index}/>)}</div>
+          <span className="portfolio-count" aria-hidden="true">{String(active + 1).padStart(2, '0')} / {items.length}</span>
+        </div>
       </div>
     </div>
     <dialog ref={dialog} className="portfolio-dialog" aria-label="Mockup Aurora ampliado" onClose={() => setIsOpen(false)} onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); setOpened(i => (i + (e.key === 'ArrowRight' ? 1 : 10)) % 11); } }} onClick={e => { if (e.target === e.currentTarget) dialog.current?.close(); }}>
