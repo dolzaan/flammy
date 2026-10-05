@@ -9,6 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 const links = [
   { id: 'studio', label: 'Studio' },
   { id: 'servicos', label: 'Serviços' },
+  { id: 'trabalhos', label: 'Trabalhos' },
   { id: 'entregas', label: 'Entregas' },
   { id: 'processo', label: 'Processo' },
   { id: 'contato', label: 'Contato' }
