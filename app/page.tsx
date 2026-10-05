@@ -23,6 +23,7 @@ export default function Page(){
     <div className="scroll-site">
       <DarkVeil/><Header/><LineSidebar/>
       <main id="principal">
+        <Portfolio/>
         <section className="hero" id="inicio">
           <div className="panel-surface" aria-hidden="true"/>
           <HeroCard>
@@ -41,7 +42,7 @@ export default function Page(){
         <section id="studio" className="studio section">
           <div className="panel-surface" aria-hidden="true"/>
           <div className="panel-content">
-            <div className="section-label">01 / QUEM É A FLAMMY</div>
+            <div className="section-label">02 / QUEM É A FLAMMY</div>
             <div className="studio-content">
               <h2 className="studio-blur-text"><span>Entre estratégia</span><span>e <em>humanidade.</em></span></h2>
               <div className="studio-copy">
@@ -61,7 +62,7 @@ export default function Page(){
         <section id="servicos" className="services section">
           <div className="panel-surface" aria-hidden="true"/>
           <div className="panel-content">
-            <div className="section-label">02 / O QUE FAZEMOS</div>
+            <div className="section-label">03 / O QUE FAZEMOS</div>
             <div className="section-heading">
               <h2>Clareza para crescer<br/>sem perder a <em>essência.</em></h2>
               <p>Estratégia que respeita pessoas.<br/>Criatividade com direção.</p>
@@ -70,7 +71,6 @@ export default function Page(){
           </div>
         </section>
 
-        <Portfolio/>
         <Deliverables/>
 
         <section className="manifesto">
@@ -123,8 +123,8 @@ export default function Page(){
       </main>
       <footer className="site-footer">
         <GlassSurface className="footer-glass"/>
-        <a href="#inicio" className="footer-wordmark" aria-label="Flammy, voltar ao início"><Image src="/flammy-logo.svg" width={846} height={156} unoptimized alt="Flammy" sizes="140px"/></a>
-        <div><span>Estratégia com alma.</span><span>© {new Date().getFullYear()} Flammy</span><a href="#inicio">Voltar ao início</a></div>
+        <a href="#trabalhos" className="footer-wordmark" aria-label="Flammy, voltar ao início"><Image src="/flammy-logo.svg" width={846} height={156} unoptimized alt="Flammy" sizes="140px"/></a>
+        <div><span>Estratégia com alma.</span><span>© {new Date().getFullYear()} Flammy</span><a href="#trabalhos">Voltar ao início</a></div>
       </footer>
 
     </div>
