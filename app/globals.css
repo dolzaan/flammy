@@ -1530,3 +1530,24 @@ main .site-content-ready.visible{opacity:1;transform:none}
  html{scroll-padding-top:80px}
  .scroll-site #principal>section:not(.hero){min-height:calc(100svh - 104px)}
 }
+
+/* Compact mobile compositions: no empty viewport-height panels. */
+@media(max-width:900px){
+ .scroll-site #principal>section:not(.hero){min-height:0;align-content:start;padding-block:28px}
+ .scroll-site #principal :is(.section-heading,.studio-content){margin:14px 0 20px;gap:12px}
+ #entregas .deliverable-grid{gap:9px}
+ #entregas .deliverable-card,#entregas .deliverable-card:nth-child(2){padding:14px 16px;display:grid;grid-template-columns:26px minmax(0,1fr);column-gap:10px;row-gap:6px;border-radius:18px}
+ #entregas .deliverable-top{display:block;grid-column:1;grid-row:1;margin:0;padding-top:4px}
+ #entregas .deliverable-icon{display:none}
+ #entregas .deliverable-card h3{grid-column:2;margin:0;font-size:20px;line-height:1.2}
+ #entregas .deliverable-card>p{display:none}
+ #entregas .deliverable-card ul{grid-column:2;margin:0;gap:3px}
+ #entregas .deliverable-card li{font-size:12px;line-height:1.45}
+ #entregas .deliverable-footer>p{font-size:11px;margin-top:12px}
+ #processo .steps{gap:8px}
+ #processo .steps article,#processo .steps article:nth-child(even){padding:12px 14px;grid-template-columns:26px minmax(0,1fr);gap:8px;border-radius:18px}
+ #processo .steps h3{font-size:20px;line-height:1.2;margin-bottom:4px}
+ #processo .steps p{font-size:12px;line-height:1.45;margin:0}
+ #processo .steps article>span{font-size:22px;line-height:1.2}
+ .scroll-site #principal>.portfolio{padding-block:28px}
+}
