@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const FlexCarousel = dynamic(() => import('./FlexCarousel'), { ssr: false });
 const names = ['Fachada', 'Fitas e padrões', 'Sinalização', 'Cartão da marca', 'Papelaria', 'Carrinho de flores', 'Cartões de visita', 'Buquê', 'Embalagem', 'Avental', 'Ecobag'];
@@ -18,10 +18,14 @@ export default function Portfolio() {
   const [webgl, setWebgl] = useState(false);
   const [opened, setOpened] = useState(0);
   const [active, setActive] = useState(0);
+  const [explored, setExplored] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const drag = useRef({ down: false, startX: 0, startScroll: 0, moved: false });
   const scrollFrame = useRef<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const reducedMotion = useReducedMotion();
+  useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
   useEffect(() => {
     if (!isOpen) return;
     const previous = document.body.style.overflow;
@@ -62,13 +66,19 @@ export default function Portfolio() {
     };
   }, [webgl, ready]);
 
-  const open = (index: number) => { setOpened(index); setIsOpen(true); dialog.current?.showModal(); };
+  const open = (index: number) => { setClosing(false); setOpened(index); setIsOpen(true); dialog.current?.showModal(); };
+  const close = () => {
+    if (closing) return;
+    if (reducedMotion) { dialog.current?.close(); return; }
+    setClosing(true);
+    closeTimer.current = setTimeout(() => { dialog.current?.close(); setClosing(false); closeTimer.current = null; }, 220);
+  };
   return <section ref={root} id="trabalhos" className="portfolio section">
     <div className="panel-surface" aria-hidden="true"/>
     <div className="panel-content">
       <div className="section-label">01 / TRABALHOS QUE GANHAM VIDA</div>
       <div className="portfolio-heading"><h2>Da essência ao <em>mundo.</em></h2><div><h3>Aurora</h3><p>Floricultura Boutique · Identidade visual</p></div></div>
-      <div className="portfolio-gallery">
+      <div className="portfolio-gallery" onWheelCapture={() => setExplored(true)} onTouchMove={() => setExplored(true)} onPointerMove={event => { if (event.buttons === 1) setExplored(true); }}>
         {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.76} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open} onChange={setActive}/> : <div className="portfolio-native" aria-label="Mockups da Aurora" onScroll={event => {
           if (scrollFrame.current !== null) return;
           const gallery = event.currentTarget;
@@ -99,15 +109,14 @@ export default function Portfolio() {
         }} onDragStart={event => event.preventDefault()}>{items.map((item, index) => <button key={item.src} className="portfolio-native-card" onClick={() => open(index)} aria-label={`Ampliar ${item.title}`}><Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 78vw, 450px" unoptimized draggable={false}/></button>)}</div>}
       </div>
       <div className="portfolio-explore">
-        <span className="portfolio-drag-hint"><ArrowLeft size={13} aria-hidden="true"/>Arraste para explorar<ArrowRight size={13} aria-hidden="true"/></span>
+        <span className="portfolio-drag-arrow" data-hidden={explored} aria-hidden="true"><svg width="62" height="18" viewBox="0 0 62 18" fill="none"><path d="M1 9H60M52 1L60 9L52 17" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
         <div className="portfolio-position" aria-label={`Imagem ${active + 1} de ${items.length}: ${items[active].title}`}>
           <div className="portfolio-dots" aria-hidden="true">{items.map((item, index) => <span key={item.src} data-active={active === index}/>)}</div>
           <span className="portfolio-count" aria-hidden="true">{String(active + 1).padStart(2, '0')} / {items.length}</span>
         </div>
       </div>
     </div>
-    <dialog ref={dialog} className="portfolio-dialog" aria-label="Mockup Aurora ampliado" onClose={() => setIsOpen(false)} onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); setOpened(i => (i + (e.key === 'ArrowRight' ? 1 : 10)) % 11); } }} onClick={e => { if (e.target === e.currentTarget) dialog.current?.close(); }}>
-      <button className="portfolio-close" onClick={() => dialog.current?.close()} aria-label="Fechar imagem"><X size={22}/></button>
+    <dialog ref={dialog} className="portfolio-dialog" data-closing={closing} aria-label="Mockup Aurora ampliado. Clique fora da imagem ou pressione Esc para fechar." onCancel={e => { e.preventDefault(); close(); }} onClose={() => setIsOpen(false)} onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); setOpened(i => (i + (e.key === 'ArrowRight' ? 1 : 10)) % 11); } }} onClick={e => { if (e.target === e.currentTarget) close(); }}>
       <motion.div key={opened} className="portfolio-full-image" initial={reducedMotion ? false : { opacity: 0, scale: 0.97, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.24, ease: 'easeOut' }}><Image src={items[opened].src} alt={items[opened].alt} width={dimensions[opened][0]} height={dimensions[opened][1]} unoptimized sizes="94vw"/></motion.div>
       <div className="portfolio-modal-controls"><button onClick={() => setOpened(i => (i + 10) % 11)} aria-label="Imagem anterior"><ArrowLeft size={20}/></button><span>{items[opened].title} · {opened + 1} / 11</span><button onClick={() => setOpened(i => (i + 1) % 11)} aria-label="Próxima imagem"><ArrowRight size={20}/></button></div>
     </dialog>
