@@ -1422,3 +1422,17 @@ main .site-content-ready.visible{opacity:1;transform:none}
 .portfolio-native-card{position:relative;flex:0 0 min(72%,450px);height:100%;border:0;border-radius:28px;overflow:hidden;background:transparent;scroll-snap-align:center;cursor:zoom-in;padding:0}
 .portfolio-native-card img{object-fit:cover;border-radius:28px}
 @media(max-width:700px){.portfolio-native-card{flex-basis:88%}.portfolio-native{gap:16px}}
+
+/* Floating image viewer, sized to each mockup rather than a large solid panel. */
+.portfolio-dialog{width:fit-content;height:auto;max-width:94vw;max-height:96dvh;padding:46px 0 0;border:0;border-radius:0;background:transparent;overflow:visible;box-shadow:none;color:var(--paper)}
+.portfolio-dialog::backdrop{background:rgba(35,10,18,.38);backdrop-filter:blur(18px) saturate(.85);-webkit-backdrop-filter:blur(18px) saturate(.85);animation:portfolio-backdrop-in .22s ease-out}
+.portfolio-full-image{height:auto;width:fit-content;max-width:94vw;margin:auto}
+.portfolio-full-image img{display:block;position:static;width:auto;height:auto;max-width:min(94vw,1120px);max-height:calc(100dvh - 156px);object-fit:contain;border-radius:20px;box-shadow:0 18px 70px #16081045}
+.portfolio-close{top:0;right:0;width:36px;height:36px;background:rgba(249,245,241,.14);border:1px solid #ffffff35;backdrop-filter:blur(12px);color:var(--paper)}
+.portfolio-modal-controls{width:fit-content;max-width:94vw;margin:16px auto 0;padding:5px 9px;gap:12px;background:rgba(249,245,241,.13);border:1px solid #ffffff2e;border-radius:999px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 28px #16081016}
+.portfolio-modal-controls>span{font-size:12px;min-width:100px;text-align:center;white-space:nowrap}
+.portfolio-modal-controls button{width:38px;height:38px;border:0;color:var(--paper)}
+.portfolio-modal-controls button:hover,.portfolio-close:hover{background:#ffffff1f}
+@keyframes portfolio-backdrop-in{from{opacity:0}to{opacity:1}}
+@media(max-width:700px){.portfolio-dialog{padding:44px 0 0}.portfolio-full-image img{max-height:calc(100dvh - 148px);border-radius:16px}.portfolio-modal-controls{margin-top:12px}}
+@media(prefers-reduced-motion:reduce){.portfolio-dialog::backdrop{animation:none}}
