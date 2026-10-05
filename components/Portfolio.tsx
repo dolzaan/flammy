@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
@@ -19,6 +19,16 @@ export default function Portfolio() {
   const [opened, setOpened] = useState(0);
   const [active, setActive] = useState(0);
   const [explored, setExplored] = useState(false);
+  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const markActivity = useCallback(() => {
+    setExplored(true);
+    if (idleTimer.current) clearTimeout(idleTimer.current);
+    idleTimer.current = setTimeout(() => { setExplored(false); idleTimer.current = null; }, 650);
+  }, []);
+  useEffect(() => {
+    window.addEventListener('scroll', markActivity, { passive: true });
+    return () => { window.removeEventListener('scroll', markActivity); if (idleTimer.current) clearTimeout(idleTimer.current); };
+  }, [markActivity]);
   const [closing, setClosing] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const drag = useRef({ down: false, startX: 0, startScroll: 0, moved: false });
@@ -78,9 +88,10 @@ export default function Portfolio() {
     <div className="panel-content">
       <div className="section-label">01 / TRABALHOS QUE GANHAM VIDA</div>
       <div className="portfolio-heading"><h2>Da essência ao <em>mundo.</em></h2><div><h3>Aurora</h3><p>Floricultura Boutique · Identidade visual</p></div></div>
-      <div className="portfolio-gallery" onWheelCapture={() => setExplored(true)} onTouchMove={() => setExplored(true)} onPointerMove={event => { if (event.buttons === 1) setExplored(true); }}>
+      <div className="portfolio-gallery" onWheelCapture={markActivity} onTouchMove={markActivity} onPointerMove={event => { if (event.buttons === 1) markActivity(); }}>
         <div className="portfolio-edge-arrows" data-hidden={explored} aria-hidden="true"><svg viewBox="0 0 48 20"><path d="M47 10H2M10 2L2 10L10 18"/></svg><svg viewBox="0 0 48 20"><path d="M1 10H46M38 2L46 10L38 18"/></svg></div>
-        {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.76} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open} onChange={setActive}/> : <div className="portfolio-native" aria-label="Mockups da Aurora" onScroll={event => {
+        {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.76} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open} onChange={index => { setActive(index); markActivity(); }}/> : <div className="portfolio-native" aria-label="Mockups da Aurora" onScroll={event => {
+          markActivity();
           if (scrollFrame.current !== null) return;
           const gallery = event.currentTarget;
           scrollFrame.current = requestAnimationFrame(() => {
