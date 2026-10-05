@@ -1583,3 +1583,8 @@ main .site-content-ready.visible{opacity:1;transform:none}
 .portfolio-edge-arrows svg{width:42px;height:20px;fill:none;stroke:currentColor;stroke-width:.7;stroke-linecap:round;stroke-linejoin:round}
 .portfolio-explore{justify-content:flex-end!important}
 @media(prefers-reduced-motion:reduce){.portfolio-edge-arrows{transition:none}}
+
+/* Direction cues return after scrolling pauses. */
+.portfolio-edge-arrows{opacity:.62}
+.portfolio-edge-arrows[data-hidden=true]{opacity:0}
+.portfolio-edge-arrows svg{stroke-width:.9;filter:drop-shadow(0 1px 2px rgba(48,16,21,.3))}
