@@ -13,6 +13,7 @@ const items = names.map((title, index) => ({ src: `/portfolio-image/${index + 1}
 
 export default function Portfolio() {
   const root = useRef<HTMLElement>(null);
+  const backdropPress = useRef(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const [ready, setReady] = useState(false);
   const [webgl, setWebgl] = useState(false);
@@ -81,6 +82,7 @@ export default function Portfolio() {
   }, [webgl, ready]);
 
   const open = (index: number) => {
+    backdropPress.current = false;
     setClosing(false); setOpened(index); setIsOpen(true); dialog.current?.showModal();
     if (hintSeen.current) return;
     hintSeen.current = true;
@@ -101,7 +103,7 @@ export default function Portfolio() {
     <div className="panel-surface" aria-hidden="true"/>
     <div className="panel-content">
       <div className="section-label">01 / TRABALHOS QUE GANHAM VIDA</div>
-      <div className="portfolio-heading"><h2>Da essência ao <em>mundo.</em></h2><div><h3>Aurora</h3><p>Floricultura Boutique · Identidade visual · Projeto conceitual</p></div></div>
+      <div className="portfolio-heading"><div><h3>Aurora</h3><p>Floricultura Boutique · Identidade visual · Projeto conceitual</p></div></div>
       <p className="portfolio-project-story">Uma identidade que traduz o afeto das flores em uma marca moderna e acolhedora. O desafio: valorizar o trabalho artesanal e os arranjos personalizados, combinando sofisticação e proximidade.</p>
       <div className="portfolio-gallery" onWheelCapture={markActivity} onTouchMove={markActivity} onPointerMove={event => { if (event.buttons === 1) markActivity(); }}>
         <div className="portfolio-edge-arrows" data-hidden={explored} aria-hidden="true"><svg viewBox="0 0 48 20"><path d="M47 10H2M10 2L2 10L10 18"/></svg><svg viewBox="0 0 48 20"><path d="M1 10H46M38 2L46 10L38 18"/></svg></div>
@@ -142,7 +144,7 @@ export default function Portfolio() {
         </div>
       </div>
     </div>
-    <dialog ref={dialog} className="portfolio-dialog" data-closing={closing} aria-label="Mockup Aurora ampliado. Clique fora da imagem ou pressione Esc para fechar." onCancel={e => { e.preventDefault(); close(); }} onClose={() => setIsOpen(false)} onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); setOpened(i => (i + (e.key === 'ArrowRight' ? 1 : 10)) % 11); } }} onClick={e => { if (e.target === e.currentTarget) close(); }}>
+    <dialog ref={dialog} className="portfolio-dialog" data-closing={closing} aria-label="Mockup Aurora ampliado. Clique fora da imagem ou pressione Esc para fechar." onCancel={e => { e.preventDefault(); close(); }} onClose={() => setIsOpen(false)} onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); setOpened(i => (i + (e.key === 'ArrowRight' ? 1 : 10)) % 11); } }} onPointerDown={e => { backdropPress.current = e.target === e.currentTarget; }} onPointerCancel={() => { backdropPress.current = false; }} onPointerUp={e => { const outside = backdropPress.current && e.target === e.currentTarget; backdropPress.current = false; if (outside) close(); }}>
       <motion.div key={opened} className="portfolio-full-image" style={{ touchAction: 'pan-y pinch-zoom' }} onTouchStart={event => {
         if (event.touches.length !== 1 || closing) { swipe.current = null; return; }
         const touch = event.touches[0];
