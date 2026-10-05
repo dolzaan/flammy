@@ -79,6 +79,7 @@ export default function Portfolio() {
       <div className="section-label">01 / TRABALHOS QUE GANHAM VIDA</div>
       <div className="portfolio-heading"><h2>Da essência ao <em>mundo.</em></h2><div><h3>Aurora</h3><p>Floricultura Boutique · Identidade visual</p></div></div>
       <div className="portfolio-gallery" onWheelCapture={() => setExplored(true)} onTouchMove={() => setExplored(true)} onPointerMove={event => { if (event.buttons === 1) setExplored(true); }}>
+        <div className="portfolio-edge-arrows" data-hidden={explored} aria-hidden="true"><svg viewBox="0 0 48 20"><path d="M47 10H2M10 2L2 10L10 18"/></svg><svg viewBox="0 0 48 20"><path d="M1 10H46M38 2L46 10L38 18"/></svg></div>
         {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.76} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open} onChange={setActive}/> : <div className="portfolio-native" aria-label="Mockups da Aurora" onScroll={event => {
           if (scrollFrame.current !== null) return;
           const gallery = event.currentTarget;
@@ -109,7 +110,6 @@ export default function Portfolio() {
         }} onDragStart={event => event.preventDefault()}>{items.map((item, index) => <button key={item.src} className="portfolio-native-card" onClick={() => open(index)} aria-label={`Ampliar ${item.title}`}><Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 78vw, 450px" unoptimized draggable={false}/></button>)}</div>}
       </div>
       <div className="portfolio-explore">
-        <span className="portfolio-drag-arrow" data-hidden={explored} aria-hidden="true"><svg width="62" height="18" viewBox="0 0 62 18" fill="none"><path d="M1 9H60M52 1L60 9L52 17" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
         <div className="portfolio-position" aria-label={`Imagem ${active + 1} de ${items.length}: ${items[active].title}`}>
           <div className="portfolio-dots" aria-hidden="true">{items.map((item, index) => <span key={item.src} data-active={active === index}/>)}</div>
           <span className="portfolio-count" aria-hidden="true">{String(active + 1).padStart(2, '0')} / {items.length}</span>
