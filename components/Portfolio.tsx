@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 
 const FlexCarousel = dynamic(() => import('./FlexCarousel'), { ssr: false });
 const names = ['Fachada', 'Fitas e padrões', 'Sinalização', 'Cartão da marca', 'Papelaria', 'Carrinho de flores', 'Cartões de visita', 'Buquê', 'Embalagem', 'Avental', 'Ecobag'];
+const dimensions = [[2048,1365],[2048,1536],[2048,1536],[2048,1536],[1365,2048],[1365,2048],[2048,1536],[1366,2048],[1365,2047],[1856,1578],[2048,1365]];
 const items = names.map((title, index) => ({ src: `/portfolio-image/${index + 1}`, title, alt: `${title} — identidade visual Aurora Floricultura Boutique`, subtitle: 'Aurora · Identidade visual' }));
 
 export default function Portfolio() {
@@ -15,6 +17,14 @@ export default function Portfolio() {
   const [ready, setReady] = useState(false);
   const [webgl, setWebgl] = useState(false);
   const [opened, setOpened] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const reducedMotion = useReducedMotion();
+  useEffect(() => {
+    if (!isOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previous; };
+  }, [isOpen]);
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
@@ -46,7 +56,7 @@ export default function Portfolio() {
     return () => gallery.removeEventListener('wheel', onWheel);
   }, [webgl, ready]);
 
-  const open = (index: number) => { setOpened(index); dialog.current?.showModal(); };
+  const open = (index: number) => { setOpened(index); setIsOpen(true); dialog.current?.showModal(); };
   return <section ref={root} id="trabalhos" className="portfolio section">
     <div className="panel-surface" aria-hidden="true"/>
     <div className="panel-content">
@@ -56,9 +66,9 @@ export default function Portfolio() {
         {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.76} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open}/> : <div className="portfolio-native" aria-label="Mockups da Aurora">{items.map((item, index) => <button key={item.src} className="portfolio-native-card" onClick={() => open(index)} aria-label={`Ampliar ${item.title}`}><Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 78vw, 450px" unoptimized/></button>)}</div>}
       </div>
     </div>
-    <dialog ref={dialog} className="portfolio-dialog" aria-label="Mockup Aurora ampliado" onClick={e => { if (e.target === e.currentTarget) dialog.current?.close(); }}>
+    <dialog ref={dialog} className="portfolio-dialog" aria-label="Mockup Aurora ampliado" onClose={() => setIsOpen(false)} onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); setOpened(i => (i + (e.key === 'ArrowRight' ? 1 : 10)) % 11); } }} onClick={e => { if (e.target === e.currentTarget) dialog.current?.close(); }}>
       <button className="portfolio-close" onClick={() => dialog.current?.close()} aria-label="Fechar imagem"><X size={22}/></button>
-      <div className="portfolio-full-image"><Image src={items[opened].src} alt={items[opened].alt} fill unoptimized sizes="100vw"/></div>
+      <motion.div key={opened} className="portfolio-full-image" initial={reducedMotion ? false : { opacity: 0, scale: 0.97, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.24, ease: 'easeOut' }}><Image src={items[opened].src} alt={items[opened].alt} width={dimensions[opened][0]} height={dimensions[opened][1]} unoptimized sizes="94vw"/></motion.div>
       <div className="portfolio-modal-controls"><button onClick={() => setOpened(i => (i + 10) % 11)} aria-label="Imagem anterior"><ArrowLeft size={20}/></button><span>{items[opened].title} · {opened + 1} / 11</span><button onClick={() => setOpened(i => (i + 1) % 11)} aria-label="Próxima imagem"><ArrowRight size={20}/></button></div>
     </dialog>
   </section>;
