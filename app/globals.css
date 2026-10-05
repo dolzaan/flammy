@@ -1627,3 +1627,8 @@ main .site-content-ready.visible{opacity:1;transform:none}
  #principal>.portfolio>.panel-surface{inset:12px 0}
  #principal>.portfolio .portfolio-explore{padding-top:8px;padding-bottom:0}
 }
+
+/* Keep heading contrast stable before and during scroll reveals. */
+.scroll-site #principal h2.site-blur-ready,
+.scroll-site #principal h2.site-blur-ready.visible{opacity:1;filter:none;transition:transform 460ms cubic-bezier(.22,1,.36,1)}
+#entregas .deliverable-footer>p{color:#68565a}
