@@ -23,7 +23,7 @@ export default function Deliverables() {
   return <section id="entregas" className="deliverables section" aria-labelledby="deliverables-title">
     <div className="panel-surface" aria-hidden="true" />
     <div className="panel-content">
-      <div className="section-label">03 / COMO A ESTRATÉGIA GANHA FORMA</div>
+      <div className="section-label">04 / COMO A ESTRATÉGIA GANHA FORMA</div>
       <div className="section-heading">
         <h2 id="deliverables-title">Da intenção<br />à <em>presença.</em></h2>
         <p>Estratégia, comunicação e design.<br />Cada entrega tem uma intenção.</p>
@@ -42,4 +42,3 @@ export default function Deliverables() {
     </div>
   </section>;
 }
-
