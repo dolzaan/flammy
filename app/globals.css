@@ -1564,3 +1564,15 @@ main .site-content-ready.visible{opacity:1;transform:none}
 .portfolio-native:active,.portfolio-native-card:active{cursor:grabbing}
 @media(max-width:600px){.portfolio-explore{padding:8px 2px 0;gap:10px;flex-wrap:wrap}.portfolio-drag-hint{font-size:10px}.portfolio-dots{gap:4px}.portfolio-count{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.portfolio-dots span{transition:none}}
+
+/* A minimal gesture cue and a complete fade cycle for the image viewer. */
+.portfolio-drag-arrow{display:flex;align-items:center;color:#74505a;opacity:.55;pointer-events:none;transition:opacity .3s ease;min-height:20px}
+.portfolio-drag-arrow[data-hidden=true]{opacity:0}
+.portfolio-dialog{padding-top:0}
+.portfolio-dialog[open]{animation:portfolio-viewer-in .24s ease-out both}
+.portfolio-dialog[data-closing=true]{animation:portfolio-viewer-out .22s ease-in both;pointer-events:none}
+.portfolio-dialog[data-closing=true]::backdrop{animation:portfolio-viewer-out .22s ease-in both}
+@keyframes portfolio-viewer-in{from{opacity:0}to{opacity:1}}
+@keyframes portfolio-viewer-out{from{opacity:1}to{opacity:0}}
+@media(max-width:700px){.portfolio-dialog{padding-top:0}}
+@media(prefers-reduced-motion:reduce){.portfolio-drag-arrow{transition:none}.portfolio-dialog[open],.portfolio-dialog[data-closing=true],.portfolio-dialog[data-closing=true]::backdrop{animation:none}}
