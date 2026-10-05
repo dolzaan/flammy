@@ -8,10 +8,18 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const FlexCarousel = dynamic(() => import('./FlexCarousel'), { ssr: false });
 const names = ['Fachada', 'Fitas e padrões', 'Sinalização', 'Cartão da marca', 'Papelaria', 'Carrinho de flores', 'Cartões de visita', 'Buquê', 'Embalagem', 'Avental', 'Ecobag'];
-const dimensions = [[2048,1365],[2048,1536],[2048,1536],[2048,1536],[1365,2048],[1365,2048],[2048,1536],[1366,2048],[1365,2047],[1856,1578],[2048,1365]];
-const items = names.map((title, index) => ({ src: `/portfolio-image/${index + 1}`, title, alt: `${title} — identidade visual Aurora Floricultura Boutique`, subtitle: 'Aurora · Identidade visual' }));
+const auroraDimensions = [[2048,1365],[2048,1536],[2048,1536],[2048,1536],[1365,2048],[1365,2048],[2048,1536],[1366,2048],[1365,2047],[1856,1578],[2048,1365]];
+const auroraItems = names.map((title, index) => ({ src: `/portfolio-image/${index + 1}`, title, alt: `${title} — identidade visual Aurora Floricultura Boutique`, subtitle: 'Aurora · Identidade visual' }));
+
+const valeNames = ['Marca', 'Conexões', 'Papelaria', 'Presença digital', 'Versões da marca', 'Aplicação digital', 'Vestuário'];
+const valeItems = valeNames.map((title, index) => ({ src: `/portfolio/achei-no-vale/${index + 1}.webp`, title, alt: `${title} — identidade visual Achei no Vale`, subtitle: 'Achei no Vale · Identidade visual' }));
 
 export default function Portfolio() {
+  const [project, setProject] = useState<'aurora' | 'vale'>('aurora');
+  const isAurora = project === 'aurora';
+  const projectName = isAurora ? 'Aurora' : 'Achei no Vale';
+  const items = isAurora ? auroraItems : valeItems;
+  const dimensions = isAurora ? auroraDimensions : [[2000,1383], ...Array.from({ length: 6 }, () => [1080,1440])];
   const root = useRef<HTMLElement>(null);
   const backdropPress = useRef(false);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -79,7 +87,7 @@ export default function Portfolio() {
       gallery.removeEventListener('wheel', onWheel);
       if (scrollFrame.current !== null) cancelAnimationFrame(scrollFrame.current);
     };
-  }, [webgl, ready]);
+  }, [webgl, ready, project]);
 
   const open = (index: number) => {
     backdropPress.current = false;
@@ -100,14 +108,16 @@ export default function Portfolio() {
     closeTimer.current = setTimeout(() => { dialog.current?.close(); setClosing(false); closeTimer.current = null; }, 220);
   };
   return <section ref={root} id="trabalhos" className="portfolio section">
+    <style>{`.portfolio-project-tabs{display:flex;gap:8px;flex-shrink:0;margin:12px 0 0}.portfolio-project-tabs button{font:inherit;font-size:12px;padding:7px 14px;border-radius:999px;border:1px solid rgba(102,33,45,.16);background:transparent;color:#68565a;cursor:pointer;transition:background .2s,color .2s}.portfolio-project-tabs button[aria-pressed=true]{background:#66212d;color:#faf5ec}.portfolio-project-tabs button:focus-visible{outline:2px solid #66212d;outline-offset:3px}@media(max-width:700px){.portfolio-project-tabs{margin-top:10px}.portfolio-project-tabs button{font-size:11px;padding:6px 12px}}`}</style>
     <div className="panel-surface" aria-hidden="true"/>
     <div className="panel-content">
       <div className="section-label">01 / TRABALHOS QUE GANHAM VIDA</div>
-      <div className="portfolio-heading"><div><h3>Aurora</h3><p>Floricultura Boutique · Identidade visual · Projeto conceitual</p></div></div>
-      <p className="portfolio-project-story">Uma identidade que traduz o afeto das flores em uma marca moderna e acolhedora. O desafio: valorizar o trabalho artesanal e os arranjos personalizados, combinando sofisticação e proximidade.</p>
+      <div className="portfolio-project-tabs" role="group" aria-label="Selecionar projeto">{(['aurora', 'vale'] as const).map(value => <button key={value} type="button" aria-pressed={project === value} onClick={() => { setProject(value); setActive(0); setOpened(0); const gallery = root.current?.querySelector<HTMLElement>('.portfolio-native'); if (gallery) gallery.scrollLeft = 0; }}>{value === 'aurora' ? 'Aurora' : 'Achei no Vale'}</button>)}</div>
+      <div className="portfolio-heading"><div><h3>{projectName}</h3><p>{isAurora ? 'Floricultura Boutique · Identidade visual · Projeto conceitual' : 'Identidade visual · Aplicações da marca'}</p></div></div>
+      <p className="portfolio-project-story">{isAurora ? 'Uma identidade que traduz o afeto das flores em uma marca moderna e acolhedora. O desafio: valorizar o trabalho artesanal e os arranjos personalizados, combinando sofisticação e proximidade.' : 'Uma identidade que aproxima pessoas, negócios e oportunidades do Vale. Formas orgânicas e tons naturais dão vida a uma marca acolhedora, com personalidade e presença no digital.'}</p>
       <div className="portfolio-gallery" onWheelCapture={markActivity} onTouchMove={markActivity} onPointerMove={event => { if (event.buttons === 1) markActivity(); }}>
         <div className="portfolio-edge-arrows" data-hidden={explored} aria-hidden="true"><svg viewBox="0 0 48 20"><path d="M47 10H2M10 2L2 10L10 18"/></svg><svg viewBox="0 0 48 20"><path d="M1 10H46M38 2L46 10L38 18"/></svg></div>
-        {ready && webgl ? <FlexCarousel items={items} preset="ribbon" intro="none" cardHeight={0.86} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open} onChange={index => { setActive(index); markActivity(); }}/> : <div className="portfolio-native" aria-label="Mockups da Aurora" onScroll={event => {
+        {ready && webgl ? <FlexCarousel key={project} items={items} preset="ribbon" intro="none" cardHeight={0.86} gap={22} radius={28} fit="natural" bend={0.12} dispersion={0.12} squeeze={0.08} captions={false} captureWheel={true} focusOnClick={false} onSelect={open} onChange={index => { setActive(index); markActivity(); }}/> : <div className="portfolio-native" key={project} aria-label={`Mockups de ${projectName}`} onScroll={event => {
           markActivity();
           if (scrollFrame.current !== null) return;
           const gallery = event.currentTarget;
@@ -144,7 +154,7 @@ export default function Portfolio() {
         </div>
       </div>
     </div>
-    <dialog ref={dialog} className="portfolio-dialog" data-closing={closing} aria-label="Mockup Aurora ampliado. Clique fora da imagem ou pressione Esc para fechar." onCancel={e => { e.preventDefault(); close(); }} onClose={() => setIsOpen(false)} onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); setOpened(i => (i + (e.key === 'ArrowRight' ? 1 : 10)) % 11); } }} onPointerDown={e => { backdropPress.current = e.target === e.currentTarget; }} onPointerCancel={() => { backdropPress.current = false; }} onPointerUp={e => { const outside = backdropPress.current && e.target === e.currentTarget; backdropPress.current = false; if (outside) close(); }}>
+    <dialog ref={dialog} className="portfolio-dialog" data-closing={closing} aria-label={`Mockup ${projectName} ampliado. Clique fora da imagem ou pressione Esc para fechar.`} onCancel={e => { e.preventDefault(); close(); }} onClose={() => setIsOpen(false)} onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); setOpened(i => (i + (e.key === 'ArrowRight' ? 1 : items.length - 1)) % items.length); } }} onPointerDown={e => { backdropPress.current = e.target === e.currentTarget; }} onPointerCancel={() => { backdropPress.current = false; }} onPointerUp={e => { const outside = backdropPress.current && e.target === e.currentTarget; backdropPress.current = false; if (outside) close(); }}>
       <motion.div key={opened} className="portfolio-full-image" style={{ touchAction: 'pan-y pinch-zoom' }} onTouchStart={event => {
         if (event.touches.length !== 1 || closing) { swipe.current = null; return; }
         const touch = event.touches[0];
@@ -160,7 +170,7 @@ export default function Portfolio() {
         if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
         setOpened(index => (index + (dx < 0 ? 1 : items.length - 1)) % items.length);
       }} initial={reducedMotion ? false : { opacity: 0, scale: 0.97, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.24, ease: 'easeOut' }}><Image src={items[opened].src} alt={items[opened].alt} width={dimensions[opened][0]} height={dimensions[opened][1]} unoptimized sizes="94vw"/></motion.div>
-      <div className="portfolio-modal-controls"><button onClick={() => setOpened(i => (i + 10) % 11)} aria-label="Imagem anterior"><ArrowLeft size={20}/></button><span>{items[opened].title} · {opened + 1} / 11</span><button onClick={() => setOpened(i => (i + 1) % 11)} aria-label="Próxima imagem"><ArrowRight size={20}/></button></div>
+      <div className="portfolio-modal-controls"><button onClick={() => setOpened(i => (i + items.length - 1) % items.length)} aria-label="Imagem anterior"><ArrowLeft size={20}/></button><span>{items[opened].title} · {opened + 1} / {items.length}</span><button onClick={() => setOpened(i => (i + 1) % items.length)} aria-label="Próxima imagem"><ArrowRight size={20}/></button></div>
       <p className="portfolio-viewer-hint" data-visible={showHint} aria-hidden={!showHint}>Deslize para explorar · Toque fora para fechar</p>
     </dialog>
   </section>;
