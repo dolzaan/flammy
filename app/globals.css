@@ -1610,3 +1610,9 @@ main .site-content-ready.visible{opacity:1;transform:none}
 #principal>.portfolio .portfolio-heading{display:block;margin-top:18px;margin-bottom:12px}
 #principal>.portfolio .portfolio-heading>div{margin-top:0}
 #principal>.portfolio .portfolio-heading h3{font-size:clamp(26px,3vw,36px);margin-bottom:6px}
+
+/* Shared introductory copy scale across the light content panels. */
+.scroll-site #principal :is(.section-heading>p,.studio-copy p,.portfolio-project-story){font-family:'Inter',Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.65;letter-spacing:normal;color:#68565a}
+.scroll-site #principal>.portfolio .portfolio-project-story{max-width:70ch;margin:0 0 22px}
+.scroll-site #principal>.portfolio .portfolio-heading p{font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:400;line-height:1.6;color:#68565a}
+@media(max-width:900px){.scroll-site #principal :is(.section-heading>p,.studio-copy p,.portfolio-project-story){font-size:14px;line-height:1.65}.scroll-site #principal>.portfolio .portfolio-project-story{margin-bottom:18px}.scroll-site #principal>.portfolio .portfolio-heading p{font-size:12px}}
