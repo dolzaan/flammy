@@ -1599,3 +1599,8 @@ main .site-content-ready.visible{opacity:1;transform:none}
 .portfolio-viewer-hint[data-visible=true]{opacity:.8}
 @media(max-width:600px){.portfolio-viewer-hint{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.portfolio-viewer-hint{transition:none}}
+
+/* Brief project context, separate from the gallery controls. */
+.portfolio-project-story{max-width:76ch;margin:0 0 16px;font-size:13px;line-height:1.65;color:#74505a}
+#principal>.portfolio .portfolio-heading{margin-bottom:14px}
+@media(max-width:900px){.portfolio-project-story{font-size:12px;line-height:1.6;margin-bottom:12px}}
