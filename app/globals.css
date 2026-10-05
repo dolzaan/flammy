@@ -1551,3 +1551,16 @@ main .site-content-ready.visible{opacity:1;transform:none}
  #processo .steps article>span{font-size:22px;line-height:1.2}
  .scroll-site #principal>.portfolio{padding-block:28px}
 }
+
+/* Quiet discovery cues for the portfolio gallery. */
+.portfolio-explore{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 6% 0;color:#74505a}
+.portfolio-drag-hint{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.02em;opacity:.8;white-space:nowrap}
+.portfolio-position{display:flex;align-items:center;gap:10px}
+.portfolio-dots{display:flex;align-items:center;gap:5px}
+.portfolio-dots span{width:4px;height:4px;flex-shrink:0;border-radius:999px;background:currentColor;opacity:.25;transition:opacity .2s,width .2s}
+.portfolio-dots span[data-active=true]{width:14px;opacity:.85}
+.portfolio-count{font-size:10px;font-variant-numeric:tabular-nums;white-space:nowrap;opacity:.7}
+.portfolio-native,.portfolio-native-card{cursor:grab;user-select:none}
+.portfolio-native:active,.portfolio-native-card:active{cursor:grabbing}
+@media(max-width:600px){.portfolio-explore{padding:8px 2px 0;gap:10px;flex-wrap:wrap}.portfolio-drag-hint{font-size:10px}.portfolio-dots{gap:4px}.portfolio-count{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.portfolio-dots span{transition:none}}
