@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { afterLoadIdle } from './afterLoadIdle';
 
 const FlexCarousel = dynamic(() => import('./FlexCarousel'), { ssr: false });
 const names = ['Fachada', 'Fitas e padrões', 'Sinalização', 'Cartão da marca', 'Papelaria', 'Carrinho de flores', 'Cartões de visita', 'Buquê', 'Embalagem', 'Avental', 'Ecobag'];
@@ -56,17 +57,24 @@ export default function Portfolio() {
     return () => { document.body.style.overflow = previous; };
   }, [isOpen]);
   useEffect(() => {
+    let cancelDecision = () => {};
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
-      const canvas = document.createElement('canvas');
-      const gl = canvas.getContext('webgl2');
-      setWebgl(Boolean(gl) && !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-      gl?.getExtension('WEBGL_lose_context')?.loseContext();
-      setReady(true);
       observer.disconnect();
+      // The WebGL carousel waits for the page to finish loading; until then the native gallery is shown.
+      cancelDecision = afterLoadIdle(() => {
+        // Touch devices keep the native swipe gallery, as DarkVeil skips WebGL there:
+        // the WebGL carousel decodes every full-size mockup up front and blocks a phone's main thread for seconds.
+        // Preferences are checked first so phones never pay for creating the probe context either.
+        const wantsWebgl = !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !window.matchMedia('(pointer: coarse)').matches;
+        const gl = wantsWebgl ? document.createElement('canvas').getContext('webgl2') : null;
+        setWebgl(Boolean(gl));
+        gl?.getExtension('WEBGL_lose_context')?.loseContext();
+        setReady(true);
+      });
     }, { rootMargin: '180px' });
     if (root.current) observer.observe(root.current);
-    return () => observer.disconnect();
+    return () => { observer.disconnect(); cancelDecision(); };
   }, []);
 
   useEffect(() => {
@@ -146,12 +154,12 @@ export default function Portfolio() {
           if (drag.current.moved) { event.preventDefault(); event.currentTarget.scrollLeft = drag.current.startScroll - delta; }
         }} onPointerUp={() => { drag.current.down = false; }} onPointerLeave={() => { drag.current.down = false; }} onPointerCancel={() => { drag.current.down = false; }} onClickCapture={event => {
           if (drag.current.moved) { event.preventDefault(); event.stopPropagation(); drag.current.moved = false; }
-        }} onDragStart={event => event.preventDefault()}>{items.map((item, index) => <button key={item.src} className="portfolio-native-card" onClick={() => open(index)} aria-label={`Ampliar ${item.title}`}><Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 78vw, 450px" unoptimized draggable={false}/></button>)}</div>}
+        }} onDragStart={event => event.preventDefault()}>{items.map((item, index) => <button key={item.src} className="portfolio-native-card" onClick={() => open(index)} aria-label={`Ampliar ${item.title}`}><Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 78vw, 450px" draggable={false}/></button>)}</div>}
       </div>
       <div className="portfolio-project-footer">
       <div className="portfolio-project-tabs" role="group" aria-label="Selecionar projeto">{(['aurora', 'vale'] as const).map(value => <button key={value} type="button" aria-label={`Ver projeto ${value === 'aurora' ? 'Aurora' : 'Achei no Vale'}`} aria-pressed={project === value} onClick={() => { setProject(value); setActive(0); setOpened(0); const gallery = root.current?.querySelector<HTMLElement>('.portfolio-native'); if (gallery) gallery.scrollLeft = 0; }}><Image src={`/portfolio/${value}-logo.svg`} alt={value === 'aurora' ? 'Aurora' : 'Achei no Vale'} width={126} height={58} unoptimized/></button>)}</div>
       <div className="portfolio-explore">
-        <div className="portfolio-position" aria-label={`Imagem ${active + 1} de ${items.length}: ${items[active].title}`}>
+        <div className="portfolio-position" role="group" aria-label={`Imagem ${active + 1} de ${items.length}: ${items[active].title}`}>
           <div className="portfolio-dots" aria-hidden="true">{items.map((item, index) => <span key={item.src} data-active={active === index}/>)}</div>
           <span className="portfolio-count" aria-hidden="true">{String(active + 1).padStart(2, '0')} / {items.length}</span>
         </div>

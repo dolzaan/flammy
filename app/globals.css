@@ -1657,3 +1657,11 @@ header.privacy-header{display:flex;align-items:center;justify-content:space-betw
 .privacy-card .privacy-intro{font-size:17px;color:var(--ink)}
 .privacy-card a{color:var(--red);text-decoration:underline;text-underline-offset:4px}
 .contact-form .consent a{text-decoration:underline;text-underline-offset:3px}
+/* Readability floor: small print stays at 12px on phones, the portfolio counter keeps 4.5:1 contrast,
+   and standalone links offer at least a 24px tap target. */
+.portfolio-count{opacity:1;color:#6e5258}
+.service-description a,.scroll-site>.site-footer>div>a,.scroll-site>header .brand{min-height:24px}
+.scroll-site>.site-footer>div>a{display:inline-flex;align-items:center}
+@media(max-width:900px){
+ .portfolio-count,.text-tag,.manifesto .section-label,.manifesto-bottom,#contato .required-note,#entregas .deliverable-footer>p,.scroll-site>.site-footer>div{font-size:12px}
+}

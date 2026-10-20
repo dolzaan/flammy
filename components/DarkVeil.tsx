@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from 'react';
+import { afterLoadIdle } from './afterLoadIdle';
 
 /** Dark Veil by David Haz / React Bits, adapted to Flammy's palette.
  * Original neural shader is retained; Three.js reuses the site's existing renderer dependency.
@@ -178,11 +179,11 @@ export default function DarkVeil() {
       };
     };
     const preferences = () => { cleanup?.(); cleanup = undefined; void start().catch(() => {}); };
-    void start().catch(() => {});
+    const cancelStart = afterLoadIdle(() => { void start().catch(() => {}); });
     reduced.addEventListener('change', preferences);
     coarse.addEventListener('change', preferences);
     return () => {
-      disposed = true; ++generation; cleanup?.();
+      disposed = true; ++generation; cancelStart(); cleanup?.();
       reduced.removeEventListener('change', preferences);
       coarse.removeEventListener('change', preferences);
     };
