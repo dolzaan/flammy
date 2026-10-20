@@ -10,7 +10,7 @@ import { afterLoadIdle } from './afterLoadIdle';
 const FlexCarousel = dynamic(() => import('./FlexCarousel'), { ssr: false });
 const names = ['Fachada', 'Fitas e padrões', 'Sinalização', 'Cartão da marca', 'Papelaria', 'Carrinho de flores', 'Cartões de visita', 'Buquê', 'Embalagem', 'Avental', 'Ecobag'];
 const auroraDimensions = [[2048,1365],[2048,1536],[2048,1536],[2048,1536],[1365,2048],[1365,2048],[2048,1536],[1366,2048],[1365,2047],[1856,1578],[2048,1365]];
-const auroraItems = names.map((title, index) => ({ src: `/portfolio-image/${index + 1}`, title, alt: `${title} — identidade visual Aurora Floricultura Boutique`, subtitle: 'Aurora · Identidade visual' }));
+const auroraItems = names.map((title, index) => ({ src: `/portfolio/aurora/${index + 1}.webp`, title, alt: `${title} — identidade visual Aurora Floricultura Boutique`, subtitle: 'Aurora · Identidade visual' }));
 
 const valeNames = ['Marca', 'Conexões', 'Papelaria', 'Presença digital', 'Versões da marca', 'Aplicação digital', 'Vestuário'];
 const valeItems = valeNames.map((title, index) => ({ src: `/portfolio/achei-no-vale/${index + 1}.webp`, title, alt: `${title} — identidade visual Achei no Vale`, subtitle: 'Achei no Vale · Identidade visual' }));
