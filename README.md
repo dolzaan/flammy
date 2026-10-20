@@ -36,7 +36,7 @@ O formulário aparece somente quando a URL do Supabase, a chave de serviço e `L
 
 ## Supabase
 
-Projeto `sfohvokxjtibqshuvltq`, região São Paulo, plano gratuito, com `supabase/migration.sql` aplicado. Está conectado ao projeto da Vercel pela integração nativa, que administra as chaves: a aplicação lê `NEXT_PUBLIC_FLAMMY_SUPABASE_URL` e `FLAMMY_SUPABASE_SERVICE_ROLE_KEY` (ou `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`), e `LEAD_HASH_SALT` fica no servidor. Nunca envie esses segredos pelo chat nem use prefixo NEXT_PUBLIC na chave de serviço.
+Projeto `sfohvokxjtibqshuvltq`, região São Paulo, plano gratuito, com `supabase/migration.sql` e `supabase/002_current_services.sql` aplicados. A coluna `service` guarda o serviço escolhido no formulário; a lista em `app/api/briefing/route.ts` precisa bater com a regra da migração. Está conectado ao projeto da Vercel pela integração nativa, que administra as chaves: a aplicação lê `NEXT_PUBLIC_FLAMMY_SUPABASE_URL` e `FLAMMY_SUPABASE_SERVICE_ROLE_KEY` (ou `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`), e `LEAD_HASH_SALT` fica no servidor. Nunca envie esses segredos pelo chat nem use prefixo NEXT_PUBLIC na chave de serviço.
 
 O plano gratuito pausa projetos sem atividade. Para evitar isso, `vercel.json` agenda um cron às segundas e quintas que chama `/api/keep-alive`, uma consulta leve ao banco. Se `CRON_SECRET` estiver definida na Vercel, a rota só responde a chamadas do cron.
 

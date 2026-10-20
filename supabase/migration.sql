@@ -3,7 +3,7 @@ create table public.flammy_leads (
  id uuid primary key default gen_random_uuid(),
  name text not null check(length(name) between 2 and 120),
  email text not null check(length(email) <=254),
- service text not null check(service in ('Identidade visual','Design para o digital','Direção criativa')),
+ service text not null check(service in ('Estratégia','Conteúdo','Social Media','Design','Projetos especiais','Vamos descobrir juntos','Identidade visual','Design para o digital','Direção criativa')),
  message text not null check(length(message) between 10 and 3000),
  consent_at timestamptz not null default now(),
  created_at timestamptz not null default now()

@@ -1,22 +1,12 @@
 import {NextRequest,NextResponse} from 'next/server';
 import {createHash} from 'node:crypto';
-// Keep the deployed database's legacy categories compatible with current services.
-// The chosen service is retained in the notification and, when space permits, the lead text.
-const databaseServices: Record<string, string> = {
- 'Estratégia':'Direção criativa',
- 'Conteúdo':'Design para o digital',
- 'Social Media':'Design para o digital',
- 'Design':'Identidade visual',
- 'Projetos especiais':'Direção criativa',
- 'Vamos descobrir juntos':'Direção criativa',
-};
+// Must match the service check in supabase/002_current_services.sql.
+const services = ['Estratégia','Conteúdo','Social Media','Design','Projetos especiais','Vamos descobrir juntos'];
 type Lead = {name:string,email:string,service:string,message:string};
 // 'saved' and 'limited' come from the database; 'failed' means it could not be reached.
 async function saveLead(url:string,key:string,lead:Lead,hash:string):Promise<'saved'|'limited'|'failed'>{
- const servicePrefix = `Serviço escolhido: ${lead.service}\n\n`;
- const storedMessage = servicePrefix.length + lead.message.length <= 3000 ? servicePrefix + lead.message : lead.message;
  try{
-  const response=await fetch(`${url}/rest/v1/rpc/submit_flammy_lead`,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({p_name:lead.name,p_email:lead.email,p_service:databaseServices[lead.service],p_message:storedMessage,p_hash:hash}),signal:AbortSignal.timeout(5000)});
+  const response=await fetch(`${url}/rest/v1/rpc/submit_flammy_lead`,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({p_name:lead.name,p_email:lead.email,p_service:lead.service,p_message:lead.message,p_hash:hash}),signal:AbortSignal.timeout(5000)});
   if(!response.ok)return 'failed';
   return await response.json() ? 'saved' : 'limited';
  }catch{return 'failed'}
@@ -43,7 +33,7 @@ export async function POST(req:NextRequest){
  if(!url||!key||!salt)return NextResponse.json({error:'Use o e-mail ou o briefing para entrar em contato.'},{status:503});
  let b;try{const text=await req.text();if(text.length>12000)throw Error();b=JSON.parse(text)}catch{return NextResponse.json({error:'Dados inválidos.'},{status:400})}
  if(b.website)return NextResponse.json({error:'Não foi possível enviar.'},{status:400});
- if(typeof b.name!=='string'||b.name.trim().length<2||b.name.length>120||typeof b.email!=='string'||b.email.length>254||!/^\S+@\S+\.\S+$/.test(b.email)||typeof b.message!=='string'||b.message.trim().length<10||b.message.length>3000||(typeof b.service!=='string'||!Object.hasOwn(databaseServices,b.service))||b.consent!=='on')return NextResponse.json({error:'Confira os campos e a autorização de contato.'},{status:400});
+ if(typeof b.name!=='string'||b.name.trim().length<2||b.name.length>120||typeof b.email!=='string'||b.email.length>254||!/^\S+@\S+\.\S+$/.test(b.email)||typeof b.message!=='string'||b.message.trim().length<10||b.message.length>3000||(typeof b.service!=='string'||!services.includes(b.service))||b.consent!=='on')return NextResponse.json({error:'Confira os campos e a autorização de contato.'},{status:400});
  const lead:Lead={name:b.name.trim(),email:b.email.trim().toLowerCase(),service:b.service,message:b.message.trim()};
  const ip=req.headers.get('x-vercel-forwarded-for')?.split(',')[0]||req.headers.get('x-forwarded-for')?.split(',')[0]||'unknown';
  const hash=createHash('sha256').update(salt+ip).digest('hex');

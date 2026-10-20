@@ -1632,9 +1632,14 @@ main .site-content-ready.visible{opacity:1;transform:none}
 .scroll-site #principal h2.site-blur-ready,
 .scroll-site #principal h2.site-blur-ready.visible{opacity:1;filter:none;transition:transform 460ms cubic-bezier(.22,1,.36,1)}
 #entregas .deliverable-footer>p{color:#68565a}
-/* On desktop the services and contact panels grow with their content, so the heading never slides under the header and the form stays inside the card. */
+/* On desktop the services, deliverables and contact panels grow with their content, so the heading never slides under the header and the form stays inside the card. */
 @media(min-width:901px){
- .scroll-site #servicos{height:auto;min-height:calc(100svh - 84px);padding-block:calc(clamp(28px,4.8vh,46px) + 26px)}
+ .scroll-site #servicos,.scroll-site #entregas{height:auto;min-height:calc(100svh - 84px);padding-block:calc(clamp(28px,4.8vh,46px) + 26px)}
  .scroll-site #contato{height:auto;min-height:calc(100svh - 164px);padding-block:calc(clamp(28px,4.8vh,46px) + 26px)}
  #servicos .service-description p{min-height:3em}
+}
+/* Desktop snapping only settles near a section start, so a short wheel or trackpad gesture always moves the page. */
+@media(min-width:901px){
+ html{scroll-snap-type:y proximity}
+ .scroll-site main>section{scroll-snap-stop:normal}
 }
