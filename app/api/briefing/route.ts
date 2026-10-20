@@ -8,6 +8,7 @@ const databaseServices: Record<string, string> = {
  'Social Media':'Design para o digital',
  'Design':'Identidade visual',
  'Projetos especiais':'Direção criativa',
+ 'Vamos descobrir juntos':'Direção criativa',
 };
 export async function POST(req:NextRequest){
  if(req.headers.get('origin')!==new URL(req.url).origin)return NextResponse.json({error:'Origem inválida.'},{status:403});

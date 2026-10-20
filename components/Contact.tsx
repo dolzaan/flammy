@@ -6,7 +6,7 @@ import { ArrowUpRight, Check, LoaderCircle } from 'lucide-react';
 
 type Field = 'name' | 'email' | 'service' | 'message' | 'consent';
 type Errors = Partial<Record<Field, string>>;
-const serviceHints: Record<string, string> = { 'Estratégia': 'Vamos trazer clareza para o próximo movimento da sua marca.', 'Conteúdo': 'Vamos transformar essência em comunicação.', 'Social Media': 'Vamos construir uma presença digital consistente.', 'Design': 'Vamos dar forma à percepção da sua marca.', 'Projetos especiais': 'Vamos criar um caminho próprio para esta ideia.' };
+const serviceHints: Record<string, string> = { 'Estratégia': 'Vamos trazer clareza para o próximo movimento da sua marca.', 'Conteúdo': 'Vamos transformar essência em comunicação.', 'Social Media': 'Vamos construir uma presença digital consistente.', 'Design': 'Vamos dar forma à percepção da sua marca.', 'Projetos especiais': 'Vamos criar um caminho próprio para esta ideia.', 'Vamos descobrir juntos': 'Vamos entender juntos o melhor caminho para a sua marca.' };
 const fields: Field[] = ['name', 'email', 'service', 'message', 'consent'];
 
 function validate(data: FormData): Errors {
@@ -16,7 +16,7 @@ function validate(data: FormData): Errors {
   const message = String(data.get('message') ?? '').trim();
   if (name.length < 2) errors.name = 'Como podemos chamar você? Digite pelo menos 2 caracteres.';
   if (!/^\S+@\S+\.\S+$/.test(email)) errors.email = 'Digite um e-mail válido, como voce@empresa.com.';
-  if (!['Estratégia', 'Conteúdo', 'Social Media', 'Design', 'Projetos especiais'].includes(String(data.get('service')))) errors.service = 'Escolha o ponto de partida que você tem em mente.';
+  if (!['Estratégia', 'Conteúdo', 'Social Media', 'Design', 'Projetos especiais', 'Vamos descobrir juntos'].includes(String(data.get('service')))) errors.service = 'Escolha o ponto de partida que você tem em mente.';
   if (message.length < 10) errors.message = 'Conte um pouco mais sobre sua ideia: pelo menos 10 caracteres.';
   if (data.get('consent') !== 'on') errors.consent = 'Precisamos da sua autorização para responder ao projeto.';
   return errors;
@@ -115,7 +115,7 @@ export default function Contact({ enabled, briefing }: { enabled: boolean; brief
     <fieldset disabled={state === 'sending'}>
       <div className="form-field"><label htmlFor={`${id}-name`}>Seu nome <span aria-hidden="true">*</span></label><input id={`${id}-name`} name="name" placeholder="Como podemos chamar você?" autoComplete="name" required maxLength={120} {...attributesFor('name')} />{errorFor('name')}</div>
       <div className="form-field"><label htmlFor={`${id}-email`}>E-mail <span aria-hidden="true">*</span></label><input id={`${id}-email`} name="email" placeholder="voce@exemplo.com" type="email" autoComplete="email" required maxLength={254} {...attributesFor('email')} />{errorFor('email')}</div>
-      <div className="form-field"><label htmlFor={`${id}-service`}>O que sua marca precisa? <span aria-hidden="true">*</span></label><select id={`${id}-service`} name="service" value={selectedService} required {...attributesFor('service')} onChange={event => { setSelectedService(event.target.value); if (errors.service) checkField('service'); }}><option value="">Selecione um serviço</option><option>Estratégia</option><option>Conteúdo</option><option>Social Media</option><option>Design</option><option>Projetos especiais</option></select>{errorFor('service')}</div>
+      <div className="form-field"><label htmlFor={`${id}-service`}>O que sua marca precisa? <span aria-hidden="true">*</span></label><select id={`${id}-service`} name="service" value={selectedService} required {...attributesFor('service')} onChange={event => { setSelectedService(event.target.value); if (errors.service) checkField('service'); }}><option value="">Selecione um serviço</option><option>Estratégia</option><option>Conteúdo</option><option>Social Media</option><option>Design</option><option>Projetos especiais</option><option>Vamos descobrir juntos</option></select>{errorFor('service')}</div>
       <div className="form-field"><label htmlFor={`${id}-message`}>Sobre o projeto <span aria-hidden="true">*</span></label><textarea id={`${id}-message`} name="message" placeholder="Conte sobre sua marca, seus objetivos e o que deseja construir" rows={2} required minLength={10} maxLength={3000} {...attributesFor('message')} />{errorFor('message')}</div>
       <label className="honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
       <label className="consent"><input type="checkbox" name="consent" required {...attributesFor('consent')} /> Autorizo o uso dos meus dados para responder à mensagem. <span aria-hidden="true">*</span></label>{errorFor('consent')}
