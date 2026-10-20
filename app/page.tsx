@@ -125,7 +125,7 @@ export default function Page(){
       <footer className="site-footer">
         <GlassSurface className="footer-glass"/>
         <a href="#inicio" className="footer-wordmark" aria-label="Flammy, voltar ao início"><Image src="/flammy-logo.svg" width={846} height={156} unoptimized alt="Flammy" sizes="140px"/></a>
-        <div><span>Estratégia com alma.</span><span>© {new Date().getFullYear()} Flammy</span><a href="#inicio">Voltar ao início</a></div>
+        <div><span>Estratégia com alma.</span><span>© {new Date().getFullYear()} Flammy</span><a href="/privacidade">Privacidade</a><a href="#inicio">Voltar ao início</a></div>
       </footer>
 
     </div>

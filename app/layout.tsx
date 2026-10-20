@@ -4,6 +4,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase:new URL('https://flammy.vercel.app'),
   title:'Flammy — Studio Criativo',
   description:'Estratégia, criatividade e sensibilidade para marcas que querem construir algo relevante.',
   robots:{index:true,follow:true},
@@ -15,8 +16,10 @@ export const metadata: Metadata = {
     title:'Flammy — Studio Criativo',
     description:'Transformamos potencial em posicionamento e presença em autoridade.',
     locale:'pt_BR',
-    type:'website'
-  }
+    type:'website',
+    url:'/'
+  },
+  twitter:{card:'summary_large_image'}
 };
 
 export default function Layout({children}:{children:React.ReactNode}){
